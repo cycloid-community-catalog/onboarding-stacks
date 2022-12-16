@@ -1,0 +1,97 @@
+#
+# Cloud Provider
+#
+
+# Amazon access to use to run terraform. Usually admin account to be able to create cloud services.
+
+#. aws_cred (required): ((aws))
+#+ Amazon credentials containing access key and secret key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
+aws_cred: ((aws))
+
+#. aws_default_region (required): eu-west-1
+#+ Amazon AWS region to use for Terraform.
+aws_region: eu-west-1
+
+
+#
+# Keypair to use for newly created instances
+#
+
+#. keypair_public (required): ((custom_keypair.ssh_pub))
+#+ The public SSH key to provision for external access through SSH
+keypair_public: ((custom_keypair.ssh_pub))
+
+
+#
+# Stack Git repository
+#
+
+#. stack_git_repository (required): ($ scs_url $)
+#+ Git repository URL containing the stack.
+stack_git_repository: ($ scs_url $)
+
+#. stack_git_branch (required): ($ scs_branch $)
+#+ Branch to use on the stack Git repository.
+stack_git_branch: ($ scs_branch $)
+
+#. stack_git_private_key (required): ((git.ssh_key))
+#+ SSH key pair to fetch the stack Git repository.
+stack_git_private_key: ((git.ssh_key))
+
+#. stack_terraform_path (required): stack-nodejs-aws/terraform
+#+ Path of Terraform files in the stack git repository
+stack_terraform_path: stack-nodejs-aws/terraform
+
+
+#
+# Config Git repository
+#
+
+#. config_git_repository (required): ($ cr_url $)
+#+ Git repository URL containing the config of the stack.
+config_git_repository: ($ cr_url $)
+
+#. config_git_branch (required): ($ cr_branch $)
+#+ Branch to use on the config Git repository.
+config_git_branch: ($ cr_branch $)
+
+#. config_git_private_key (required): ((git.ssh_key))
+#+ SSH key pair to fetch the config Git repository.
+config_git_private_key: ((git.ssh_key))
+
+#. config_terraform_path (required): ($ project $)/terraform/($ environment $)
+#+ Path of Terraform files in the config git repository
+config_terraform_path: ($ project $)/terraform/($ environment $)
+
+
+#
+# Default variables that shouldn't be changed except if needed
+#
+
+#. env (required): ($ environment $)
+#+ Name of the project's environment.
+env: ($ environment $)
+
+#. project (required): ($ project $)
+#+ Name of the project.
+project: ($ project $)
+
+#. customer (required): ($ organization_canonical $)
+#+ Name of the Cycloid Organization, used as customer variable name.
+customer: ($ organization_canonical $)
+
+#. cycloid_api_url (required): https://http-api.cycloid.io
+#+ Cycloid API URL.
+cycloid_api_url: 'https://http-api.cycloid.io'
+
+#. cycloid_api_key (required): ((custom_api-key-admin.key))
+#+ API key to grant admin acess to Cycloid API.
+cycloid_api_key: ((custom_api-key-admin.key))
+
+#. cycloid_inventory_jwt (required): ($ inventory_jwt $)
+#+ JWT token to access Cycloid inventory (acting as HTTP Terraform backend).
+cycloid_inventory_jwt: ($ inventory_jwt $)
+
+#. terraform_version (required): '1.1.9'
+#+ terraform version used to execute your code. Please select a Terraform version matching a container image tag here: https://hub.docker.com/r/cycloid/terraform-resource/tags
+terraform_version: '1.1.9'

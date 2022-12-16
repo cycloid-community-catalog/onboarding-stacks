@@ -1,0 +1,124 @@
+---
+version: "2"
+use_cases:
+- name: default
+  sections:
+  - name: NodeJS Server
+    groups:
+    - name: Virtual machine specifications
+      technologies: [terraform]
+      vars:
+      - name: "Instance type"
+        description: "Instance type for the VM."
+        key: vm_instance_type
+        widget: slider_list
+        type: string
+        default: "Standard_DS2_v2"
+        values:
+            - "Standard_DS1_v2"
+            - "Standard_DS2_v2"
+            - "Standard_DS3_v2"
+        required: true
+      - name: "Disk size"
+        unit: Go
+        description: "Disk size for the VM."
+        key: vm_disk_size
+        widget: slider_range
+        type: integer
+        default: 30
+        values:
+            - 30
+            - 250
+        required: true
+
+    - name: NodeJS Application
+      technologies: [terraform]
+      vars:
+      - name: "Webapp Public Git URL"
+        description: "Public git URL of the web application to build and deploy."
+        key: git_app_url
+        widget: auto_complete
+        type: string
+        values: ["https://github.com/Rahul-Pandey7/react-image-compressor.git","https://github.com/arnab-datta/counter-app.git","https://github.com/Yog9/SnapShot.git","https://github.com/ahfarmer/calculator.git","https://github.com/ahfarmer/emoji-search.git"]
+        default: "https://github.com/Yog9/SnapShot.git"
+        required: true
+
+    - name: Security
+      technologies: [pipeline]
+      vars:
+      - name: "Public SSH key"
+        description: "The public SSH key, for SSH access to newly-created instances."
+        key: keypair_public
+        widget: cy_cred
+        type: string
+        default: "((custom_keypair.ssh_pub))"
+        required: true
+
+  - name: Azure Cloud Provider
+    groups:
+    - name: Access Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Azure credentials"
+        description: "The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret."
+        key: azure_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - azure
+        type: string
+        default: "((azure))"
+    - name: Azure Infrastructure
+      technologies: [terraform]
+      vars:
+      - name: "Azure location"
+        description: "Azure location for Terraform."
+        key: azure_location
+        widget: auto_complete
+        type: string
+        values:
+            - Australia Central
+            - China East
+            - China North
+            - East Asia
+            - East US
+            - France Central
+            - France South
+            - North Europe
+            - Southeast Asia
+            - South Africa North
+            - South Africa West
+            - West Europe
+            - West US
+        default: "West Europe"
+        required: true
+      - name: "Existing resource group name"
+        description: "The name of the existing resource group where the resources will be deployed."
+        key: rg_name
+        widget: simple_text
+        type: string
+        default: ""
+        required: true
+
+  # Uncomment if you want the user to be able to override the default values set in the pipeline
+  #
+  # - name: Cycloid Platform
+  #   groups:
+  #   - name: Cycloid API
+  #     technologies: [pipeline]
+  #     vars:
+  #     - name: "Cycloid API URL"
+  #       description: "Cycloid API URL. Leave the default value unless your are running an on premises Cycloid platform."
+  #       key: cycloid_api_url
+  #       widget: simple_text
+  #       type: string
+  #       default: "https://http-api.cycloid.io"
+  #       required: true
+  #     - name: "Cycloid API key"
+  #       description: "API key to grant access to Cycloid API."
+  #       key: cycloid_api_key
+  #       widget: cy_cred
+  #       type: string
+  #       default: "((cycloid-api-key.key))"
+  #       required: true
