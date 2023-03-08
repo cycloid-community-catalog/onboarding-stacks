@@ -38,7 +38,7 @@ resources:
     vars:
       aws_cred: ((aws_cred))
       aws_region: ((aws_region))
-      ssh_keypair: ((ssh_keypair))
+      keypair_public: ((keypair_public))
       customer: ((customer))
       project: ((project))
       env: ((env))
@@ -251,11 +251,11 @@ jobs:
             path: ansible-playbook
         params:
           #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
-          ANSIBLE_REMOTE_USER: ((vm_os_user))
+          ANSIBLE_REMOTE_USER: admin
           SSH_PRIVATE_KEY: ((keypair_private))
           EC2_VPC_DESTINATION_VARIABLE: ip_address # Force to connect to public IP because we don't use a bastion in this stack
-          AWS_ACCESS_KEY_ID: ((aws_access_key))
-          AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
+          AWS_ACCESS_KEY_ID: ((aaws_cred.access_key))
+          AWS_SECRET_ACCESS_KEY: ((aws_cred.secret_key))
           AWS_DEFAULT_REGION: ((aws_region))
           ANSIBLE_PLAYBOOK_PATH: ansible-playbook
           ANSIBLE_PLAYBOOK_NAME: site.yml

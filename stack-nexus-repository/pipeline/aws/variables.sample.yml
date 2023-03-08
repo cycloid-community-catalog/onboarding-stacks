@@ -20,6 +20,8 @@ aws_region: eu-west-1
 #. ssh_keypair (required): ((keypair))
 #+ The  SSH keypair containing ssh_prv and ssh_pub to connect via SSH to execute the Ansible playbook.
 ssh_keypair: ((keypair))
+keypair_public: ssh_keypair.ssh_pub
+keypair_private: ssh_keypair.ssh_prv
 
 
 #
