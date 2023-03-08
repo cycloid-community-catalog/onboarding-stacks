@@ -99,11 +99,6 @@ To run this stack, you will need:
 |`stack_git_private_key`|SSH key pair to fetch the stack Git repository.|`-`|`((git.ssh_key))`|`True`|
 |`stack_git_repository`|Git repository URL containing the stack.|`-`|`git@github.com:cycloidio/cycloid-demo-stacks.git`|`True`|
 |`stack_terraform_path`|Path of Terraform files in the stack git repository|`-`|`stack-get-started/terraform/azure`|`True`|
-|`terraform_resource_group_name`|Azure Resource Group of the Storage Account to use to store terraform remote state file.|`-`|`($ organization_canonical $)-terraform`|`True`|
-|`terraform_storage_account_key`|Azure Storage Account key to use to store terraform remote state file.|`-`|`((azure_storage.access_key))`|`True`|
-|`terraform_storage_account_name`|Azure Storage Account name to use to store terraform remote state file.|`-`|`((azure_storage.account_name))`|`True`|
-|`terraform_storage_container_name`|Azure Storage container name to store terraform remote state file.|`-`|`($ organization_canonical $)`|`True`|
-|`terraform_storage_container_path`|Azure Storage container path to store terraform remote state file.|`-`|`($ project $)/($ environment $)`|`True`|
 |`terraform_version`|terraform version used to execute your code.cycloid-toolkit docker image tag to use (https://hub.docker.com/r/cycloid/cycloid-toolkit/tags).|`-`|`'1.0.5'`|`True`|
 |`vm_instance_status`|Instance status for the Nexus Repository|`-`|`Running`|`True`|
 |`vm_os_user`|Admin username for newly created instances|`-`|`nexus`|`True`|
@@ -146,7 +141,6 @@ To run this stack, you will need:
 |`stack_git_private_key`|SSH key pair to fetch the stack Git repository.|`-`|`((git.ssh_key))`|`True`|
 |`stack_git_repository`|Git repository URL containing the stack.|`-`|`git@github.com:cycloidio/cycloid-demo-stacks.git`|`True`|
 |`stack_terraform_path`|Path of Terraform files in the stack git repository|`-`|`stack-get-started/terraform/gcp`|`True`|
-|`terraform_storage_bucket_name`|Google Cloud Storage bucket name to store terraform remote state file.|`-`|`($ organization_canonical $)-terraform-remote-state`|`True`|
 |`terraform_version`|terraform version used to execute your code.cycloid-toolkit docker image tag to use (https://hub.docker.com/r/cycloid/cycloid-toolkit/tags).|`-`|`'1.0.5'`|`True`|
 |`vm_os_user`|Admin username for newly created instances|`-`|`admin`|`True`|
 

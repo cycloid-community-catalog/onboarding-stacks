@@ -33,11 +33,9 @@ resources:
   icon: terraform
   source:
     env_name: ((env))
-    backend_type: gcs
+    backend_type: http
     backend_config:
-      bucket: ((terraform_storage_bucket_name))
-      prefix: ((project))/((env))
-      credentials: ((gcp_credentials_json))
+      address: '((cycloid_api_url))/inventory?jwt=((cycloid_inventory_jwt))'
     vars:
       gcp_project: ((gcp_project))
       gcp_region: ((gcp_region))
