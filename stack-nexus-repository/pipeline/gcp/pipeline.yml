@@ -300,8 +300,6 @@ jobs:
 
         - get: tfstate
           trigger: false
-          passed:
-            - terraform-apply
 
       - task: merge-stack-and-config
         config:
