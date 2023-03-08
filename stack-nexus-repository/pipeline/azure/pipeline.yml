@@ -41,7 +41,6 @@ resources:
       azure_env: ((azure_env))
       azure_cred: ((azure_cred))
       ssh_keypair: ((ssh_keypair))
-      vm_os_user: ((vm_os_user))
       env: ((env))
       project: ((project))
       customer: ((customer))

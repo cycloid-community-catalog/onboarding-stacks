@@ -14,4 +14,3 @@ variable "azure_location" {
     default = "West Europe"
 }
 variable "ssh_keypair" {}
-variable "vm_os_user" {}

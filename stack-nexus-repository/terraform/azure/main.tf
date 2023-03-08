@@ -18,10 +18,6 @@ module "nexus" {
   #+ The public SSH key, for SSH access to newly-created instances
   keypair_public = var.ssh_keypair["ssh_pub"]
 
-  #. vm_os_user: nexus
-  #+ Admin username for newly created instances
-  vm_os_user = var.vm_os_user
-
   #. azure_location: "West Europe"
   #+ Azure location
   azure_location = var.azure_location

@@ -41,7 +41,6 @@ resources:
       gcp_region: ((gcp_region))
       gcp_zone: ((gcp_zone))
       ssh_keypair: ((ssh_keypair))
-      vm_os_user: ((vm_os_user))
       env: ((env))
       project: ((project))
       customer: ((customer))

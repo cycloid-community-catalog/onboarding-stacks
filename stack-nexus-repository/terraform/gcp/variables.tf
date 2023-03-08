@@ -14,4 +14,3 @@ variable "gcp_zone" {
   default     = "b"
 }
 variable "ssh_keypair" {}
-variable "vm_os_user" {}
