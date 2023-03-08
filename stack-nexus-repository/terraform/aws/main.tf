@@ -16,7 +16,7 @@ module "nexus" {
 
   #. keypair_public: ""
   #+ The public SSH key, for SSH access to newly-created instances
-  keypair_public = var.ssh_keypair.ssh_pub
+  keypair_public = var.ssh_keypair["ssh_pub"]
 
   #
   # Nexus Repository
