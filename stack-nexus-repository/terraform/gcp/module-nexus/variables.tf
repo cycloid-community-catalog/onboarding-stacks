@@ -8,10 +8,6 @@ variable "keypair_public" {
   description = "The public SSH key, for SSH access to newly-created instances"
 }
 
-data "google_compute_zones" "available" {
-  status = "UP"
-}
-
 
 #
 # Nexus Repository

@@ -13,5 +13,5 @@ variable "gcp_zone" {
   description = "GCP zone where to create servers."
   default     = "b"
 }
-variable "keypair_public" {}
+variable "ssh_keypair" {}
 variable "vm_os_user" {}

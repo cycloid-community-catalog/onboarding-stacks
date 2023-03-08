@@ -13,5 +13,5 @@ variable "azure_env" {
 variable "azure_location" {
     default = "West Europe"
 }
-variable "keypair_public" {}
+variable "ssh_keypair" {}
 variable "vm_os_user" {}
