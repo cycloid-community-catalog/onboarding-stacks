@@ -47,6 +47,7 @@ resources:
     env:
       GOOGLE_PROJECT: ((gcp_project))
       GOOGLE_REGION: ((gcp_region))
+      GOOGLE_ZONE: ((gcp_zone))
       GOOGLE_CREDENTIALS: ((gcp_credentials_json))
 
 # The Terraform stack (will be merged with the config)
