@@ -40,7 +40,7 @@ resources:
       gcp_project: ((gcp_project))
       gcp_region: ((gcp_region))
       gcp_zone: ((gcp_zone))
-      ssh_keypair: ((ssh_keypair))
+      keypair_public: ((keypair_public))
       env: ((env))
       project: ((project))
       customer: ((customer))
@@ -258,7 +258,7 @@ jobs:
             path: ansible-playbook
         params:
           #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
-          ANSIBLE_REMOTE_USER: ((vm_os_user))
+          ANSIBLE_REMOTE_USER: admin
           SSH_PRIVATE_KEY: ((keypair_private))
           GCP_USE_PRIVATE_IP: False # Force to connect to public IP because we don't use a bastion in this stack
           GCP_SERVICE_ACCOUNT_CONTENTS: ((gcp_credentials_json))

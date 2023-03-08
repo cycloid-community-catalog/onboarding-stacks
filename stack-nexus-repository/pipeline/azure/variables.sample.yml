@@ -21,9 +21,13 @@ azure_location: "West Europe"
 # SSH Keypair to use for newly created instances
 #
 
-#. ssh_keypair (required): ((keypair))
-#+ The  SSH keypair containing ssh_prv and ssh_pub to connect via SSH to execute the Ansible playbook.
-ssh_keypair: ((keypair))
+#. keypair_public (required): ((keypair.ssh_pub))
+#+ The public SSH key to connect via SSH to execute the Ansible playbook.
+keypair_public: ((keypair.ssh_pub))
+
+#. keypair_private (required): ((keypair.ssh_prv))
+#+ The private SSH key to connect via SSH to execute the Ansible playbook.
+keypair_private: ((keypair.ssh_prv))
 
 
 #

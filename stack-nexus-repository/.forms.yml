@@ -30,19 +30,23 @@ use_cases:
             - 20
             - 250
         required: true
-    - name: SSH Keypair to access new instances
+    - name: SSH Keypair for new instances
       technologies: [pipeline]
       vars:
-      - name: "SSH Key pair"
-        description: "The  SSH keypair containing ssh_prv and ssh_pub to connect via SSH to execute the Ansible playbook"
-        key: ssh_keypair
+      - name: "SSH Public key"
+        description: "The public SSH key to connect via SSH to execute the Ansible playbook"
+        key: keypair_public
         widget: cy_cred
-        widget_config:
-          display_keys: false
-          cred_types:
-            - custom
         type: string
-        default: "((keypair))"
+        default: "((keypair.ssh_pub))"
+        required: true
+      - name: "SSH Private key"
+        description: "The private SSH key to connect via SSH to execute the Ansible playbook"
+        key: keypair_private
+        widget: cy_cred
+        type: string
+        default: "((keypair.ssh_prv))"
+        required: true
     - name: Application Configuration
       technologies: [terraform]
       vars:
@@ -128,19 +132,22 @@ use_cases:
             - "Running"
             - "Stopped"
         required: true
-    - name: SSH Keypair to access new instances
+    - name: SSH Keypair for new instances
       technologies: [pipeline]
       vars:
-      - name: "SSH Key pair"
-        description: "The  SSH keypair containing ssh_prv and ssh_pub to connect via SSH to execute the Ansible playbook"
-        key: ssh_keypair
+      - name: "SSH Public key"
+        description: "The public SSH key to connect via SSH to execute the Ansible playbook"
+        key: keypair_public
         widget: cy_cred
-        widget_config:
-          display_keys: false
-          cred_types:
-            - custom
         type: string
-        default: "((keypair))"
+        default: "((keypair.ssh_pub))"
+        required: true
+      - name: "SSH Private key"
+        description: "The private SSH key to connect via SSH to execute the Ansible playbook"
+        key: keypair_private
+        widget: cy_cred
+        type: string
+        default: "((keypair.ssh_prv))"
         required: true
     - name: Application Configuration
       technologies: [terraform]
@@ -238,19 +245,22 @@ use_cases:
             - 10
             - 250
         required: true
-    - name: SSH Keypair to access new instances
+    - name: SSH Keypair for new instances
       technologies: [pipeline]
       vars:
-      - name: "SSH Key pair"
-        description: "The  SSH keypair containing ssh_prv and ssh_pub to connect via SSH to execute the Ansible playbook"
-        key: ssh_keypair
+      - name: "SSH Public key"
+        description: "The public SSH key to connect via SSH to execute the Ansible playbook"
+        key: keypair_public
         widget: cy_cred
-        widget_config:
-          display_keys: false
-          cred_types:
-            - custom
         type: string
-        default: "((keypair))"
+        default: "((keypair.ssh_pub))"
+        required: true
+      - name: "SSH Private key"
+        description: "The private SSH key to connect via SSH to execute the Ansible playbook"
+        key: keypair_private
+        widget: cy_cred
+        type: string
+        default: "((keypair.ssh_prv))"
         required: true
     - name: Application Configuration
       technologies: [terraform]
