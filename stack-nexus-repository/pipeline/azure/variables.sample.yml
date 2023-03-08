@@ -1,0 +1,112 @@
+#
+# Cloud Provider
+#
+
+# Azure access to use to run terraform.
+
+#. azure_cred (required): ((azure))
+#+ Azure credentials for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
+azure_cred: ((azure))
+
+#. azure_env (required): public
+#+ Azure environment to use for Terraform. Can be either `public`, `usgovernment`, `german` or `china`.
+azure_env: "public"
+
+#. azure_location (required): West Europe
+#+ Azure location to use for terraform. 
+azure_location: "West Europe"
+
+
+#
+# SSH Keypair to use for newly created instances
+#
+
+#. ssh_keypair (required): ((keypair))
+#+ The  SSH keypair containing ssh_prv and ssh_pub to connect via SSH to execute the Ansible playbook.
+ssh_keypair: ((keypair))
+
+
+#
+# Default Stack Repository
+#
+
+#. stack_git_repository (required): ($ scs_url $)
+#+ Git repository URL containing the stack.
+stack_git_repository: ($ scs_url $)
+
+#. stack_git_branch (required): ($ scs_branch $)
+#+ Branch to use on the stack Git repository.
+stack_git_branch: ($ scs_branch $)
+
+#. stack_git_private_key (required): ((git.ssh_key))
+#+ SSH key pair to fetch the stack Git repository.
+stack_git_private_key: ((git.ssh_key))
+
+#. stack_terraform_path (required): stack-nexus-repository/terraform/azure
+#+ Path of Terraform files in the stack git repository
+stack_terraform_path: stack-nexus-repository/terraform/azure
+
+#. stack_ansible_path (required): stack-nexus-repository/ansible
+#+ Path of Ansible files in the stack git repository
+stack_ansible_path: stack-nexus-repository/ansible
+
+#
+# Default Config Repository
+#
+
+#. config_git_repository (required): ($ cr_url $)
+#+ Git repository URL containing the config of the stack.
+config_git_repository: ($ cr_url $)
+
+#. config_git_branch (required): ($ cr_branch $)
+#+ Branch to use on the config Git repository.
+config_git_branch: ($ cr_branch $)
+
+#. config_git_private_key (required): ((git.ssh_key))
+#+ SSH key pair to fetch the config Git repository.
+config_git_private_key: ((git.ssh_key))
+
+#. config_terraform_path (required): ($ project $)/terraform/azure/($ environment $)
+#+ Path of Terraform files in the config git repository
+config_terraform_path: ($ project $)/terraform/azure/($ environment $)
+
+#. config_ansible_path (required): ($ project $)/ansible/environments
+#+ Path of Ansible files in the config git repository
+config_ansible_path: ($ project $)/ansible/environments
+
+
+#
+# Default variables that shouldn't be changed except if needed
+#
+
+#. env (required): ($ environment $)
+#+ Name of the project's environment.
+env: ($ environment $)
+
+#. project (required): ($ project $)
+#+ Name of the project.
+project: ($ project $)
+
+#. customer (required): ($ organization_canonical $)
+#+ Name of the Cycloid Organization, used as customer variable name.
+customer: ($ organization_canonical $)
+
+#. cycloid_api_url (required): https://http-api.cycloid.io
+#+ Cycloid API URL.
+cycloid_api_url: 'https://http-api.cycloid.io'
+
+#. cycloid_api_key (required): ((api-key-admin.key))
+#+ API key to grant admin acess to Cycloid API.
+cycloid_api_key: ((api-key-admin.key))
+
+#. cycloid_inventory_jwt (required): ($ inventory_jwt $)
+#+ JWT token to access Cycloid inventory (acting as HTTP Terraform backend).
+cycloid_inventory_jwt: ($ inventory_jwt $)
+
+#. terraform_version (required): '1.1.9'
+#+ terraform version used to execute your code.
+terraform_version: '1.1.9'
+
+#. cycloid-toolkit ansible version (required): 'v2.9'
+#+ cycloid-toolkit docker image tag to use (https://hub.docker.com/r/cycloid/cycloid-toolkit/tags).
+ansible_version: 'v2.9'

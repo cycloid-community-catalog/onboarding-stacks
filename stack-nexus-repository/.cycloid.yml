@@ -1,0 +1,86 @@
+---
+# Configuration of the Cycloid stack
+version: '2'
+name: 'Nexus Repository'
+canonical: 'stack-nexus-repository'
+description: This stack deploys a Nexus Repository on a AWS, Azure or GCP instance using Terraform and Ansible.
+author: 'Cycloid'
+image: 'https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/nexus.png'
+status: 'private'
+keywords:
+- nexus
+- repository
+- artefact
+- provider:aws
+- provider:azure
+- provider:gcp
+technologies:
+- technology: nexus
+  version: "3.33"
+
+config:
+  aws:
+    name: 'AWS'
+    description: 'Deploys a Nexus Repository in a single AWS instance'
+    cloud_provider: aws
+    # Pipeline and variable configuration for the AWS CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/aws/pipeline.yml'
+      variables:
+        path: 'pipeline/aws/variables.sample.yml'
+        destination: '($ project $)/pipeline/aws/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/aws/main.tf'
+        destination: '($ project $)/terraform/aws/($ environment $)/main.tf'
+
+  azure:
+    name: 'Azure'
+    description: 'Deploys a Nexus Repository in a single Azure instance'
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the Azure CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/azure/pipeline.yml'
+      variables:
+        path: 'pipeline/azure/variables.sample.yml'
+        destination: '($ project $)/pipeline/azure/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/azure/main.tf'
+        destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
+
+  gcp:
+    name: 'GCP'
+    description: 'Deploys a Nexus Repository in a single GCP instance'
+    cloud_provider: google
+    # Pipeline and variable configuration for the GCP CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/gcp/pipeline.yml'
+      variables:
+        path: 'pipeline/gcp/variables.sample.yml'
+        destination: '($ project $)/pipeline/gcp/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/gcp/main.tf'
+        destination: '($ project $)/terraform/gcp/($ environment $)/main.tf'
