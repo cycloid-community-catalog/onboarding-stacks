@@ -38,6 +38,14 @@ stack_git_branch: ($ scs_branch $)
 #+ SSH key pair to fetch the stack Git repository.
 stack_git_private_key: ((git.ssh_key))
 
+#. stack_git_username (required): ((git.username))
+#+ Username for HTTP(S) auth when pulling/pushing.
+# stack_git_username: ((git.username))
+
+#. stack_git_token (required): ((git.password))
+#+ Password for HTTP(S) auth when pulling/pushing.
+# stack_git_token: ((git.password))
+
 #. stack_terraform_path (required): stack-nodejs-aws/terraform
 #+ Path of Terraform files in the stack git repository
 stack_terraform_path: stack-nodejs-aws/terraform
@@ -58,6 +66,14 @@ config_git_branch: ($ cr_branch $)
 #. config_git_private_key (required): ((git.ssh_key))
 #+ SSH key pair to fetch the config Git repository.
 config_git_private_key: ((git.ssh_key))
+
+#. config_git_username (required): ((git.username))
+#+ Username for HTTP(S) auth when pulling/pushing.
+# config_git_username: ((git.username))
+
+#. config_git_token (required): ((git.password))
+#+ Password for HTTP(S) auth when pulling/pushing.
+# config_git_token: ((git.password))
 
 #. config_terraform_path (required): ($ project $)/terraform/($ environment $)
 #+ Path of Terraform files in the config git repository
