@@ -297,6 +297,20 @@ use_cases:
             - northamerica-northeast1
             - northamerica-northeast2
         required: true
+      - name: "GCP zone"
+        description: "Google Cloud Platform zone to use for Terraform. Make sure the zone extension exists for the selected region."
+        key: gcp_zone
+        widget: dropdown
+        type: string
+        default: "b"
+        values:
+            - a
+            - b
+            - c
+            - d
+            - e
+            - f
+        required: true      
       - name: "GCP credentials"
         description: "Google Cloud Platform JSON credentials to use for Terraform."
         key: gcp_credentials_json
