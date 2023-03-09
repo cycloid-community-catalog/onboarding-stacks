@@ -4,7 +4,7 @@ resource "google_compute_network" "nexus" {
 }
 
 resource "google_compute_subnetwork" "nexus" {
-  name          = "${var.vpc_name}-subnet"
+  name          = "${var.customer}-${var.project}-${var.env}-subnet"
   ip_cidr_range = "10.123.0.0/16"
   network       = google_compute_network.nexus.id
 }

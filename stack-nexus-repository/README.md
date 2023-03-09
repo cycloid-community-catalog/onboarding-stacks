@@ -68,8 +68,6 @@ To run this stack, you will need:
 |`nexus_port`|Port where Nexus Repository service is exposed|`-`|`8081`|`False`|
 |`vm_disk_size`|Disk size for the Nexus Repository (Go)|`-`|`20`|`False`|
 |`vm_instance_type`|Instance type for the Nexus Repository|`-`|`'t3.micro'`|`False`|
-|`vm_os_user`|Admin username for newly created instances|`-`|`admin`|`False`|
-|`vpc_name`|The name of the VPC to create where the Nexus Repository instance will be deployed|`-`|`'cycloid-get-started'`|`False`|
 
 ## Azure
 
@@ -153,5 +151,3 @@ To run this stack, you will need:
 |`nexus_port`|Port where Nexus Repository service is exposed|`-`|`8081`|`False`|
 |`vm_disk_size`|Disk size for the Nexus Repository (Go)|`-`|`20`|`False`|
 |`vm_machine_type`|Machine type for the Nexus Repository|`-`|`'n2-standard-2'`|`False`|
-|`vm_os_user`|Admin username for newly created instances|`-`|`admin`|`False`|
-|`vpc_name`|The name for the VPC network to create where the Nexus Repository instance will be deployed|`-`|`'cycloid-get-started'`|`False`|
