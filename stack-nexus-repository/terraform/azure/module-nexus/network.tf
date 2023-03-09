@@ -2,7 +2,7 @@
 resource "azurerm_network_security_group" "nexus" {
   name                = "${var.customer}-${var.project}-${var.env}-nexus"
   resource_group_name = data.azurerm_resource_group.nexus.name
-  location            = data.azurerm_resource_group.nexus.location
+  location            = var.azure_location
 
   security_rule {
     name                       = "inbound-ssh"
@@ -37,7 +37,7 @@ resource "azurerm_network_security_group" "nexus" {
 resource "azurerm_public_ip" "nexus" {
   name                = "${var.customer}-${var.project}-${var.env}-nexus"
   resource_group_name = data.azurerm_resource_group.nexus.name
-  location            = data.azurerm_resource_group.nexus.location
+  location            = var.azure_location
   allocation_method   = "Dynamic"
 
   tags = merge(local.merged_tags, {
@@ -49,7 +49,7 @@ resource "azurerm_public_ip" "nexus" {
 resource "azurerm_network_interface" "nexus" {
   name                = "${var.customer}-${var.project}-${var.env}-nexus"
   resource_group_name = data.azurerm_resource_group.nexus.name
-  location            = data.azurerm_resource_group.nexus.location
+  location            = var.azure_location
 
   ip_configuration {
       name                          = "${var.customer}-${var.project}-${var.env}-nexus"
@@ -72,7 +72,7 @@ resource "azurerm_network_interface_security_group_association" "nexus" {
 resource "azurerm_virtual_network" "nexus" {
   name                = "${var.customer}-${var.project}-${var.env}-nexus"
   resource_group_name = data.azurerm_resource_group.nexus.name
-  location            = data.azurerm_resource_group.nexus.location
+  location            = var.azure_location
   address_space       = ["10.123.0.0/16"]
 
   tags = merge(local.merged_tags, {
