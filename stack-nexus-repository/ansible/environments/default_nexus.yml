@@ -1,5 +1,5 @@
 ---
-nexus_version: '3.37.0-01'
+nexus_version: '3.41.0-01'
 nexus_package: "nexus-{{ nexus_version }}-unix.tar.gz"
 nexus_os_group: 'nexus'
 vm_os_user: 'nexus'
@@ -8,5 +8,6 @@ nexus_installation_dir: '/opt'
 nexus_data_dir: '/opt/sonatype-work'
 nexus_timezone: 'Europe/Paris' # java timezone
 
-java_version: 8
-java_home: "/usr/lib/jvm/java-{{ java_version }}-openjdk-amd64"
+java_home: "/usr/lib/jvm/java-8-openjdk-amd64"
+java_deb: "openjdk-8-jre_8u332-ga-1_deb9u1_amd64.deb"
+java_deb_headless: "openjdk-8-jre-headless_8u332-ga-1_deb9u1_amd64.deb"
