@@ -266,9 +266,9 @@ use_cases:
         type: string
         default: "n2-standard-2"
         values:
-            - n1-standard-2
             - n2-standard-2
             - n2d-standard-2
+            - t2d-standard-2
         required: true
       - name: "Disk size"
         unit: Go
