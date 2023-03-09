@@ -3,7 +3,7 @@ resource "azurerm_linux_virtual_machine" "nexus" {
   name                  = "${var.customer}-${var.project}-${var.env}-nexus"
   computer_name         = "nexus"
   resource_group_name   = data.azurerm_resource_group.nexus.name
-  location              = data.azurerm_resource_group.nexus.location
+  location              = var.azure_location
   network_interface_ids = [azurerm_network_interface.nexus.id]
   size                  = var.vm_instance_type
   admin_username        = var.vm_os_user
