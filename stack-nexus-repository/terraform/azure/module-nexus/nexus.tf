@@ -15,9 +15,9 @@ resource "azurerm_linux_virtual_machine" "nexus" {
   }
 
   source_image_reference {
-      publisher = "credativ"
-      offer     = "Debian"
-      sku       = "9"
+      publisher = "Debian"
+      offer     = "debian-10"
+      sku       = "10"
       version   = "latest"
   }
 

@@ -45,10 +45,17 @@
       value: 65536
 
   # Installing JAVA
-  - name: Install openjdk 8
+  - name: Update repositories cache 
     apt:
-      name: "openjdk-{{ java_version }}-jdk"
-      state: present
+      update_cache: yes
+
+  - name: Install Java JRE 8 headless
+    apt:
+      deb: https://cycloid-demo-archives.s3.eu-west-1.amazonaws.com/{{ java_deb_headless }}
+
+  - name: Install Java JRE 8
+    apt:
+      deb: https://cycloid-demo-archives.s3.eu-west-1.amazonaws.com/{{ java_deb }}
 
   - name: make sure /etc/profile.d exists
     file: 
@@ -143,7 +150,7 @@
 
   - name: Waiting for nexus to be ready...
     wait_for:
-      host: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+      host: "{{ vm_ip }}"
       port: "{{ nexus_port }}"
       delay: 5
 
