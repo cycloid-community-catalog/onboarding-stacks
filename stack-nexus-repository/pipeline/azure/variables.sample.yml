@@ -43,6 +43,15 @@ keypair_private: ((keypair.ssh_prv))
 
 
 #
+# Instance status
+#
+
+#. vm_instance_status (required): "Running"
+#+ Instance status for the Nexus Repository.
+vm_instance_status: "Running"
+
+
+#
 # Default Stack Repository
 #
 
