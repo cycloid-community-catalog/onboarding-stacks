@@ -36,12 +36,17 @@ resources:
     backend_config:
       address: '((cycloid_api_url))/inventory?jwt=((cycloid_inventory_jwt))'
     vars:
-      aws_cred: ((aws_cred))
+      aws_access_key: ((aws_access_key))
+      aws_secret_key: ((aws_secret_key))
       aws_region: ((aws_region))
       keypair_public: ((keypair_public))
       customer: ((customer))
       project: ((project))
       env: ((env))
+    env:
+      AWS_ACCESS_KEY_ID: ((aws_access_key))
+      AWS_DEFAULT_REGION: ((aws_region))
+      AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
 
 # The Terraform stack (will be merged with the config)
 - name: git_stack-terraform
@@ -254,8 +259,8 @@ jobs:
           ANSIBLE_REMOTE_USER: admin
           SSH_PRIVATE_KEY: ((keypair_private))
           EC2_VPC_DESTINATION_VARIABLE: ip_address # Force to connect to public IP because we don't use a bastion in this stack
-          AWS_ACCESS_KEY_ID: ((aws_cred)).access_key
-          AWS_SECRET_ACCESS_KEY: ((aws_cred)).secret_key
+          AWS_ACCESS_KEY_ID: ((aws_access_key))
+          AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
           AWS_DEFAULT_REGION: ((aws_region))
           ANSIBLE_PLAYBOOK_PATH: ansible-playbook
           ANSIBLE_PLAYBOOK_NAME: site.yml
