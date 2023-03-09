@@ -10,15 +10,10 @@ resource "google_compute_firewall" "nexus" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-data "google_compute_zones" "available" {
-  status = "UP"
-}
-
 resource "google_compute_instance" "nexus" {
   name           = "${var.customer}-${var.project}-${var.env}-nexus"
   machine_type   = var.vm_machine_type
   can_ip_forward = false
-  zone           = data.google_compute_zones.available.names[length(data.google_compute_zones.available.names)-1]
 
   boot_disk {
     initialize_params {
