@@ -37,8 +37,13 @@ groups:
 jobs:
   - name: get-github-repo
     plan:
-      - get: github-user-repo
+      - put: github-user-repo
         trigger: true
+        params:
+          build_metadata: [body]
+          text: |
+            {"name":$repo_name,"description":$repo_description,"homepage":"https://github.com","private":false,"is_template":true}
+        
       - task: take-a-look
         config:
           platform: linux
@@ -50,8 +55,3 @@ jobs:
           run:
             path: cat
             args: ["github-user-repo/headers", "github-user-repo/body"]
-
-
-
-# {"name":"Hello-World","description":"This is your first repo!","homepage":"https://github.com","private":false,"is_template":true}
-

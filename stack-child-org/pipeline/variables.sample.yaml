@@ -10,6 +10,9 @@ github-token: ((olivier2t-repo.password))
 #+ Github organization
 github-org: ""
 
+repo_name: "foo"
+repo_description: "bar"
+
 #
 # Default variables that shouldn't be changed except if needed
 #
