@@ -23,7 +23,7 @@ resources:
       url: https://api.github.com/user/repos
       headers:
         Accept: application/vnd.github+json
-        X-GitHub-Api-Version: 2022-11-28
+        X-GitHub-Api-Version: '2022-11-28'
         Authorization: Bearer ((github-token))
       version:
         jq: .id
@@ -38,11 +38,10 @@ jobs:
   - name: get-github-repo
     plan:
       - put: github-user-repo
-        trigger: true
         params:
           build_metadata: [body]
           text: |
-            {"name":$repo_name,"description":$repo_description,"homepage":"https://github.com","private":false,"is_template":true}
+            {"name":"$repo_name","description":"$repo_description","homepage":"https://github.com","private":false,"is_template":true}
         
       - task: take-a-look
         config:
