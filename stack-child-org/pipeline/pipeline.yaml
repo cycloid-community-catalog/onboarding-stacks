@@ -1,12 +1,13 @@
 resource_types:
-  - name: api-call
+  - name: http-api
     type: docker-image
     source:
-      repository: jgriff/http-resource
+      repository: aequitas/http-api-resource
+      tag: latest
 
 resources:
   # - name: github-org-repo
-  #   type: api-call
+  #   type: http-api
   #   source:
   #     url: https://api.github.com/orgs/((github-org))/repos
   #     headers:
@@ -18,16 +19,21 @@ resources:
   #       default: none
 
   - name: github-user-repo
-    type: api-call
+    type: http-api
     source:
-      url: https://api.github.com/user/repos
+      uri: https://api.github.com/user/repos
+      method: POST
       headers:
         Accept: application/vnd.github+json
         X-GitHub-Api-Version: '2022-11-28'
-        Authorization: Bearer ((github-token))
-      version:
-        jq: .id
-        default: none
+        Authorization: "Bearer {github-token}"
+      github-token: ((github-token))
+      json:
+        name: "{repo_name}"
+        description: "{repo_description}"
+        homepage: "https://github.com"
+        private: true
+        is_template: false
 
 groups:
 - name: overview
@@ -39,9 +45,8 @@ jobs:
     plan:
       - put: github-user-repo
         params:
-          build_metadata: [body]
-          text: |
-            {"name":"$repo_name","description":"$repo_description","homepage":"https://github.com","private":false,"is_template":true}
+          repo_name: ((repo_name))
+          repo_description: ((repo_description))
         
       - task: take-a-look
         config:
