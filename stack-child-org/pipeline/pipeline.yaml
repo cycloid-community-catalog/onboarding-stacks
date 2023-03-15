@@ -33,7 +33,7 @@ resources:
 groups:
 - name: overview
   jobs:
-    - get-github-repo
+    - github-repo
 
 jobs:
   - name: github-repo
