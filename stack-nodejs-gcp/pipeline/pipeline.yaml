@@ -42,7 +42,7 @@ resources:
     env_name: ((env))
     backend_type: http
     backend_config:
-      address: '((cycloid_api_url))/inventory?jwt=((cycloid_inventory_jwt))'
+      address: '((cycloid_api_url))/inventory?jwt=($ inventory_jwt $)'
     vars:
       gcp_project: ((gcp_project))
       gcp_region: ((gcp_region))
