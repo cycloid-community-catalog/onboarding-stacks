@@ -100,10 +100,6 @@ cycloid_api_url: 'https://http-api.cycloid.io'
 #+ API key to grant admin acess to Cycloid API.
 cycloid_api_key: ((custom_api-key-admin.key))
 
-#. cycloid_inventory_jwt (required): ($ inventory_jwt $)
-#+ JWT token to access Cycloid inventory (acting as HTTP Terraform backend).
-cycloid_inventory_jwt: ($ inventory_jwt $)
-
 #. terraform_version (required): '1.1.9'
 #+ terraform version used to execute your code. Please select a Terraform version matching a container image tag here: https://hub.docker.com/r/cycloid/terraform-resource/tags
 terraform_version: '1.1.9'
