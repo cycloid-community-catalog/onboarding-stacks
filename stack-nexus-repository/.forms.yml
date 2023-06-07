@@ -1,21 +1,6 @@
 ---
 version: "2"
 use_cases:
-- name: cycloid-common
-  sections:
-  - name: Cycloid Platform
-    groups:
-    - name: Cycloid API
-      technologies: [pipeline]
-      vars:
-      - name: "API key"
-        description: "API key to grant admin acess to Cycloid API."
-        key: cycloid_api_key
-        type: string
-        widget: cy_cred
-        default: "((api-key-admin.key))"
-        required: true
-
 - name: aws
   sections:
   - name: Nexus Repository

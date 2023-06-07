@@ -19,20 +19,6 @@ resource_types:
     repository: cycloid/terraform-resource
     tag: ((terraform_version))
 
-- name: cycloid-events
-  type: registry-image
-  source:
-    repository: cycloid/cycloid-events-resource
-    tag: latest
-
-# The email Concourse resource type allowing to send emails from this pipeline.
-# (cf. https://github.com/pivotal-cf/email-resource)
-#
-# - name: email
-#   type: registry-image
-#   source:
-#     repository: pcfseceng/email-resource
-
 
 resources:
 - name: tfstate
@@ -50,36 +36,6 @@ resources:
       project: ((project))
       customer: ((customer))
 
-# The Cycloid event resource to log events
-- name: cycloid-event
-  type: cycloid-events
-  source:
-    api_key: ((cycloid_api_key))
-    api_url: ((cycloid_api_url))
-    icon: fa-code-branch
-    organization: ((customer))
-    severity: info
-    type: Custom
-    tags:
-      - key: project
-        value: ((project))
-      - key: env
-        value: ((env))
-  icon: calendar
-
-# The email Concourse resource allowing to send emails from this pipeline.
-# Please add a custom "smtp" credential in Cycloid console accordingly.
-#
-# - name: send-email
-#   type: email
-#   source:
-#     smtp:
-#       host: ((smtp.server))
-#       port: "((smtp.port))" # this must be a string
-#       username: ((smtp.user))
-#       password: ((smtp.passwd))
-#     from: ((smtp.from))
-#     to: [ ((smtp.to)) ]
 
 # The Terraform stack (will be merged with the config)
 - name: git_stack-terraform
@@ -194,22 +150,6 @@ jobs:
         params:
           plan_run: true
           terraform_source: merged-stack/
-
-        on_success:
-          do:
-            - put: cycloid-event
-              params:
-                severity: info
-                title: Cycloid worker deployment successful
-                message: The project ((project)) on ((env)) environment deployed successfully
-
-        # On job execution success, send also a notification email.
-        # To enable it, you will need to uncomment the above resource type and resource declaration.
-        #
-        #     - put: send-email
-        #       params:
-        #         subject_text: "Build SUCCESS: ${BUILD_PIPELINE_NAME}/${BUILD_JOB_NAME}/${BUILD_NAME}"
-        #         body_text: "Build finished successfully: https://console.cycloid.io/organizations/((customer))/projects/((project))/pipelines/${BUILD_PIPELINE_NAME}/jobs/${BUILD_JOB_NAME}/builds/${BUILD_ID}"
 
 
   # Destroy the infrastructure

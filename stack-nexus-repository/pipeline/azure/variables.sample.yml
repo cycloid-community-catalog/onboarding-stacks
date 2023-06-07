@@ -136,10 +136,6 @@ customer: ($ organization_canonical $)
 #+ Cycloid API URL.
 cycloid_api_url: 'https://http-api.cycloid.io'
 
-#. cycloid_api_key (required): ((api-key-admin.key))
-#+ API key to grant admin acess to Cycloid API.
-cycloid_api_key: ((api-key-admin.key))
-
 #. terraform_version (required): '1.1.9'
 #+ terraform version used to execute your code.
 terraform_version: '1.1.9'

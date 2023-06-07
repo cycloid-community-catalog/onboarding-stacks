@@ -100,25 +100,3 @@ use_cases:
         type: string
         default: ""
         required: true
-
-  # Uncomment if you want the user to be able to override the default values set in the pipeline
-  #
-  # - name: Cycloid Platform
-  #   groups:
-  #   - name: Cycloid API
-  #     technologies: [pipeline]
-  #     vars:
-  #     - name: "Cycloid API URL"
-  #       description: "Cycloid API URL. Leave the default value unless your are running an on premises Cycloid platform."
-  #       key: cycloid_api_url
-  #       widget: simple_text
-  #       type: string
-  #       default: "https://http-api.cycloid.io"
-  #       required: true
-  #     - name: "Cycloid API key"
-  #       description: "API key to grant access to Cycloid API."
-  #       key: cycloid_api_key
-  #       widget: cy_cred
-  #       type: string
-  #       default: "((cycloid-api-key.key))"
-  #       required: true
