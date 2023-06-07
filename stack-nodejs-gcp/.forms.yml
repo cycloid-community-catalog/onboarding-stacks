@@ -39,7 +39,7 @@ use_cases:
         key: keypair_public
         widget: cy_cred
         type: string
-        default: "((custom_keypair.ssh_pub))"
+        default: "((keypair.ssh_pub))"
         required: true
 
     - name: NodeJS Application

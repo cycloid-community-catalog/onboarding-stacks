@@ -25,9 +25,9 @@ gcp_zone: "b"
 # Keypair to use for newly created instances
 #
 
-#. keypair_public (required): ((custom_keypair.ssh_pub))
+#. keypair_public (required): ((keypair.ssh_pub))
 #+ The public SSH key to provision for external access through SSH
-keypair_public: ((custom_keypair.ssh_pub))
+keypair_public: ((keypair.ssh_pub))
 
 
 #
