@@ -1,7 +1,7 @@
 version: "2"
 name: NodeJS WebApp on GCP
 canonical: stack-nodejs-gcp
-status: private
+status: public
 author: Cycloid
 description: |
   Build and deploy a Node.js web application on an GCP Virtual Machine.

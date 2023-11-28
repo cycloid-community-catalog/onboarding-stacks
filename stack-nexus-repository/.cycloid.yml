@@ -3,10 +3,10 @@
 version: '2'
 name: 'Nexus Repository'
 canonical: 'stack-nexus-repository'
-description: This stack deploys a Nexus Repository on a AWS, Azure or GCP instance using Terraform and Ansible.
+description: 'This stack deploys a Nexus Repository on a AWS, Azure or GCP instance using Terraform and Ansible.'
 author: 'Cycloid'
 image: 'https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/nexus.png'
-status: 'private'
+status: 'public'
 keywords:
 - nexus
 - repository

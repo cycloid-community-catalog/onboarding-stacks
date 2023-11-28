@@ -59,7 +59,7 @@ use_cases:
     - name: Access Configuration
       technologies: [pipeline]
       vars:
-      - name: "AWS account"
+      - name: "AWS Account"
         description: "The AWS account where to deploy the infrastructure. It contains access key and secret key."
         key: aws_cred
         widget: cy_cred
@@ -69,11 +69,12 @@ use_cases:
             - aws
         type: string
         default: "((aws))"
-      - name: "Amazon AWS region"
+        required: true
+      - name: "AWS Region"
         description: "Amazon AWS region to use for Terraform."
         key: aws_region
         widget: auto_complete
         type: string
-        values: ["eu-north-1","ap-south-1","eu-west-3","eu-west-2","eu-west-1","ap-northeast-2","ap-northeast-1","sa-east-1","ca-central-1","ap-southeast-1","ap-southeast-2","eu-central-1","us-east-1","us-east-2","us-west-1","us-west-2"]
-        default: eu-west-1
+        values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/aws-regions.json
+        default: eu-west-3
         required: true
