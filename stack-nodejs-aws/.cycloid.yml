@@ -4,7 +4,7 @@ canonical: stack-nodejs-aws
 status: public
 author: Cycloid
 description: |
-  Build and deploy a Node.js web application on an AWS EC2 instance.
+  Build and deploy a Node.js web application on an AWS EC2 instance using Terraform.
 image: |
   https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/node.svg
 keywords:

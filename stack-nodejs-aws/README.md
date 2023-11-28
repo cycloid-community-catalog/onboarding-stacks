@@ -18,9 +18,9 @@ This stack will:
 
 |Name|Description|Type|Default|Required|
 |---|---|:---:|:---:|:---:|
-|`aws_access_key`|Amazon AWS access key for Terraform. see value format [Here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)|`-`|`((aws_aws.access_key))`|`True`|
-|`aws_secret_key`|Amazon AWS secret key for Terraform. see value format [Here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)|`-`|`((aws_aws.secret_key))`|`True`|
-|`aws_region`|Amazon AWS region to use for Terraform.|`-`|`eu-west-1`|`True`|
+|`aws_access_key`|AWS access key for Terraform. see value format [Here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)|`-`|`((aws_aws.access_key))`|`True`|
+|`aws_secret_key`|AWS secret key for Terraform. see value format [Here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)|`-`|`((aws_aws.secret_key))`|`True`|
+|`aws_region`|AWS region to use for Terraform.|`-`|`eu-west-1`|`True`|
 |`keypair_private`|The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion.|`-`|`((keypair.ssh_prv))`|`True`|
 |`keypair_public`|SSH public key to provision on Bastion to connect to it.|`-`|`((keypair.ssh_pub))`|`True`|
 |`git_repository`|Git repository url containing the config of the stack.|`-`|`git@github.com:cycloidio/cycloid-stacks-test.git`|`True`|

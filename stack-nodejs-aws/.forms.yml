@@ -71,7 +71,7 @@ use_cases:
         default: "((aws))"
         required: true
       - name: "AWS Region"
-        description: "Amazon AWS region to use for Terraform."
+        description: "AWS region to use for Terraform."
         key: aws_region
         widget: auto_complete
         type: string

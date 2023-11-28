@@ -5,15 +5,15 @@
 # AWS access to use to run terraform. Usually admin account to be able to create AWS Cloud services.
 
 #. aws_access_key (required): ((aws_cycloid-demo.access_key))
-#+ Amazon AWS access key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
+#+ AWS access key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
 aws_access_key: ((aws.access_key))
 
 #. aws_secret_key (required): ((aws_cycloid-demo.secret_key))
-#+ Amazon AWS secret key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
+#+ AWS secret key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
 aws_secret_key: ((aws.secret_key))
 
 #. aws_default_region (required): eu-west-1
-#+ Amazon AWS region to use for Terraform.
+#+ AWS region to use for Terraform.
 aws_region: eu-west-1
 
 
@@ -115,9 +115,9 @@ customer: ($ organization_canonical $)
 #+ Cycloid API URL.
 cycloid_api_url: 'https://http-api.cycloid.io'
 
-#. terraform_version (required): '1.1.9'
+#. terraform_version (required): '1.5.7'
 #+ terraform version used to execute your code.
-terraform_version: '1.1.9'
+terraform_version: '1.5.7'
 
 #. cycloid-toolkit ansible version (required): 'v2.9'
 #+ cycloid-toolkit docker image tag to use (https://hub.docker.com/r/cycloid/cycloid-toolkit/tags).

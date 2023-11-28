@@ -4,7 +4,7 @@ canonical: stack-nodejs-gcp
 status: public
 author: Cycloid
 description: |
-  Build and deploy a Node.js web application on an GCP Virtual Machine.
+  Build and deploy a Node.js web application on an GCP Virtual Machine using Terraform.
 image: |
   https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/node.svg
 keywords:
