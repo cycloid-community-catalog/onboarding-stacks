@@ -45,7 +45,7 @@ resources:
   source:
     uri: ((stack_git_repository))
     branch: ((stack_git_branch))
-    private_key: ((stack_git_private_key))
+    # private_key: ((stack_git_private_key))
     # username: ((stack_git_username))
     # password: ((stack_git_token))
     paths:

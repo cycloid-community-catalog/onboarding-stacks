@@ -50,7 +50,7 @@ resources:
   source:
     uri: ((stack_git_repository))
     branch: ((stack_git_branch))
-    private_key: ((stack_git_private_key))
+    # private_key: ((stack_git_private_key))
     # username: ((stack_git_username))
     # password: ((stack_git_token))
     paths:
@@ -76,7 +76,9 @@ resources:
   source:
     uri: ((stack_git_repository))
     branch: ((stack_git_branch))
-    private_key: ((stack_git_private_key))
+    # private_key: ((stack_git_private_key))
+    # username: ((stack_git_username))
+    # password: ((stack_git_token))
     paths:
       - ((stack_ansible_path))/*
 
@@ -88,6 +90,8 @@ resources:
     uri: ((config_git_repository))
     branch: ((config_git_branch))
     private_key: ((config_git_private_key))
+    # username: ((config_git_username))
+    # password: ((config_git_token))
     paths:
       - ((config_ansible_path))/*
 
