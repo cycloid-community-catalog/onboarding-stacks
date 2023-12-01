@@ -44,9 +44,13 @@ module "keypair" {
     monitoring_discovery = false
   }
 
+  #. keypair_name: ""
+  #+ The name of the key pair to provision to the instance
+  keypair_name = "${var.customer}-${var.project}-${var.env}"
+
   #. keypair_public: ""
   #+ Public key to create
-  keypair_public = "Value injected by StackForms"
+  keypair_public = var.keypair_public
 
 }
 
