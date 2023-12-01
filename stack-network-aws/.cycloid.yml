@@ -6,9 +6,9 @@ canonical: stack-network-aws
 status: public
 author: Cycloid
 description: |
-  Deploys a VPC with a public and a private subnets in a single AZ, as well as a bastion EC2 instance.
+  Deploys a VPC with a public and a private subnets, as well as a bastion instance.
 image: |
-  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/network.svg
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/aws-vpc.png
 keywords:
 - terraform
 - network
