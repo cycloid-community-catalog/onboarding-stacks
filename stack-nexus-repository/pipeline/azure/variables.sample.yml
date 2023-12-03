@@ -120,6 +120,6 @@ cycloid_api_url: ($ api_url $)
 #+ terraform version used to execute your code.
 terraform_version: '1.5.7'
 
-#. cycloid-toolkit ansible version (required): 'v2.9'
+#. cycloid-toolkit ansible version (required): 'v8.3'
 #+ cycloid-toolkit docker image tag to use (https://hub.docker.com/r/cycloid/cycloid-toolkit/tags).
-ansible_version: 'v2.9'
+ansible_version: 'v8.3'
