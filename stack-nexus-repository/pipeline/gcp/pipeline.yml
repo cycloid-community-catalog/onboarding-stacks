@@ -41,7 +41,7 @@ resources:
       GOOGLE_PROJECT: ((gcp_project))
       GOOGLE_REGION: ((gcp_region))
       GOOGLE_ZONE: ((gcp_zone))
-      GOOGLE_CREDENTIALS: ((gcp_credentials_json))
+      GOOGLE_CREDENTIALS: ((((gcp_cred)).json_key))
 
 # The Terraform stack (will be merged with the config)
 - name: git_stack-terraform
@@ -241,7 +241,7 @@ jobs:
           ANSIBLE_REMOTE_USER: admin
           SSH_PRIVATE_KEY: ((keypair_private))
           GCP_USE_PRIVATE_IP: False # Force to connect to public IP because we don't use a bastion in this stack
-          GCP_SERVICE_ACCOUNT_CONTENTS: ((gcp_credentials_json))
+          CY_GCP_CRED: ((gcp_cred))
           ANSIBLE_PLAYBOOK_PATH: ansible-playbook
           ANSIBLE_PLAYBOOK_NAME: site.yml
           ANSIBLE_EXTRA_VARS:
