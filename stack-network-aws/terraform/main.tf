@@ -44,13 +44,13 @@ module "keypair" {
     monitoring_discovery = false
   }
 
-  #. keypair_name: ""
+  #. key_pair_name: ""
   #+ The name of the key pair to provision to the instance
-  keypair_name = "${var.customer}-${var.project}-${var.env}"
+  key_pair_name = "${var.customer}-${var.project}-${var.env}"
 
-  #. keypair_public: ""
+  #. key_pair_public: ""
   #+ Public key to create
-  keypair_public = var.keypair_public
+  key_pair_public = var.keypair_public
 
 }
 
@@ -82,9 +82,9 @@ module "bastion" {
   #+ Whether to associate a public IP on the primary interface or not
   associate_public_ip_address = true
 
-  #. keypair_name: ""
+  #. key_pair_name: ""
   #+ The name of the key pair to provision to the instance
-  keypair_name = module.keypair.name
+  key_pair_name = module.keypair.key_pair.key_name
 
   #. subnet_id: ''
   #+ Subnet ID where to deploy the EC2 instance
