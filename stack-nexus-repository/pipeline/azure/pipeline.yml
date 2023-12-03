@@ -242,44 +242,6 @@ jobs:
             project: ((project))
             customer: ((customer))
 
-      - task: run-operations
-        config:
-          platform: linux
-          image_resource:
-            type: registry-image
-            source:
-              repository: bitnami/azure-cli
-              tag: latest
-          run:
-            path: /bin/bash
-            args:
-              - '-c'
-              - |
-                source ansible-playbook/env
-                echo "Resource group name: ${resource_group_name}"
-                echo "Virtual machine name: ${vm_name}"
-                echo "Requested VM instance status: ${vm_instance_status}"
-                if [[ "$vm_instance_status" = "Running" ]]; then
-                  echo "Starting instance..."
-                  az login --service-principal --username ${AZURE_CLIENT_ID} --password ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
-                  az vm start --resource-group ${resource_group_name} --name ${vm_name}
-                  exit 0
-                fi
-                if [[ "$vm_instance_status" = "Stopped" ]]; then
-                  echo "Stopping instance..."
-                  az login --service-principal --username ${AZURE_CLIENT_ID} --password ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
-                  az vm stop --resource-group ${resource_group_name} --name ${vm_name}
-                  exit 0
-                fi
-          inputs:
-          - name: merged-stack
-            path: ansible-playbook
-        params:
-          vm_instance_status: ((vm_instance_status))
-          AZURE_TENANT_ID: ((azure_tenant_id))
-          AZURE_CLIENT_ID: ((azure_client_id))
-          AZURE_CLIENT_SECRET: ((azure_client_secret))
-
 
   # Destroy the infrastructure
   - name: terraform-destroy

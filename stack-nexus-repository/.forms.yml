@@ -117,19 +117,6 @@ use_cases:
             - 30
             - 250
         required: true
-    - name: Instance Operations
-      technologies: [pipeline]
-      vars:
-      - name: "Instance status"
-        description: "Instance status for the Nexus Repository."
-        key: vm_instance_status
-        widget: dropdown
-        type: string
-        default: "Running"
-        values:
-            - "Running"
-            - "Stopped"
-        required: true
     - name: SSH Keypair for new instances
       technologies: [pipeline]
       vars:
