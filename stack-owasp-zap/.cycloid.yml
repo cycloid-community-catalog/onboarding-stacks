@@ -3,7 +3,7 @@
 version: '2'
 name: 'OWASP Zed Attack Proxy (ZAP)'
 canonical: 'stack-owasp-zap'
-description: 'The world's most widely used web app scanner. Free and open source. Actively maintained by a dedicated international team of volunteers. A GitHub Top 1000 project.'
+description: The world's most widely used web app scanner. Free and open source. Actively maintained by a dedicated international team of volunteers. A GitHub Top 1000 project.
 author: 'Cycloid'
 image: 'https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/owasp-zap.png'
 status: 'public'
