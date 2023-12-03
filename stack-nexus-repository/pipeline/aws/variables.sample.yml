@@ -4,13 +4,9 @@
 
 # AWS access to use to run terraform. Usually admin account to be able to create AWS Cloud services.
 
-#. aws_access_key (required): ((aws_cycloid-demo.access_key))
-#+ AWS access key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
-aws_access_key: ((aws.access_key))
-
-#. aws_secret_key (required): ((aws_cycloid-demo.secret_key))
-#+ AWS secret key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
-aws_secret_key: ((aws.secret_key))
+#. aws_cred (required): ((aws))
+#+ Amazon credentials containing access key and secret key for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
+aws_cred: ((aws))
 
 #. aws_default_region (required): eu-west-1
 #+ AWS region to use for Terraform.

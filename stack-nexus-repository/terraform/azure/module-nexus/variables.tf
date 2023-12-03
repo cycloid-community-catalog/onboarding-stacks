@@ -17,7 +17,7 @@ variable "azure_location" {
 #
 # Nexus Repository
 #
-variable "rg_name" {
+variable "resource_group_name" {
   type        = string
   description = "The name of the existing resource group where the resources will be deployed."
   default     = "cycloid-get-started"

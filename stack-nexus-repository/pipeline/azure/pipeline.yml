@@ -30,12 +30,7 @@ resources:
     backend_config:
       address: '((cycloid_api_url))/inventory?jwt=($ inventory_jwt $)'
     vars:
-      azure_location: ((azure_location))
-      azure_env: ((azure_env))
-      azure_client_id: ((azure_client_id))
-      azure_client_secret: ((azure_client_secret))
-      azure_subscription_id: ((azure_subscription_id))
-      azure_tenant_id: ((azure_tenant_id))
+      azure_cred: ((azure_cred))
       keypair_public: ((keypair_public))
       env: ((env))
       project: ((project))
@@ -239,11 +234,7 @@ jobs:
           ANSIBLE_REMOTE_USER: nexus
           SSH_PRIVATE_KEY: ((keypair_private))
           AZURE_USE_PRIVATE_IP: False # Force to connect to public IP because we don't use a bastion in this stack
-          AZURE_SUBSCRIPTION_ID: ((azure_subscription_id))
-          AZURE_TENANT_ID: ((azure_tenant_id))
-          AZURE_TENANT: ((azure_tenant_id))
-          AZURE_CLIENT_ID: ((azure_client_id))
-          AZURE_SECRET: ((azure_client_secret))
+          CY_AZURE_CRED: ((azure_cred))
           ANSIBLE_PLAYBOOK_PATH: ansible-playbook
           ANSIBLE_PLAYBOOK_NAME: site.yml
           ANSIBLE_EXTRA_VARS:
@@ -265,19 +256,19 @@ jobs:
               - '-c'
               - |
                 source ansible-playbook/env
-                echo "Resource group name: ${rg_name}"
+                echo "Resource group name: ${resource_group_name}"
                 echo "Virtual machine name: ${vm_name}"
                 echo "Requested VM instance status: ${vm_instance_status}"
                 if [[ "$vm_instance_status" = "Running" ]]; then
                   echo "Starting instance..."
                   az login --service-principal --username ${AZURE_CLIENT_ID} --password ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
-                  az vm start --resource-group ${rg_name} --name ${vm_name}
+                  az vm start --resource-group ${resource_group_name} --name ${vm_name}
                   exit 0
                 fi
                 if [[ "$vm_instance_status" = "Stopped" ]]; then
                   echo "Stopping instance..."
                   az login --service-principal --username ${AZURE_CLIENT_ID} --password ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
-                  az vm stop --resource-group ${rg_name} --name ${vm_name}
+                  az vm stop --resource-group ${resource_group_name} --name ${vm_name}
                   exit 0
                 fi
           inputs:

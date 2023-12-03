@@ -107,7 +107,7 @@ To run this stack, you will need:
 |`keypair_public`|The public SSH key, for SSH access to newly-created instances|`-`|`""`|`False`|
 |`nexus_admin_password`|Initial admin password in case of first installation|`-`|`changeme`|`False`|
 |`nexus_port`|Port where Nexus Repository service is exposed|`-`|`8081`|`False`|
-|`rg_name`|The name of the existing resource group where the resources will be deployed|`-`|`'cycloid-get-started'`|`False`|
+|`resource_group_name`|The name of the existing resource group where the resources will be deployed|`-`|`'cycloid-get-started'`|`False`|
 |`vm_disk_size`|Disk size for the Nexus Repository (Go)|`-`|`20`|`False`|
 |`vm_instance_type`|Instance type for the Nexus Repository|`-`|`'t3.micro'`|`False`|
 |`vm_os_user`|Admin username for newly created instances|`-`|`nexus`|`False`|

@@ -20,15 +20,15 @@ module "nexus" {
 
   #. azure_location: "West Europe"
   #+ Azure location
-  azure_location = var.azure_location
+  azure_location = "Value injected by StackForms"
 
   #
   # Nexus Repository
   #
 
-  #. rg_name: 'cycloid-get-started'
+  #. resource_group_name: 'cycloid-get-started'
   #+ The name of the existing resource group where the resources will be deployed
-  rg_name = "Value injected by StackForms"
+  resource_group_name = "Value injected by StackForms"
 
   #. vm_instance_type: 't3.micro'
   #+ Instance type for the Nexus Repository
