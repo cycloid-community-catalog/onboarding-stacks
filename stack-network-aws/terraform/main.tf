@@ -85,6 +85,10 @@ module "bastion" {
   #+ The name of the key pair to provision to the instance
   key_pair_name = module.keypair.key_pair.key_name
 
+  #. service_ports: [22]
+  #+ Array of TCP ports to be allowed as ingress
+  service_ports = [22]
+
   #. subnet_id: ''
   #+ Subnet ID where to deploy the EC2 instance
   subnet_id = module.network.public_subnet_id
