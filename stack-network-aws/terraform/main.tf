@@ -71,7 +71,7 @@ module "bastion" {
 
   #. create: false
   #+ Whether to create a bastion instance
-  create = "Value injected by StackForms"
+  create = false
 
   #. vm_instance_type: "t2.micro"
   #+ Instance type to deploy
