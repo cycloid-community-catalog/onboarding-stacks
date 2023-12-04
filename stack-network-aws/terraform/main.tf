@@ -44,8 +44,6 @@ module "keypair" {
     monitoring_discovery = false
   }
 
-  count = bastion ? 1 : 0
-
   #. key_pair_name: ""
   #+ The name of the key pair to provision to the instance
   key_pair_name = "${var.customer}-${var.project}-${var.env}"
@@ -71,7 +69,9 @@ module "bastion" {
     monitoring_discovery = false
   }
 
-  count = bastion ? 1 : 0
+  #. create: false
+  #+ Whether to create a bastion instance
+  create = "Value injected by StackForms"
 
   #. vm_instance_type: "t2.micro"
   #+ Instance type to deploy

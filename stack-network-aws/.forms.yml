@@ -40,11 +40,11 @@ use_cases:
         required: true
 
     - name: Bastion
-      technologies: [pipeline]
+      technologies: [terraform]
       vars:
       - name: "Deploy a bastion instance?"
         description: "Whether to deploy a bastion instance or not."
-        key: bastion
+        key: module.bastion.create
         widget: switch
         type: boolean
         default: false
