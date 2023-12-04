@@ -51,6 +51,7 @@ use_cases:
     - name: Bastion Access
       technologies: [pipeline]
       condition: '$bastion == true'
+      vars:
       - name: "SSH Public key"
         description: "The public SSH key to connect via SSH. The public key must be provisionned in the credentials module beforehand."
         key: keypair_public
