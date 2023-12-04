@@ -39,15 +39,6 @@ use_cases:
           error_message: "Please enter a valid CIDR such as 10.0.0.0/24"
         required: true
 
-    - name: Bastion
-      technologies: [terraform]
-      vars:
-      - name: "Deploy a bastion instance?"
-        description: "Whether to deploy a bastion instance or not."
-        key: module.bastion.create
-        widget: switch
-        type: boolean
-        default: false
     - name: Key Pair
       technologies: [pipeline]
       vars:

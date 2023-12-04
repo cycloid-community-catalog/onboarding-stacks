@@ -69,10 +69,6 @@ module "bastion" {
     monitoring_discovery = false
   }
 
-  #. create: false
-  #+ Whether to create a bastion instance
-  create = false
-
   #. vm_instance_type: "t2.micro"
   #+ Instance type to deploy
   vm_instance_type = "t2.micro"
