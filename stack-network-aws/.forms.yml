@@ -39,9 +39,18 @@ use_cases:
           error_message: "Please enter a valid CIDR such as 10.0.0.0/24"
         required: true
 
-    - name: Bastion Configuration
+    - name: Bastion
       technologies: [pipeline]
       vars:
+      - name: "Deploy a bastion instance?"
+        description: "Whether to deploy a bastion instance or not."
+        key: bastion
+        widget: switch
+        type: boolean
+        default: false
+    - name: Bastion Access
+      technologies: [pipeline]
+      condition: '$bastion == true'
       - name: "SSH Public key"
         description: "The public SSH key to connect via SSH. The public key must be provisionned in the credentials module beforehand."
         key: keypair_public

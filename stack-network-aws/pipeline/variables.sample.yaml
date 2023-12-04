@@ -14,8 +14,12 @@ aws_region: eu-west-1
 
 
 #
-# Keypair to use for newly created instances
+# Bastion & Keypair
 #
+
+#. bastion (required): false
+#+ Whether to depmloy a bastion instance or not
+bastion: false
 
 #. keypair_public (required): ((keypair.ssh_pub))
 #+ The public SSH key to provision for external access through SSH
