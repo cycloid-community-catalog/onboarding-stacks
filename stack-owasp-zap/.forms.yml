@@ -3,13 +3,13 @@ version: "2"
 use_cases:
 - name: aws
   sections:
-  - name: OWASP Zed Attack Proxy (ZAP)
+  - name: OWASP ZAP
     groups:
     - name: Virtual machine specifications
       technologies: [terraform]
       vars:
       - name: "Instance type"
-        description: "Instance type for the OWASP Zed Attack Proxy (ZAP)."
+        description: "Instance type for the OWASP ZAP."
         key: vm_instance_type
         widget: slider_list
         type: string
@@ -21,7 +21,7 @@ use_cases:
         required: true
       - name: "Disk size"
         unit: Go
-        description: "Disk size for the OWASP Zed Attack Proxy (ZAP)."
+        description: "Disk size for the OWASP ZAP."
         key: vm_disk_size
         widget: slider_range
         type: integer
@@ -58,7 +58,7 @@ use_cases:
       technologies: [terraform]
       vars:
       - name: "Port"
-        description: "Port where OWASP Zed Attack Proxy (ZAP) HTTP service is exposed."
+        description: "Port where OWASP ZAP HTTP service is exposed."
         key: zap_port
         widget: simple_text
         type: string
@@ -90,13 +90,13 @@ use_cases:
 
 - name: azure
   sections:
-  - name: OWASP Zed Attack Proxy (ZAP)
+  - name: OWASP ZAP
     groups:
     - name: Virtual machine specifications
       technologies: [terraform]
       vars:
       - name: "Instance type"
-        description: "Instance type for the OWASP Zed Attack Proxy (ZAP)."
+        description: "Instance type for the OWASP ZAP."
         key: vm_instance_type
         widget: slider_list
         type: string
@@ -108,7 +108,7 @@ use_cases:
         required: true
       - name: "Disk size"
         unit: Go
-        description: "Disk size for the OWASP Zed Attack Proxy (ZAP)."
+        description: "Disk size for the OWASP ZAP."
         key: vm_disk_size
         widget: slider_range
         type: integer
@@ -131,7 +131,7 @@ use_cases:
       technologies: [terraform]
       vars:
       - name: "Port"
-        description: "Port where OWASP Zed Attack Proxy (ZAP) HTTP service is exposed."
+        description: "Port where OWASP ZAP HTTP service is exposed."
         key: zap_port
         widget: simple_text
         type: string
@@ -185,13 +185,13 @@ use_cases:
 
 - name: gcp
   sections:
-  - name: OWASP Zed Attack Proxy (ZAP)
+  - name: OWASP ZAP
     groups:
     - name: Virtual machine specifications
       technologies: [terraform]
       vars:
       - name: "Machine type"
-        description: "Machine type for the OWASP Zed Attack Proxy (ZAP)."
+        description: "Machine type for the OWASP ZAP."
         key: vm_machine_type
         widget: slider_list
         type: string
@@ -203,7 +203,7 @@ use_cases:
         required: true
       - name: "Disk size"
         unit: Go
-        description: "Disk size for the OWASP Zed Attack Proxy (ZAP)."
+        description: "Disk size for the OWASP ZAP."
         key: vm_disk_size
         widget: slider_range
         type: integer
@@ -226,7 +226,7 @@ use_cases:
       technologies: [terraform]
       vars:
       - name: "Port"
-        description: "Port where OWASP Zed Attack Proxy (ZAP) HTTP service is exposed."
+        description: "Port where OWASP ZAP HTTP service is exposed."
         key: zap_port
         widget: simple_text
         type: string
