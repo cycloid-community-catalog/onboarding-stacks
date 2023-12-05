@@ -13,13 +13,13 @@ azure_cred: ((azure))
 # SSH Key pair to use for newly created instances
 #
 
-#. key_pair_public (required): ((key_pair.public))
+#. key_pair_public (required): ((key_pair.public_key))
 #+ The public SSH key to connect via SSH to execute the Ansible playbook.
-key_pair_public: ((key_pair.public))
+key_pair_public: ((key_pair.public_key))
 
-#. key_pair_private (required): ((key_pair.private))
+#. key_pair_private (required): ((key_pair.private_key))
 #+ The private SSH key to connect via SSH to execute the Ansible playbook.
-key_pair_private: ((key_pair.private))
+key_pair_private: ((key_pair.private_key))
 
 
 #

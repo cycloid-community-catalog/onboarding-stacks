@@ -38,14 +38,14 @@ use_cases:
         key: key_pair_public
         widget: cy_cred
         type: string
-        default: ((key_pair.public))
+        default: ((key_pair.public_key))
         required: true
       - name: "SSH Private key"
         description: "The private SSH key to connect via SSH to execute the Ansible playbook"
         key: key_pair_private
         widget: cy_cred
         type: string
-        default: ((key_pair.private))
+        default: ((key_pair.private_key))
         required: true
     - name: Application Configuration
       technologies: [terraform]
@@ -125,14 +125,14 @@ use_cases:
         key: key_pair_public
         widget: cy_cred
         type: string
-        default: ((key_pair.public))
+        default: ((key_pair.public_key))
         required: true
       - name: "SSH Private key"
         description: "The private SSH key to connect via SSH to execute the Ansible playbook"
         key: key_pair_private
         widget: cy_cred
         type: string
-        default: ((key_pair.private))
+        default: ((key_pair.private_key))
         required: true
     - name: Application Configuration
       technologies: [terraform]
@@ -222,14 +222,14 @@ use_cases:
         key: key_pair_public
         widget: cy_cred
         type: string
-        default: ((key_pair.public))
+        default: ((key_pair.public_key))
         required: true
       - name: "SSH Private key"
         description: "The private SSH key to connect via SSH to execute the Ansible playbook"
         key: key_pair_private
         widget: cy_cred
         type: string
-        default: ((key_pair.private))
+        default: ((key_pair.private_key))
         required: true
     - name: Application Configuration
       technologies: [terraform]

@@ -46,8 +46,8 @@ To run this stack, you will need:
 |`customer`|Name of the Cycloid Organization, used as customer variable name.|`-`|`($ organization_canonical $)`|`True`|
 |`cycloid_api_url`|Cycloid API URL.|`-`|`https://http-api.cycloid.io`|`True`|
 |`env`|Name of the project's environment.|`-`|`($ environment $)`|`True`|
-|`key_pair_private`|The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion|`-`|`((key_pair.private))`|`True`|
-|`key_pair_public`|The public SSH key to provision to bastion for external access through SSH|`-`|`((key_pair.public))`|`True`|
+|`key_pair_private`|The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion|`-`|`((key_pair.private_key))`|`True`|
+|`key_pair_public`|The public SSH key to provision to bastion for external access through SSH|`-`|`((key_pair.public_key))`|`True`|
 |`project`|Name of the project.|`-`|`($ project $)`|`True`|
 |`stack_ansible_path`|Path of Ansible files in the stack git repository|`-`|`stack-get-started/ansible`|`True`|
 |`stack_git_branch`|Branch to use on the stack Git repository.|`-`|`master`|`True`|
@@ -87,8 +87,8 @@ To run this stack, you will need:
 |`customer`|Name of the Cycloid Organization, used as customer variable name.|`-`|`($ organization_canonical $)`|`True`|
 |`cycloid_api_url`|Cycloid API URL.|`-`|`https://http-api.cycloid.io`|`True`|
 |`env`|Name of the project's environment.|`-`|`($ environment $)`|`True`|
-|`key_pair_private`|The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion|`-`|`((key_pair.private))`|`True`|
-|`key_pair_public`|The public SSH key to provision to bastion for external access through SSH|`-`|`((key_pair.public))`|`True`|
+|`key_pair_private`|The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion|`-`|`((key_pair.private_key))`|`True`|
+|`key_pair_public`|The public SSH key to provision to bastion for external access through SSH|`-`|`((key_pair.public_key))`|`True`|
 |`project`|Name of the project.|`-`|`($ project $)`|`True`|
 |`stack_ansible_path`|Path of Ansible files in the stack git repository|`-`|`stack-get-started/ansible`|`True`|
 |`stack_git_branch`|Branch to use on the stack Git repository.|`-`|`master`|`True`|
@@ -128,8 +128,8 @@ To run this stack, you will need:
 |`gcp_credentials_json`|Google Cloud Platform credentials JSON for Terraform. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)|`-`|`((gcp.json_key))`|`True`|
 |`gcp_project`|Google Cloud Platform project to use for Terraform.|`-`|`($ organization_canonical $)`|`True`|
 |`gcp_region`|Google Cloud Platform region to use for Terraform.|`-`|`europe-west1`|`True`|
-|`key_pair_private`|The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion|`-`|`((key_pair.private))`|`True`|
-|`key_pair_public`|The public SSH key to provision to bastion for external access through SSH|`-`|`((key_pair.public))`|`True`|
+|`key_pair_private`|The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion|`-`|`((key_pair.private_key))`|`True`|
+|`key_pair_public`|The public SSH key to provision to bastion for external access through SSH|`-`|`((key_pair.public_key))`|`True`|
 |`project`|Name of the project.|`-`|`($ project $)`|`True`|
 |`stack_ansible_path`|Path of Ansible files in the stack git repository|`-`|`stack-get-started/ansible`|`True`|
 |`stack_git_branch`|Branch to use on the stack Git repository.|`-`|`master`|`True`|
