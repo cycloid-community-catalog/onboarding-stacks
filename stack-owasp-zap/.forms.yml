@@ -39,7 +39,6 @@ use_cases:
         widget: cy_inventory_resource
         widget_config:
           attribute: key_name
-          attributes: 'tags.customer[eq]=((customer))'
           type: aws_key_pair
         type: string
         required: true
@@ -52,7 +51,7 @@ use_cases:
         widget: cy_inventory_resource
         widget_config:
           attribute: id
-          attributes: 'tags.customer[eq]=((customer))'
+          attributes: 'tags.customer[eq]=($customer$)'
           type: aws_vpc
         type: string
         required: true
