@@ -14,9 +14,9 @@ module "zap" {
     monitoring_discovery = false
   }
 
-  #. key_pair_public: ""
+  #. key_pair_name: ""
   #+ The public SSH key, for SSH access to newly-created instances
-  key_pair_public = var.key_pair_public
+  key_pair_name = "Value injected by StackForms"
 
   #
   # OWASP Zed Attack Proxy (ZAP)

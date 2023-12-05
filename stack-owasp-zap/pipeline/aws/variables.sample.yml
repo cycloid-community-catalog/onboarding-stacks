@@ -14,15 +14,6 @@ aws_region: eu-west-1
 
 
 #
-# SSH Key pair to use for newly created instances
-#
-
-#. key_pair_public (required): ((key_pair.public_key))
-#+ The public SSH key to connect via SSH to execute the Ansible playbook.
-key_pair_public: ((key_pair.public_key))
-
-
-#
 # Default Stack Repository
 #
 

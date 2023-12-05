@@ -32,7 +32,6 @@ resources:
     vars:
       aws_cred: ((aws_cred))
       aws_region: ((aws_region))
-      key_pair_public: ((key_pair_public))
       env: ((env))
       project: ((project))
       customer: ((customer))
