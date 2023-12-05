@@ -51,7 +51,6 @@ use_cases:
         widget: cy_inventory_resource
         widget_config:
           attribute: id
-          attributes: 'tags.customer[eq]=($customer$)'
           type: aws_vpc
         type: string
         required: true
