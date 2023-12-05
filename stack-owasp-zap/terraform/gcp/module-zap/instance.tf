@@ -41,6 +41,6 @@ resource "google_compute_instance" "zap" {
   })
 
   metadata = {
-    sshKeys = "${var.vm_os_user}:${var.keypair_public}"
+    sshKeys = "${var.vm_os_user}:${var.key_pair_public}"
   }
 }

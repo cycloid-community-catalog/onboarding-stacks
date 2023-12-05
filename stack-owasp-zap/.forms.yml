@@ -39,7 +39,10 @@ use_cases:
         widget: cy_inventory_resource
         widget_config:
           attribute: key_name
-          type: aws_key_pair
+          filters:
+            attributes: 'tags.customer[eq]=((customer))'
+            provider: aws
+            type: aws_key_pair
         type: string
         required: true
     - name: Networking
@@ -51,7 +54,10 @@ use_cases:
         widget: cy_inventory_resource
         widget_config:
           attribute: id
-          type: aws_vpc
+          filters:
+            attributes: 'tags.customer[eq]=((customer))'
+            provider: aws
+            type: aws_vpc
         type: string
         required: true
     - name: Application Configuration
@@ -122,10 +128,10 @@ use_cases:
       vars:
       - name: "SSH Public key"
         description: "The public SSH key to provision to new instances"
-        key: keypair_public
+        key: key_pair_public
         widget: cy_cred
         type: string
-        default: ((keypair.ssh_pub))
+        default: ((key_pair.public_key))
         required: true
     - name: Application Configuration
       technologies: [terraform]
@@ -217,10 +223,10 @@ use_cases:
       vars:
       - name: "SSH Public key"
         description: "The public SSH key to provision to new instances"
-        key: keypair_public
+        key: key_pair_public
         widget: cy_cred
         type: string
-        default: ((keypair.ssh_pub))
+        default: ((key_pair.public_key))
         required: true
     - name: Application Configuration
       technologies: [terraform]

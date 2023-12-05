@@ -14,9 +14,9 @@ module "zap" {
     monitoring_discovery = false
   }
 
-  #. keypair_public: ""
+  #. key_pair_public: ""
   #+ The public SSH key, for SSH access to newly-created instances
-  keypair_public = var.keypair_public
+  key_pair_public = var.key_pair_public
 
   #
   # OWASP Zed Attack Proxy (ZAP)
@@ -38,7 +38,7 @@ module "zap" {
   #+ VPC ID where to deploy the EC2 instance
   vpc_id = "Value injected by StackForms"
 
-  #. key_name: ''
+  #. key_pair_name: ''
   #+ Public Key pair name to provision to the EC2 instance
-  key_name = "Value injected by StackForms"
+  key_pair_name = "Value injected by StackForms"
 }

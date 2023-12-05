@@ -52,6 +52,13 @@ resource "aws_instance" "zap" {
     delete_on_termination = true
   }
 
+  user_data_base64 = base64encode(templatefile(
+    "${path.module}/userdata.sh.tpl",
+    {
+      zap_port = var.zap_port
+    }
+  ))
+
   tags = merge(local.merged_tags, {
     Name       = "${var.customer}-${var.project}-${var.env}-zap"
     role       = "zap"
