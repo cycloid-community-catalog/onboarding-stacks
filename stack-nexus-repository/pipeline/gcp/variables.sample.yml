@@ -22,16 +22,16 @@ gcp_zone: "b"
 
 
 #
-# SSH Keypair to use for newly created instances
+# SSH Key pair to use for newly created instances
 #
 
-#. keypair_public (required): ((keypair.ssh_pub))
+#. key_pair_public (required): ((key_pair.public))
 #+ The public SSH key to connect via SSH to execute the Ansible playbook.
-keypair_public: ((keypair.ssh_pub))
+key_pair_public: ((key_pair.public))
 
-#. keypair_private (required): ((keypair.ssh_prv))
+#. key_pair_private (required): ((key_pair.private))
 #+ The private SSH key to connect via SSH to execute the Ansible playbook.
-keypair_private: ((keypair.ssh_prv))
+key_pair_private: ((key_pair.private))
 
 
 #

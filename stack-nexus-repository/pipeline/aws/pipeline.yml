@@ -31,7 +31,7 @@ resources:
     vars:
       aws_cred: ((aws_cred))
       aws_region: ((aws_region))
-      keypair_public: ((keypair_public))
+      key_pair_public: ((key_pair_public))
       customer: ((customer))
       project: ((project))
       env: ((env))
@@ -232,7 +232,7 @@ jobs:
         params:
           #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
           ANSIBLE_REMOTE_USER: admin
-          SSH_PRIVATE_KEY: ((keypair_private))
+          SSH_PRIVATE_KEY: ((key_pair_private))
           EC2_VPC_DESTINATION_VARIABLE: ip_address # Force to connect to public IP because we don't use a bastion in this stack
           CY_AWS_CRED: ((aws_cred))
           AWS_DEFAULT_REGION: ((aws_region))

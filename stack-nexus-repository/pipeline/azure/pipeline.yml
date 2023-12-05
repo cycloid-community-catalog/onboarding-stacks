@@ -31,7 +31,7 @@ resources:
       address: '((cycloid_api_url))/inventory?jwt=($ inventory_jwt $)'
     vars:
       azure_cred: ((azure_cred))
-      keypair_public: ((keypair_public))
+      key_pair_public: ((key_pair_public))
       env: ((env))
       project: ((project))
       customer: ((customer))
@@ -232,7 +232,7 @@ jobs:
         params:
           #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
           ANSIBLE_REMOTE_USER: nexus
-          SSH_PRIVATE_KEY: ((keypair_private))
+          SSH_PRIVATE_KEY: ((key_pair_private))
           AZURE_USE_PRIVATE_IP: False # Force to connect to public IP because we don't use a bastion in this stack
           CY_AZURE_CRED: ((azure_cred))
           ANSIBLE_PLAYBOOK_PATH: ansible-playbook
