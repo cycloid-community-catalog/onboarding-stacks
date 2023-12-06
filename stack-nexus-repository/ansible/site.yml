@@ -45,19 +45,30 @@
       value: 65536
 
   # Installing JAVA
-#   - name: Add specified repository into sources list
-#     ansible.builtin.apt_repository:
-#       repo: deb http://archive.canonical.com/ubuntu hardy partner
-#       state: present
+  - name: Add the Apt signing key of AdoptOpenJDK from jfrog.io
+    apt_key:
+      url: https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
+      state: present
 
+  - name: Add apt repository for AdoptOpenJDK
+    apt_repository:
+      repo: "deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ bullseye main"
+      filename: adoptopenjdk
+      state: present
+
+  - name: Install AdoptOpenJDK package
+    apt:
+      name: "adoptopenjdk-8-hotspot-jre"
+      state: present
+      update_cache: yes
 # wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
 # sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
 # sudo apt-get update && sudo apt-get install adoptopenjdk-8-hotspot
 
-  - name: Add jessie-backports repo
-    apt_repository:
-      repo: 'deb http://httpredir.debian.org/debian jessie-backports main'
-      state: present
+  # - name: Add jessie-backports repo
+  #   apt_repository:
+  #     repo: 'deb http://httpredir.debian.org/debian jessie-backports main'
+  #     state: present
 
   # - name: install java from jessie-backports
   #   apt:
@@ -68,14 +79,14 @@
 #   apt:
 #     update_cache: yes
 
-  - name: Install Java
-    apt:
-      pkg:
-        - openjdk-8-jre-headless
-        - ca-certificates-java
-      state: latest
-      default_release: jessie-backports
-      update_cache: true
+  # - name: Install Java
+  #   apt:
+  #     pkg:
+  #       - openjdk-8-jre-headless
+  #       - ca-certificates-java
+  #     state: latest
+  #     default_release: jessie-backports
+  #     update_cache: true
 
   # - name: Install Java JRE 8 headless
   #   apt:
