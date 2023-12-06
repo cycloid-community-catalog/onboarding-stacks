@@ -45,6 +45,12 @@
       value: 65536
 
   # Installing JAVA
+  - name: Install gpg package
+    apt:
+      name: "gpg"
+      state: present
+      update_cache: yes
+
   - name: Add the Apt signing key of AdoptOpenJDK from jfrog.io
     apt_key:
       url: https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
