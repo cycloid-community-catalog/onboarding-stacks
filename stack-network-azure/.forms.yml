@@ -1,0 +1,91 @@
+---
+version: "2"
+use_cases:
+- name: default
+  sections:
+  - name: Azure Network Landing Zone
+    groups:
+    - name: Network Configuration
+      technologies: [terraform]
+      vars:
+      - name: "Virtual Network CIDR"
+        description: "The CIDR of the Virtual Network to create."
+        key: module.network.network_cidr
+        widget: simple_text
+        type: string
+        default: "10.0.0.0/16"
+        validations: 
+        - regexp: "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\/[0-9]{1,2}$" 
+          error_message: "Please enter a valid CIDR such as 10.0.0.0/16"
+        required: true
+      - name: "Private Subnet CIDR"
+        description: "The Private CIDR of the Subnet."
+        key: module.network.private_subnet_cidr
+        widget: simple_text
+        type: string
+        default: "10.0.0.0/24"
+        validations: 
+        - regexp: "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\/[0-9]{1,2}$" 
+          error_message: "Please enter a valid CIDR such as 10.0.0.0/24"
+        required: true
+      - name: "Public Subnet CIDR"
+        description: "The Public CIDR of the Subnet."
+        key: module.network.public_subnet_cidr
+        widget: simple_text
+        type: string
+        default: "10.0.1.0/24"
+        validations: 
+        - regexp: "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\/[0-9]{1,2}$" 
+          error_message: "Please enter a valid CIDR such as 10.0.0.0/24"
+        required: true
+
+    - name: Bastion Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "SSH Public Key"
+        description: "The public SSH key to connect via SSH. The public key must be provisionned in the credentials module beforehand."
+        key: module.bastion.key_pair_public
+        widget: cy_cred
+        widget_config:
+          display_keys: true
+          cred_types:
+            - custom
+        type: string
+        default: ((key_pair.public_key))
+        required: true
+
+    - name: Azure Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Azure Credentials"
+        description: "The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret."
+        key: azure_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - azure
+        type: string
+        default: "((azure))"
+        required: true
+    - name: Resource Group
+      technologies: [terraform]
+      vars:
+      - name: "New Resource Group"
+        description: "The name of the resource group to create in the location mentionned above. The Networking resources will be created in this Resource Group."
+        key: module.resource-group.name
+        widget: simple_text
+        type: string
+        default: "cycloid"
+        validations: 
+        - regexp: "^[A-Za-z0-9_-]+$"
+          error_message: "Please enter a valid Azure Resource Group such as MyResourceGroup"
+        required: true
+      - name: "Azure Location"
+        description: "Azure location where to create Resource Group and Networking resources."
+        key: module.resource-group.azure_location
+        widget: auto_complete
+        type: string
+        values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/azure-locations.json
+        default: "West Europe"
+        required: true

@@ -1,0 +1,40 @@
+---
+# Configuration of the Cycloid stack
+version: '2'
+name: 'Azure Network Landing Zone'
+canonical: stack-network-azure
+status: public
+author: Cycloid
+description: |
+  Deploys networking resources such as a virtual network and associated subnet, within a new resource group.
+image: |
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/azure-vnet.png
+keywords:
+- terraform
+- virtual
+- network
+- subnet
+- resource
+- group
+- provider:azure
+technologies:
+- technology: terraform
+  version: 1.5.7
+
+config:
+  default:
+    name: 'Default'
+    description: 'Deploys a Virtual Network, subnet and a resource group'
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the default CD pipeline use case
+    pipeline:
+      pipeline:
+        path: pipeline/pipeline.yaml
+      variables:
+        path: pipeline/variables.sample.yaml
+        destination: ($ project $)/pipeline/($ environment $)/variables.yaml
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/main.tf'
+        destination: '($ project $)/terraform/($ environment $)/main.tf'
