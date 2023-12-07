@@ -1,3 +1,3 @@
 data "azurerm_resource_group" "webapp" {
-  name = var.rg_name
+  name = var.resource_group_name
 }

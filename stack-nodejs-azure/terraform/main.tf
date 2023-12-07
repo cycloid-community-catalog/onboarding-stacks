@@ -34,16 +34,16 @@ module "webapp" {
   #+ Disk size for the VM (Go)
   vm_disk_size = "Value injected by StackForms"
 
-  #. rg_name: ''
+  #. resource_group_name: ''
   #+ The name of the existing resource group where the resources will be deployed
-  rg_name = "Value injected by StackForms"
+  resource_group_name = "Value injected by StackForms"
 
   #. azure_location: "West Europe"
   #+ Azure location
   azure_location = "Value injected by StackForms"
 
-  #. keypair_public: ''
+  #. key_pair_public: ''
   #+ Public key to provision to the instance
-  keypair_public = var.keypair_public
+  key_pair_public = var.key_pair_public
 
 }

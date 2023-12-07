@@ -48,10 +48,10 @@ use_cases:
       vars:
       - name: "Public SSH key"
         description: "The public SSH key, for SSH access to newly-created instances."
-        key: keypair_public
+        key: key_pair_public
         widget: cy_cred
         type: string
-        default: "((keypair.ssh_pub))"
+        default: "((key_pair.public_key))"
         required: true
 
   - name: AWS Cloud Provider

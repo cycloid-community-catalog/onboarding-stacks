@@ -42,7 +42,7 @@ resource "google_compute_instance" "webapp" {
   }
 
   metadata = {
-    sshKeys = "${var.vm_os_user}:${var.keypair_public}"
+    sshKeys = "${var.vm_os_user}:${var.key_pair_public}"
   }
 
   metadata_startup_script = templatefile(

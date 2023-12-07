@@ -25,7 +25,7 @@ variable "vm_os_user" {
   default     = "admin"
 }
 
-variable "keypair_public" {
+variable "key_pair_public" {
   description = "Public key to provision to the instance"
   default = ""
 }

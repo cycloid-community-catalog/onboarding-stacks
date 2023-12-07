@@ -31,7 +31,7 @@ resources:
       address: '((cycloid_api_url))/inventory?jwt=($ inventory_jwt $)'
     vars:
       azure_cred: ((azure_cred))
-      keypair_public: ((keypair_public))
+      key_pair_public: ((key_pair_public))
       env: ((env))
       project: ((project))
       customer: ((customer))
@@ -57,9 +57,9 @@ resources:
   source:
     uri: ((config_git_repository))
     branch: ((config_git_branch))
-    private_key: ((config_git_private_key))
-    # username: ((config_git_username))
-    # password: ((config_git_token))
+    # private_key: ((config_git_private_key))
+    username: ((config_git_username))
+    password: ((config_git_token))
     paths:
       - ((config_terraform_path))/*
 

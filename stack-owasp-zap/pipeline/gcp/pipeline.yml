@@ -64,9 +64,9 @@ resources:
   source:
     uri: ((config_git_repository))
     branch: ((config_git_branch))
-    private_key: ((config_git_private_key))
-    # username: ((config_git_username))
-    # password: ((config_git_token))
+    # private_key: ((config_git_private_key))
+    username: ((config_git_username))
+    password: ((config_git_token))
     paths:
       - ((config_terraform_path))/*
 

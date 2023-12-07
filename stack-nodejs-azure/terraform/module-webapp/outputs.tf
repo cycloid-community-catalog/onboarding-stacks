@@ -1,7 +1,7 @@
 #
 # Resource Group outputs
 #
-output "rg_name" {
+output "resource_group_name" {
   description = "The name for the Resource Group"
   value       = data.azurerm_resource_group.webapp.name
 }

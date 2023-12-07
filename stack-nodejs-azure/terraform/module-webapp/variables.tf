@@ -25,12 +25,12 @@ variable "vm_os_user" {
   default     = "cycloid"
 }
 
-variable "keypair_public" {
+variable "key_pair_public" {
   description = "Public key to provision to the instance"
   default = ""
 }
 
-variable "rg_name" {
+variable "resource_group_name" {
   type        = string
   description = "The name of the existing resource group where the resources will be deployed."
   default     = ""

@@ -21,8 +21,8 @@ This stack will:
 |`aws_access_key`|AWS access key for Terraform. see value format [Here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)|`-`|`((aws_aws.access_key))`|`True`|
 |`aws_secret_key`|AWS secret key for Terraform. see value format [Here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)|`-`|`((aws_aws.secret_key))`|`True`|
 |`aws_region`|AWS region to use for Terraform.|`-`|`eu-west-1`|`True`|
-|`keypair_private`|The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion.|`-`|`((keypair.ssh_prv))`|`True`|
-|`keypair_public`|SSH public key to provision on Bastion to connect to it.|`-`|`((keypair.ssh_pub))`|`True`|
+|`key_pair_private`|The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion.|`-`|`((key_pair.private_key))`|`True`|
+|`key_pair_public`|SSH public key to provision on Bastion to connect to it.|`-`|`((key_pair.public_key))`|`True`|
 |`git_repository`|Git repository url containing the config of the stack.|`-`|`git@github.com:cycloidio/cycloid-stacks-test.git`|`True`|
 |`git_branch`|Branch of the config git repository.|`-`|`config`|`True`|
 |`git_private_key`|SSH key pair to fetch the config git repository.|`-`|`((git_github.ssh_key))`|`True`|

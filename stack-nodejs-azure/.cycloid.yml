@@ -1,4 +1,6 @@
-version: "2"
+---
+# Configuration of the Cycloid stack
+version: '2'
 name: NodeJS WebApp on Azure
 canonical: stack-nodejs-azure
 status: public

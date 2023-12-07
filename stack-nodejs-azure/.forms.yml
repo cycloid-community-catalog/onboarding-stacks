@@ -48,15 +48,13 @@ use_cases:
       vars:
       - name: "Public SSH key"
         description: "The public SSH key, for SSH access to newly-created instances."
-        key: keypair_public
+        key: key_pair_public
         widget: cy_cred
         type: string
-        default: "((keypair.ssh_pub))"
+        default: "((key_pair.public_key))"
         required: true
 
-  - name: Azure Cloud Provider
-    groups:
-    - name: Access Configuration
+    - name: Azure Access Configuration
       technologies: [pipeline]
       vars:
       - name: "Azure credentials"
@@ -69,6 +67,7 @@ use_cases:
             - azure
         type: string
         default: "((azure))"
+        required: true
     - name: Azure Infrastructure
       technologies: [terraform]
       vars:
@@ -77,25 +76,12 @@ use_cases:
         key: azure_location
         widget: auto_complete
         type: string
-        values:
-            - Australia Central
-            - China East
-            - China North
-            - East Asia
-            - East US
-            - France Central
-            - France South
-            - North Europe
-            - Southeast Asia
-            - South Africa North
-            - South Africa West
-            - West Europe
-            - West US
+        values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/azure-locations.json
         default: "West Europe"
         required: true
       - name: "Existing resource group name"
         description: "The name of the existing resource group where the resources will be deployed."
-        key: rg_name
+        key: resource_group_name
         widget: simple_text
         type: string
         default: ""

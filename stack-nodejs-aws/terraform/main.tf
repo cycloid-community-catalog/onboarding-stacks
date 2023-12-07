@@ -34,8 +34,8 @@ module "webapp" {
   #+ Disk size for the VM (Go)
   vm_disk_size = "Value injected by StackForms"
 
-  #. keypair_public: ''
+  #. key_pair_public: ''
   #+ Public key to provision to the instance
-  keypair_public = var.keypair_public
+  key_pair_public = var.key_pair_public
 
 }
