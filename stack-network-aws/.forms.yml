@@ -44,14 +44,14 @@ use_cases:
       vars:
       - name: "SSH Public key"
         description: "The public SSH key to connect via SSH to newly created instances. The public key must be provisionned in the credentials module beforehand."
-        key: keypair_public
+        key: key_pair_public
         widget: cy_cred
         widget_config:
           display_keys: true
           cred_types:
             - custom
         type: string
-        default: ((keypair.ssh_pub))
+        default: ((key_pair.public_key))
         required: true
 
     - name: AWS Access Configuration

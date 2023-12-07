@@ -28,10 +28,10 @@ module "network" {
 
 }
 
-module "keypair" {
+module "key_pair" {
   #####################################
   # Do not modify the following lines #
-  source   = "git::https://github.com/cycloid-community-catalog/onboarding-iac.git//aws/keypair"
+  source   = "git::https://github.com/cycloid-community-catalog/onboarding-iac.git//aws/key_pair"
   project  = var.project
   env      = var.env
   customer = var.customer
@@ -50,7 +50,7 @@ module "keypair" {
 
   #. key_pair_public: ""
   #+ Public key to create
-  key_pair_public = var.keypair_public
+  key_pair_public = var.key_pair_public
 }
 
 module "bastion" {
@@ -83,7 +83,7 @@ module "bastion" {
 
   #. key_pair_name: ""
   #+ The name of the key pair to provision to the instance
-  key_pair_name = module.keypair.key_pair.key_name
+  key_pair_name = module.key_pair.key_pair.key_name
 
   #. service_ports: [22]
   #+ Array of TCP ports to be allowed as ingress
@@ -92,5 +92,4 @@ module "bastion" {
   #. subnet_id: ''
   #+ Subnet ID where to deploy the EC2 instance
   subnet_id = module.network.public_subnet_id
-
 }
