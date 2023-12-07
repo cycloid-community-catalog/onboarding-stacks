@@ -6,7 +6,7 @@ canonical: stack-network-azure
 status: public
 author: Cycloid
 description: |
-  Deploys a Virtual Network with public and private subnets, as well as a bastion instance, within a newly created resource group.
+  Deploys a Virtual Network with public and private subnets, as well as a bastion instance, in a new resource group.
 image: |
   https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/azure-vnet.png
 keywords:
