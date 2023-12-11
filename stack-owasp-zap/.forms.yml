@@ -51,7 +51,7 @@ use_cases:
         widget: cy_inventory_resource
         widget_config:
           attribute: id
-          type: aws_vpc
+          #type: aws_vpc
         type: string
         required: true
     - name: Application Configuration
