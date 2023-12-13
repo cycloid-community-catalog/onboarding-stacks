@@ -33,15 +33,15 @@ use_cases:
     - name: SSH key pair
       technologies: [terraform]
       vars:
-      - name: "SSH Public key"
-        description: "The public SSH key pair name to provision to new instances"
-        key: key_pair_name
-        widget: cy_inventory_resource
-        widget_config:
-          attribute: id
-          type: aws_key_pair
-        type: string
-        required: true
+      # - name: "SSH Public key"
+      #   description: "The public SSH key pair name to provision to new instances"
+      #   key: key_pair_name
+      #   widget: cy_inventory_resource
+      #   widget_config:
+      #     attribute: key_name
+      #     type: aws_key_pair
+      #   type: string
+      #   required: true
     - name: Networking
       technologies: [terraform]
       vars:
