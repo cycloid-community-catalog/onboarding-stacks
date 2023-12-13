@@ -38,7 +38,7 @@ use_cases:
         key: key_pair_name
         widget: cy_inventory_resource
         widget_config:
-          attribute: key_name
+          attribute: id
           type: aws_key_pair
         type: string
         required: true
