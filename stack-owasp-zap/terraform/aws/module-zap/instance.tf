@@ -1,7 +1,7 @@
 resource "aws_security_group" "zap" {
   name        = "${var.customer}-${var.project}-${var.env}-zap"
   description = "Allow accessing the OWASP Zed Attack Proxy (ZAP) service from the internet."
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 
   tags = merge(local.merged_tags, {
     Name       = "${var.customer}-${var.project}-${var.env}-zap"
@@ -43,7 +43,7 @@ resource "aws_instance" "zap" {
 
   vpc_security_group_ids = [aws_security_group.zap.id]
 
-  subnet_id               = aws_subnets.public_subnets[0]
+  subnet_id               = data.aws_subnets.public_subnets.ids[0]
   disable_api_termination = false
   associate_public_ip_address = true
 
