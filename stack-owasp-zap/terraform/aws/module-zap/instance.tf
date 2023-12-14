@@ -17,6 +17,14 @@ resource "aws_security_group_rule" "egress-all" {
   security_group_id = aws_security_group.zap.id
 }
 
+resource "aws_security_group_rule" "self" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "tcp"
+  self              = true
+}
+
 resource "aws_security_group_rule" "ingress-ssh" {
   type              = "ingress"
   from_port         = 22
