@@ -1,6 +1,7 @@
 #!/bin/bash
 until sudo apt-get update; do sleep 1; done
-until sudo apt-get install openjdk-11-jre-headless -y; do sleep 1; done
+until sudo apt-get upgrade; do sleep 1; done
+sudo apt-get install ca-certificates-java openjdk-11-jre-headless -y
 wget https://github.com/zaproxy/zaproxy/releases/download/v2.14.0/ZAP_2.14.0_Linux.tar.gz
 tar -xzf ZAP_2.14.0_Linux.tar.gz
 sudo mv ZAP_2.14.0 /opt/
