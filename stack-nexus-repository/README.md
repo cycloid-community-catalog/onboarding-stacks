@@ -9,9 +9,7 @@ This stack will:
 
 # Requirements
 
-To run this stack, you will need:
-  * an [AWS S3 bucket](https://docs.aws.amazon.com/quickstarts/latest/s3backup/step-1-create-bucket.html) or an [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/) or an [GCP Cloud Storage](https://cloud.google.com/storage) to store Terraform remote states.
-  * an SSH key pair to access the created instance remotely (it will be used to run the ansible playbook).
+To run this stack, you will need an SSH key pair to access the created instance remotely. The public key will be provisionned to the created instance and the private key will be used to run the ansible playbook to install the Nexus Repository.
 
 # Details
 
