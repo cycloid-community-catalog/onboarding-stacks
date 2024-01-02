@@ -1,4 +1,4 @@
-module "webapp" {
+module "network" {
   #####################################
   # Do not modify the following lines #
   source   = "git::https://github.com/cycloid-community-catalog/onboarding-iac.git//gcp/network"
