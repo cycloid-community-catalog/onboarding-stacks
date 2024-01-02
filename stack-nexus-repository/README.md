@@ -3,7 +3,7 @@
 Deploys a virtual machine and installs Nexus Repository on it.
 
 This stack will:
-  * Create a vpc or vnet and subnets.
+  * Create networking resources (VPC or VNet and subnets).
   * Create an instance.
   * Deploy Nexus Repository on the instance.
 
@@ -15,9 +15,7 @@ To run this stack, you will need an SSH key pair to access the created instance 
 
 ## Pipeline
 
-<p align="center">
 <img src="docs/pipeline.png" width="800">
-</p>
 
 **Jobs description**
 

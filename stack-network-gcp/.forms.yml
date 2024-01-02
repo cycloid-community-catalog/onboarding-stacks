@@ -29,21 +29,6 @@ use_cases:
           error_message: "Please enter a valid CIDR such as 10.0.1.0/24"
         required: true
 
-    - name: Bastion Configuration
-      technologies: [pipeline]
-      vars:
-      - name: "SSH Public key"
-        description: "The public SSH key to connect via SSH. The public key must be provisionned in the credentials module beforehand."
-        key: key_pair_public
-        widget: cy_cred
-        widget_config:
-          display_keys: true
-          cred_types:
-            - custom
-        type: string
-        default: ((key_pair.public_key))
-        required: true
-
     - name: GCP Access Configuration
       technologies: [pipeline]
       vars:
