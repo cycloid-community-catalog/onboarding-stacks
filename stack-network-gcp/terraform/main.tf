@@ -14,10 +14,6 @@ module "network" {
     monitoring_discovery = false
   }
 
-  #. gcp_project: ""
-  #+ The GCP project name
-  gcp_project = var.gcp_project
-
   #. public_subnet_cidr: "10.0.0.0/24"
   #+ The CIDR for the Public Subnet
   public_subnet_cidr = "Value injected by StackForms"
