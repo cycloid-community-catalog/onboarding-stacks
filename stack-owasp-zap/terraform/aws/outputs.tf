@@ -1,3 +1,8 @@
+output "zap_url" {
+  description = "The URL of the OWASP Zed Attack Proxy UI"
+  value       = "http://${module.zap.vm_ip}:${module.zap.port}/UI"
+}
+
 output "vm_ip" {
   description = "The IP address the OWASP Zed Attack Proxy (ZAP)"
   value       = module.zap.vm_ip
