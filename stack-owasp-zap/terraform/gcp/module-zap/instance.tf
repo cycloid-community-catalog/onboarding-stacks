@@ -1,6 +1,6 @@
 resource "google_compute_firewall" "zap" {
   name    = "${var.customer}-${var.project}-${var.env}-firewall-zap"
-  network = google_compute_network.zap.name
+  network = data.google_compute_subnetwork.zap.network
 
   allow {
     protocol = "tcp"
@@ -28,7 +28,7 @@ resource "google_compute_instance" "zap" {
   }
 
   network_interface {
-    subnetwork = google_compute_subnetwork.zap.name
+    subnetwork = data.google_compute_subnetwork.zap.name
 
     access_config {
       // Ephemeral public IP

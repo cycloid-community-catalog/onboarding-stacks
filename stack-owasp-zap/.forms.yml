@@ -235,6 +235,20 @@ use_cases:
         default: "8080"
         required: true
 
+    - name: Networking
+      technologies: [terraform]
+      vars:
+      - name: "Subnet"
+        description: "VPC where to deploy the instance. It must belong to the same region set below in this form."
+        key: subnet_self_link
+        widget: cy_inventory_resource
+        widget_config:
+          attribute: self_link
+          filters:
+            type: google_compute_subnetwork
+        type: string
+        required: true
+
     - name: GCP Access Configuration
       technologies: [pipeline]
       vars:

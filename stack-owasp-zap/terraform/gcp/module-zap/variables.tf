@@ -8,6 +8,11 @@ variable "key_pair_public" {
   description = "The public SSH key, for SSH access to newly-created instances"
 }
 
+# Subnet
+variable "subnet_self_link" {
+  description = "The GCP subnet self link where to deploy the instances"
+}
+
 
 #
 # OWASP Zed Attack Proxy (ZAP)

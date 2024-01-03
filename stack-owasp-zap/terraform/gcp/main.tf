@@ -18,6 +18,10 @@ module "zap" {
   #+ The public SSH key, for SSH access to newly-created instances
   key_pair_public = var.key_pair_public
 
+  #. subnet_self_link: ""
+  #+ The GCP subnet self link where to deploy the instances
+  subnet_self_link = "Value injected by StackForms"
+
 
   #
   # OWASP Zed Attack Proxy (ZAP)
