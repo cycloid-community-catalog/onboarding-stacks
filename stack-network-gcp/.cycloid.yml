@@ -22,7 +22,7 @@ technologies:
 config:
   default:
     name: 'Default'
-    description: 'Deploys a Virtual Network, public and private subnets and a bastion'
+    description: 'Deploys a Virtual Network, public and private subnets'
     cloud_provider: google
     # Pipeline and variable configuration for the default CD pipeline use case
     pipeline:
