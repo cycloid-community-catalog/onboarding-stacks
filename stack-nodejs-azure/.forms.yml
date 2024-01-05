@@ -5,6 +5,39 @@ use_cases:
   sections:
   - name: NodeJS Server
     groups:
+    - name: Azure Cloud Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Azure credentials"
+        description: "The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret."
+        key: azure_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - azure
+        type: string
+        default: "((azure))"
+        required: true
+    - name: Azure Infrastructure
+      technologies: [terraform]
+      vars:
+      - name: "Azure location"
+        description: "Azure location for Terraform."
+        key: azure_location
+        widget: auto_complete
+        type: string
+        values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/azure-locations.json
+        default: "West Europe"
+        required: true
+      - name: "Existing resource group name"
+        description: "The name of the existing resource group where the resources will be deployed."
+        key: resource_group_name
+        widget: simple_text
+        type: string
+        default: ""
+        required: true
+
     - name: Virtual machine specifications
       technologies: [terraform]
       vars:
@@ -52,37 +85,4 @@ use_cases:
         widget: cy_cred
         type: string
         default: "((key_pair.public_key))"
-        required: true
-
-    - name: Azure Access Configuration
-      technologies: [pipeline]
-      vars:
-      - name: "Azure credentials"
-        description: "The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret."
-        key: azure_cred
-        widget: cy_cred
-        widget_config:
-          display_keys: false
-          cred_types:
-            - azure
-        type: string
-        default: "((azure))"
-        required: true
-    - name: Azure Infrastructure
-      technologies: [terraform]
-      vars:
-      - name: "Azure location"
-        description: "Azure location for Terraform."
-        key: azure_location
-        widget: auto_complete
-        type: string
-        values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/azure-locations.json
-        default: "West Europe"
-        required: true
-      - name: "Existing resource group name"
-        description: "The name of the existing resource group where the resources will be deployed."
-        key: resource_group_name
-        widget: simple_text
-        type: string
-        default: ""
         required: true

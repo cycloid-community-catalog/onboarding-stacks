@@ -5,41 +5,7 @@ use_cases:
   sections:
   - name: Azure Network Landing Zone
     groups:
-    - name: Network Configuration
-      technologies: [terraform]
-      vars:
-      - name: "Virtual Network CIDR"
-        description: "The CIDR of the Virtual Network to create."
-        key: network_cidr
-        widget: simple_text
-        type: string
-        default: "10.0.0.0/16"
-        validations: 
-        - regexp: "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\/[0-9]{1,2}$" 
-          error_message: "Please enter a valid CIDR such as 10.0.0.0/16"
-        required: true
-      - name: "Private Subnet CIDR"
-        description: "The Private CIDR of the Subnet."
-        key: private_subnet_cidr
-        widget: simple_text
-        type: string
-        default: "10.0.0.0/24"
-        validations: 
-        - regexp: "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\/[0-9]{1,2}$" 
-          error_message: "Please enter a valid CIDR such as 10.0.0.0/24"
-        required: true
-      - name: "Public Subnet CIDR"
-        description: "The Public CIDR of the Subnet."
-        key: public_subnet_cidr
-        widget: simple_text
-        type: string
-        default: "10.0.1.0/24"
-        validations: 
-        - regexp: "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\/[0-9]{1,2}$" 
-          error_message: "Please enter a valid CIDR such as 10.0.0.0/24"
-        required: true
-
-    - name: Azure Configuration
+    - name: Azure Cloud Configuration
       technologies: [pipeline]
       vars:
       - name: "Azure Credentials"
@@ -73,4 +39,38 @@ use_cases:
         type: string
         values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/azure-locations.json
         default: "West Europe"
+        required: true
+        
+    - name: Network Configuration
+      technologies: [terraform]
+      vars:
+      - name: "Virtual Network CIDR"
+        description: "The CIDR of the Virtual Network to create."
+        key: network_cidr
+        widget: simple_text
+        type: string
+        default: "10.0.0.0/16"
+        validations: 
+        - regexp: "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\/[0-9]{1,2}$" 
+          error_message: "Please enter a valid CIDR such as 10.0.0.0/16"
+        required: true
+      - name: "Private Subnet CIDR"
+        description: "The Private CIDR of the Subnet."
+        key: private_subnet_cidr
+        widget: simple_text
+        type: string
+        default: "10.0.0.0/24"
+        validations: 
+        - regexp: "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\/[0-9]{1,2}$" 
+          error_message: "Please enter a valid CIDR such as 10.0.0.0/24"
+        required: true
+      - name: "Public Subnet CIDR"
+        description: "The Public CIDR of the Subnet."
+        key: public_subnet_cidr
+        widget: simple_text
+        type: string
+        default: "10.0.1.0/24"
+        validations: 
+        - regexp: "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\/[0-9]{1,2}$" 
+          error_message: "Please enter a valid CIDR such as 10.0.0.0/24"
         required: true
