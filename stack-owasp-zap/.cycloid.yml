@@ -3,7 +3,7 @@
 version: '2'
 name: 'OWASP Zed Attack Proxy'
 canonical: 'stack-owasp-zap'
-description: "Warning: An AWS, Azure or GCP Network Landing Zone is required. The world's most widely used web app scanner. Free and open source. Actively maintained by a dedicated international team of volunteers. A GitHub Top 1000 project."
+description: "Warning: An AWS Network Landing Zone is required. The world's most widely used web app scanner. Free and open source. Actively maintained by a dedicated international team of volunteers. A GitHub Top 1000 project."
 author: 'Cycloid'
 image: 'https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/owasp-zap.png'
 status: 'public'
@@ -15,8 +15,6 @@ keywords:
 - zap
 - pentest
 - provider:aws
-- provider:azure
-- provider:gcp
 technologies:
 - technology: zap
   version: "2.14.0"
@@ -29,46 +27,12 @@ config:
     # Pipeline and variable configuration for the AWS CD pipeline use case
     pipeline:
       pipeline:
-        path: 'pipeline/aws/pipeline.yml'
+        path: 'pipeline/pipeline.yml'
       variables:
-        path: 'pipeline/aws/variables.sample.yml'
-        destination: '($ project $)/pipeline/aws/($ environment $)/variables.yml'
+        path: 'pipeline/variables.sample.yml'
+        destination: '($ project $)/pipeline/($ environment $)/variables.yml'
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
-        path: 'terraform/aws/main.tf'
-        destination: '($ project $)/terraform/aws/($ environment $)/main.tf'
-
-  azure:
-    name: 'Azure'
-    description: 'Deploys OWASP Zed Attack Proxy (ZAP) in a single Azure instance'
-    cloud_provider: azurerm
-    # Pipeline and variable configuration for the Azure CD pipeline use case
-    pipeline:
-      pipeline:
-        path: 'pipeline/azure/pipeline.yml'
-      variables:
-        path: 'pipeline/azure/variables.sample.yml'
-        destination: '($ project $)/pipeline/azure/($ environment $)/variables.yml'
-    # Configuration of terraform
-    terraform:
-      main:
-        path: 'terraform/azure/main.tf'
-        destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
-
-  gcp:
-    name: 'GCP'
-    description: 'Deploys OWASP Zed Attack Proxy (ZAP) in a single GCP instance'
-    cloud_provider: google
-    # Pipeline and variable configuration for the GCP CD pipeline use case
-    pipeline:
-      pipeline:
-        path: 'pipeline/gcp/pipeline.yml'
-      variables:
-        path: 'pipeline/gcp/variables.sample.yml'
-        destination: '($ project $)/pipeline/gcp/($ environment $)/variables.yml'
-    # Configuration of terraform
-    terraform:
-      main:
-        path: 'terraform/gcp/main.tf'
-        destination: '($ project $)/terraform/gcp/($ environment $)/main.tf'
+        path: 'terraform/main.tf'
+        destination: '($ project $)/terraform/($ environment $)/main.tf'

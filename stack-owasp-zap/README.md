@@ -1,5 +1,5 @@
 # stack-owasp-zap
 
-:warning: **An AWS, Azure or GCP Network Landing Zone is required**. Please use a *Network Landing Zone* stack to deploy it before using this stack.
+:warning: **An AWS Network Landing Zone is required**. Please use the *AWS Network Landing Zone* stack to deploy it before using this stack.
 
-OWASP ZAP can only be run on AWS EC2 if you want to expose it via a public IP address. For Azure and GCP, it can be exposed only via a private IP address.
+:warning: This stack deploys OWASP ZAP on an AWS EC2 instance and expose its service via a full open public IP address for demonstration purposes. You MUST restrict the access to this service if you want to use it with production workloads.
