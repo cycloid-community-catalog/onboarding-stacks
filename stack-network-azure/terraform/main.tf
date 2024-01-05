@@ -1,28 +1,3 @@
-module "resource-group" {
-  #####################################
-  # Do not modify the following lines #
-  source   = "git::https://github.com/cycloid-community-catalog/onboarding-iac.git//azure/resource-group"
-  project  = var.project
-  env      = var.env
-  customer = var.customer
-  #####################################
-
-  #. extra_tags (optional): {}
-  #+ Dict of extra tags to add on resources. format { "foo" = "bar" }.
-  extra_tags = {
-    demo = true
-    monitoring_discovery = false
-  }
-
-  #. name: ''
-  #+ The name of the resource group to create
-  name = "Value injected by StackForms"
-
-  #. azure_location: "West Europe"
-  #+ Azure location where to create the Resource Group
-  azure_location = "Value injected by StackForms"
-}
-
 module "network" {
   #####################################
   # Do not modify the following lines #
@@ -40,7 +15,7 @@ module "network" {
   }
 
   #. resource_group_name: ''
-  #+ The name of the existing resource group where the resources will be deployed
+  #+ The name of the resource group to create
   resource_group_name = module.resource-group.name
 
   #. azure_location: "West Europe"
