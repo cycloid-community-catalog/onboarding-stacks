@@ -66,7 +66,7 @@ use_cases:
         required: true
       - name: "NAT Gateway"
         description: "Whether to deploy a NAT gateway or not."
-        key: nat_gateway
+        key: module.network.nat_gateway
         widget: switch
         type: boolean
         default: false
@@ -77,7 +77,7 @@ use_cases:
       vars:
       - name: "SSH Public key"
         description: "The public SSH key to connect via SSH to newly created instances. The public key must be provisionned in the credentials module beforehand."
-        key: key_pair_public
+        key: module.key_pair.key_pair_public
         widget: cy_cred
         widget_config:
           display_keys: true
