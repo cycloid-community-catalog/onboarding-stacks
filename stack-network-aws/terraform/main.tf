@@ -28,7 +28,7 @@ module "network" {
 
   #. nat_gateway: false
   #+ Whether to deploy a NAT gateway or not
-  nat_gateway = false
+  nat_gateway = "Value injected by StackForms"
 
 }
 
