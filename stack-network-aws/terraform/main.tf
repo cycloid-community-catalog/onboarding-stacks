@@ -26,6 +26,10 @@ module "network" {
   #+ Private Subnet CIDR
   vpc_private_subnet = "Value injected by StackForms"
 
+  #. nat_gateway: false
+  #+ Whether to deploy a NAT gateway or not
+  nat_gateway = false
+
 }
 
 module "key_pair" {
