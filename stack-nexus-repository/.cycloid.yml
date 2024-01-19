@@ -8,14 +8,14 @@ author: 'Cycloid'
 image: 'https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/nexus.png'
 status: 'public'
 keywords:
-- nexus
-- repository
-- artefact
-- provider:aws
-- provider:azure
-- provider:gcp
-- provider:vmware
-- provider:k8s
+- 'nexus'
+- 'repository'
+- 'artefact'
+- 'provider:aws'
+- 'provider:azure'
+- 'provider:gcp'
+- 'provider:kubernetes'
+- 'provider:vmware'
 technologies:
 - technology: nexus
   version: "3.33"
@@ -90,7 +90,7 @@ config:
   kubernetes:
     name: 'Kubernetes'
     description: 'Deploys a Nexus Repository in a single Kubernetes instance'
-    cloud_provider: k8s
+    cloud_provider: kubernetes
     # Pipeline and variable configuration for the GCP CD pipeline use case
     pipeline:
       pipeline:
