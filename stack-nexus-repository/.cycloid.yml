@@ -84,3 +84,42 @@ config:
       main:
         path: 'terraform/gcp/main.tf'
         destination: '($ project $)/terraform/gcp/($ environment $)/main.tf'
+
+  kubernetes:
+    name: 'Kubernetes'
+    description: 'Deploys a Nexus Repository in a single Kubernetes instance'
+    cloud_provider: kubernetes
+    # Pipeline and variable configuration for the GCP CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/kubernetes/pipeline.yml'
+      variables:
+        path: 'pipeline/kubernetes/variables.sample.yml'
+        destination: '($ project $)/pipeline/kubernetes/($ environment $)/variables.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/kubernetes/main.tf'
+        destination: '($ project $)/terraform/kubernetes/($ environment $)/main.tf'
+
+  vmware:
+    name: 'VMware'
+    description: 'Deploys a Nexus Repository in a single VMware instance'
+    cloud_provider: vmware
+    # Pipeline and variable configuration for the GCP CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/vmware/pipeline.yml'
+      variables:
+        path: 'pipeline/vmware/variables.sample.yml'
+        destination: '($ project $)/pipeline/vmware/($ environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      nexus:
+        path: 'ansible/environments/nexus.yml.sample'
+        destination: '($ project $)/ansible/environments/($ environment $)-nexus.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/vmware/main.tf'
+        destination: '($ project $)/terraform/vmware/($ environment $)/main.tf'

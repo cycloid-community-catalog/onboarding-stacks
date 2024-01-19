@@ -122,7 +122,7 @@ use_cases:
         key: resource_group_name
         widget: simple_text
         type: string
-        default: ""
+        default: "cycloid-demo"
         required: true
 
     - name: Virtual machine specifications
@@ -340,4 +340,245 @@ use_cases:
         widget: simple_text
         type: string
         default: "changeme"
+        required: true
+      
+- name: eks
+  sections:
+  - name: Nexus Repository
+    groups:
+    - name: Pod specifications
+      technologies: [terraform]
+      vars:
+      - name: "Disk size"
+        unit: Go
+        description: "Disk size for the Nexus Repository."
+        key: vm_disk_size
+        widget: slider_range
+        type: integer
+        default: 20
+        values:
+            - 10
+            - 250
+        required: true
+    - name: Application Configuration
+      technologies: [terraform]
+      vars:
+      - name: "Port"
+        description: "Port where Nexus Repository service is exposed."
+        key: nexus_port
+        widget: simple_text
+        type: string
+        default: "8081"
+        required: true
+
+  - name: AWS Cloud Provider
+    groups:
+    - name: Cloud Access Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "AWS access key"
+        description: "Amazon AWS access key for Terraform."
+        key: aws_access_key
+        widget: cy_cred
+        type: string
+        default: "((aws_cycloid-demo.access_key))"
+        required: true
+      - name: "AWS secret key"
+        description: "Amazon AWS secret key for Terraform."
+        key: aws_secret_key
+        widget: cy_cred
+        type: string
+        default: "((aws_cycloid-demo.secret_key))"
+        required: true
+      - name: "Amazon AWS region"
+        description: "Amazon AWS region to use for Terraform."
+        key: aws_region
+        widget: auto_complete
+        type: string
+        values: ["eu-north-1","ap-south-1","eu-west-3","eu-west-2","eu-west-1","ap-northeast-2","ap-northeast-1","sa-east-1","ca-central-1","ap-southeast-1","ap-southeast-2","eu-central-1","us-east-1","us-east-2","us-west-1","us-west-2"]
+        default: eu-west-1
+        required: true
+    - name: EKS Cluster Access Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Cluster Name"
+        description: "Cluster name where to deploy the workload. The Kubernetes cluster shall exist or be created beforehand."
+        key: eks_cluster_name
+        widget: simple_text
+        type: string
+        default: default
+        required: true
+      - name: "Namespace"
+        description: "Namespace where to deploy the workload. The Namespace will be created."
+        key: eks_namespace
+        widget: simple_text
+        type: string
+        default: nexus
+        required: true
+
+- name: vmware
+  sections:
+  - name: Nexus Repository
+    groups:
+    - name: Virtual machine specifications
+      technologies: [terraform]
+      vars:
+      - name: "vCPU"
+        unit: vCPU
+        description: "Number of vCPU allocated to the virtual machine."
+        key: vm_cpu
+        widget: slider_range
+        type: integer
+        default: 2
+        values:
+            - 1
+            - 4
+        required: true
+      - name: "Memory"
+        unit: Mo
+        description: "Memory allocated to the virtual machine."
+        key: vm_memory
+        widget: slider_list
+        type: integer
+        default: 2048
+        values:
+            - 1024
+            - 2048
+            - 4096
+        required: true
+      - name: "Disk"
+        unit: Go
+        description: "Disk size allocated to the virtual machine."
+        key: vm_disk_size
+        widget: slider_range
+        type: integer
+        default: 20
+        values:
+            - 10
+            - 200
+        required: true
+      - name: "Operating System"
+        description: "Virtual Machine Operating System."
+        key: vsphere_template
+        widget: auto_complete
+        type: string
+        values: ["debian","ubuntu"]
+        default: "debian"
+        required: true
+      - name: "Network"
+        description: "Network where the virtual machine will be located."
+        key: vsphere_network
+        widget: simple_text
+        default: "VM Network"
+        type: string
+        required: true
+      - name: "IP Address"
+        description: "IP address to assign to the virtual machine network interface. You can also integrate Cycloid with an IP Address Management tool."
+        key: vm_ip
+        widget: simple_text
+        default: "212.129.18.92"
+        type: string
+        required: true
+      - name: "MAC Address"
+        description: "MAC address to assign to the virtual machine network interface. You can also integrate Cycloid with a MAC Address Management tool."
+        key: vm_mac
+        widget: simple_text
+        default: "00:50:56:01:f1:96"
+        type: string
+        required: true
+    - name: SSH connection to new instances
+      technologies: [pipeline]
+      condition: "vm_custom==true"
+      vars:
+      - name: "User"
+        description: "The user to use to connect through SSH."
+        key: vm_os_user
+        widget: simple_text
+        type: string
+        default: "admin"
+        required: true
+      - name: "Keypair public"
+        description: "The public SSH key, for SSH access to newly-created instances."
+        key: keypair_public
+        widget: cy_cred
+        type: string
+        required: true
+        default: "((keypair.ssh_pub))"
+        required: true
+      - name: "Keypair private"
+        description: "The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion."
+        key: keypair_private
+        widget: cy_cred
+        type: string
+        default: "((keypair.ssh_prv))"
+        required: true
+    - name: Application Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Port"
+        description: "Port where Nexus Repository service is exposed."
+        key: nexus_port
+        widget: simple_text
+        type: string
+        default: "8081"
+        required: true
+      - name: "Admin password"
+        description: "Initial admin password for Nexus Repository first installation."
+        key: nexus_admin_password
+        widget: simple_text
+        type: string
+        default: "changeme"
+        required: true
+
+  - name: VMware Cloud Provider
+    groups:
+    - name: Access Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "vCenter server"
+        description: "vCenter server for Terraform."
+        key: vsphere_server
+        widget: simple_text
+        type: string
+        default: "212.83.169.2"
+        required: true
+      - name: "vCenter admin username"
+        description: "vCenter admin username for Terraform."
+        key: vsphere_user
+        widget: cy_cred
+        type: string
+        default: "((basic_auth_vsphere.username))"
+        required: true
+      - name: "vCenter admin password"
+        description: "vCenter admin password for Terraform."
+        key: vsphere_password
+        widget: cy_cred
+        type: string
+        default: "((basic_auth_vsphere.password))"
+        required: true
+    - name: Deployment Configuration
+      technologies: [terraform]
+      vars:
+      - name: "Datacenter"
+        description: "Datacenter where to create the virtual machine."
+        key: vsphere_datacenter
+        widget: auto_complete
+        type: string
+        values: ["dc1","dc2"]
+        default: "dc1"
+        required: true
+      - name: "Datastore"
+        description: "Datastore where to create the virtual machine."
+        key: vsphere_datastore
+        widget: auto_complete
+        type: string
+        values: ["datastore1","datastore2"]
+        default: "datastore1"
+        required: true
+      - name: "Cluster"
+        description: "Cluster where the virtual machine will be located."
+        key: vsphere_cluster
+        widget: simple_text
+        default: "cluster1"
+        type: string
         required: true
