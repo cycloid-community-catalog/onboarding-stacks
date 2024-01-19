@@ -488,7 +488,6 @@ use_cases:
         required: true
     - name: SSH connection to new instances
       technologies: [pipeline]
-      condition: "vm_custom==true"
       vars:
       - name: "User"
         description: "The user to use to connect through SSH."
