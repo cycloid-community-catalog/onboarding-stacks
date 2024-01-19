@@ -342,7 +342,7 @@ use_cases:
         default: "changeme"
         required: true
       
-- name: eks
+- name: kubernetes
   sections:
   - name: Nexus Repository
     groups:
