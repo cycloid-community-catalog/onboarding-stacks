@@ -15,7 +15,7 @@ keywords:
 - provider:azure
 - provider:gcp
 - provider:vmware
-- provider:kubernetes
+- provider:k8s
 technologies:
 - technology: nexus
   version: "3.33"
@@ -90,7 +90,7 @@ config:
   kubernetes:
     name: 'Kubernetes'
     description: 'Deploys a Nexus Repository in a single Kubernetes instance'
-    cloud_provider: kubernetes
+    cloud_provider: k8s
     # Pipeline and variable configuration for the GCP CD pipeline use case
     pipeline:
       pipeline:
