@@ -3,7 +3,7 @@
 version: '2'
 name: 'Nexus Repository'
 canonical: 'stack-nexus-repository'
-description: 'This stack deploys a Nexus Repository on a AWS, Azure or GCP instance using Terraform and Ansible.'
+description: 'This stack deploys a Nexus Repository on a AWS, Azure, GCP or VMware instance using Terraform and Ansible. It can also deploy a Nexus Repository on a Kubernetes cluster using Helm.'
 author: 'Cycloid'
 image: 'https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/nexus.png'
 status: 'public'
@@ -89,7 +89,7 @@ config:
 
   kubernetes:
     name: 'Kubernetes'
-    description: 'Deploys a Nexus Repository in a single Kubernetes instance'
+    description: 'Deploys a Nexus Repository in a Kubernetes cluster'
     cloud_provider: kubernetes
     # Pipeline and variable configuration for the GCP CD pipeline use case
     pipeline:
