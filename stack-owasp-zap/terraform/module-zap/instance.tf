@@ -54,7 +54,7 @@ resource "aws_instance" "zap" {
 
   subnet_id               = data.aws_subnets.public_subnets.ids[0]
   disable_api_termination = false
-  associate_public_ip_address = true
+  # associate_public_ip_address = true
 
   root_block_device {
     volume_size           = var.vm_disk_size
