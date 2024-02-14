@@ -1,7 +1,7 @@
 module "network" {
   #####################################
   # Do not modify the following lines #
-  source   = "git::https://github.com/cycloid-community-catalog/onboarding-iac.git//aws/network"
+  source   = "./network"
   project  = var.project
   env      = var.env
   customer = var.customer
@@ -35,7 +35,7 @@ module "network" {
 module "key_pair" {
   #####################################
   # Do not modify the following lines #
-  source   = "git::https://github.com/cycloid-community-catalog/onboarding-iac.git//aws/key_pair"
+  source   = "./key_pair"
   project  = var.project
   env      = var.env
   customer = var.customer
@@ -50,7 +50,7 @@ module "key_pair" {
 
   #. key_pair_name: ""
   #+ The name of the key pair to provision to the instance
-  key_pair_name = "${var.customer}-${var.project}-${var.env}"
+  key_pair_name = "${var.project}-${var.env}"
 
   #. key_pair_public: ""
   #+ Public key to create
