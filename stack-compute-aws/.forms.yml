@@ -3,7 +3,7 @@ version: "2"
 use_cases:
 - name: default
   sections:
-  - name: EC2
+  - name: EC2 Instance
     groups:
   - name: AWS Cloud Provider
     groups:

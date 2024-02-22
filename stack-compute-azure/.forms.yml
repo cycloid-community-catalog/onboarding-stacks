@@ -1,0 +1,76 @@
+---
+version: "2"
+use_cases:
+- name: default
+  sections:
+  - name: Instance
+    groups:
+    - name: Azure Cloud Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Azure credentials"
+        description: "The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret."
+        key: azure_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - azure
+        type: string
+        default: "((azure))"
+        required: true
+    - name: Azure Infrastructure
+      technologies: [terraform]
+      vars:
+      - name: "Azure location"
+        description: "Azure location for Terraform."
+        key: azure_location
+        widget: auto_complete
+        type: string
+        values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/azure-locations.json
+        default: "West Europe"
+        required: true
+      - name: "Existing resource group name"
+        description: "The name of the existing resource group where the resources will be deployed."
+        key: resource_group_name
+        widget: simple_text
+        type: string
+        default: ""
+        required: true
+
+    - name: Virtual machine specifications
+      technologies: [terraform]
+      vars:
+      - name: "Instance type"
+        description: "Instance type for the VM."
+        key: vm_instance_type
+        widget: slider_list
+        type: string
+        default: "Standard_DS2_v2"
+        values:
+            - "Standard_DS1_v2"
+            - "Standard_DS2_v2"
+            - "Standard_DS3_v2"
+        required: true
+      - name: "Disk size"
+        unit: Go
+        description: "Disk size for the VM."
+        key: vm_disk_size
+        widget: slider_range
+        type: integer
+        default: 30
+        values:
+            - 30
+            - 250
+        required: true
+
+    - name: Security
+      technologies: [pipeline]
+      vars:
+      - name: "Public SSH key"
+        description: "The public SSH key, for SSH access to newly-created instances."
+        key: key_pair_public
+        widget: cy_cred
+        type: string
+        default: "((key_pair.public_key))"
+        required: true

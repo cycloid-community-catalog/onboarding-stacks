@@ -1,27 +1,26 @@
 ---
 # Configuration of the Cycloid stack
 version: '2'
-name: 'AWS EC2 Instance'
-canonical: stack-compute-aws
+name: Azure Virtual Machine
+canonical: stack-compute-azure
 status: public
 author: Cycloid
 description: |
-  Deploy an AWS EC2 instance using Terraform.
+  Deploy an Azure Virtual Machine using Terraform.
 image: |
-  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/ec2.png
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/azure-vm.png
 keywords:
-  - ec2
   - virtual machine
   - instance
-  - provider:aws
+  - provider:azure
 technologies:
   - technology: n/a
 
 config:
   default:
     name: 'Default'
-    description: 'Deploy an AWS EC2 instance using Terraform'
-    cloud_provider: aws
+    description: 'Deploy an Azure VM using Terraform'
+    cloud_provider: azurerm
     # Pipeline and variable configuration for the default CD pipeline use case
     pipeline:
       pipeline:
