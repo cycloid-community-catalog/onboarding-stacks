@@ -21,6 +21,7 @@ resource "azurerm_linux_virtual_machine" "snapshot" {
   }
 
   disable_password_authentication = false
+  admin_password                  = "Ch4ng3M3!"
 
   custom_data = base64encode(templatefile(
     "${path.module}/userdata.sh.tpl",
