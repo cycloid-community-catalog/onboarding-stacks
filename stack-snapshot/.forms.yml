@@ -101,7 +101,7 @@ use_cases:
         key: resource_group_name
         widget: cy_inventory_resource
         widget_config:
-          attribute: self_link
+          attribute: name
           filters:
             type: azurerm_resource_group
         type: string
