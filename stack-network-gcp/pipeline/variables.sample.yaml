@@ -18,7 +18,7 @@ gcp_region: "europe-west1"
 
 #. gcp_zone (required): "b"
 #+ Google Cloud Platform zone to use for Terraform.
-gcp_zone: "b"
+gcp_zone: "europe-west1-b"
 
 
 #

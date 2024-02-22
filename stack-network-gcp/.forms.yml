@@ -103,7 +103,6 @@ use_cases:
               values: ['us-west3-a', 'us-west3-b', 'us-west3-c']
             - condition: "$gcp_region == 'us-west4'"
               values: ['us-west4-a', 'us-west4-b', 'us-west4-c']
-        default: ""
         validations: 
         - regexp: "^[a-z]+-[a-z0-9]+-[a-z]{1}$"
           error_message: "Please enter a valid GCP Zone such as europe-west1-b."
