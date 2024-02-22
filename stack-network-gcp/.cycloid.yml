@@ -10,11 +10,10 @@ description: |
 image: |
   https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/gcp-vpc.png
 keywords:
-- terraform
 - network
 - vpc
 - subnet
-- bastion
+- provider:gcp
 technologies:
 - technology: terraform
   version: 1.5.7
