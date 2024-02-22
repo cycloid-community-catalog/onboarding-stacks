@@ -20,6 +20,8 @@ resource "azurerm_linux_virtual_machine" "snapshot" {
       version   = "latest"
   }
 
+  disable_password_authentication = false
+
   custom_data = base64encode(templatefile(
     "${path.module}/userdata.sh.tpl",
     {
