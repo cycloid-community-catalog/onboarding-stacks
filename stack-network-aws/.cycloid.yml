@@ -1,12 +1,12 @@
 ---
 # Configuration of the Cycloid stack
 version: '2'
-name: 'AWS Network Landing Zone'
+name: 'AWS VPC Network'
 canonical: stack-network-aws
 status: public
 author: Cycloid
 description: |
-  Deploys a VPC with public and private subnets, as well as a bastion instance and a SSH key pair.
+  Deploys a VPC with public and private subnets.
 image: |
   https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/aws-vpc.png
 keywords:
@@ -14,7 +14,6 @@ keywords:
 - network
 - vpc
 - subnet
-- bastion
 - provider:aws
 technologies:
 - technology: terraform
@@ -23,7 +22,6 @@ technologies:
 config:
   default:
     name: 'Default'
-    description: 'Deploys a VPC, public and private subnets and a bastion'
     cloud_provider: aws
     # Pipeline and variable configuration for the default CD pipeline use case
     pipeline:

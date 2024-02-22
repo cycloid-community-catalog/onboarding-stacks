@@ -1,7 +1,7 @@
 ---
 # Configuration of the Cycloid stack
 version: '2'
-name: 'GCP Network Landing Zone'
+name: 'GCP VPC Network'
 canonical: stack-network-gcp
 status: public
 author: Cycloid
