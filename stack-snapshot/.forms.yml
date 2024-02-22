@@ -105,7 +105,6 @@ use_cases:
           filters:
             type: azurerm_resource_group
         type: string
-        default: "cycloid-demo"
         required: true
     - name: Virtual machine specifications
       technologies: [terraform]
