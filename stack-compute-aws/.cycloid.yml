@@ -8,7 +8,7 @@ author: Cycloid
 description: |
   Deploy an AWS EC2 instance using Terraform.
 image: |
-  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/ec2.png
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/aws-ec2.svg
 keywords:
   - ec2
   - virtual machine
