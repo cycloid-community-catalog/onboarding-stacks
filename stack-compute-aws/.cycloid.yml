@@ -6,7 +6,7 @@ canonical: stack-compute-aws
 status: public
 author: Cycloid
 description: |
-  Deploy an AWS EC2 instance using Terraform.
+  Deploys an AWS EC2 instance using Terraform.
 image: |
   https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/aws-ec2.svg
 keywords:

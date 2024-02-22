@@ -6,7 +6,7 @@ canonical: stack-compute-azure
 status: public
 author: Cycloid
 description: |
-  Deploy an Azure Virtual Machine using Terraform.
+  Deploys an Azure Virtual Machine using Terraform.
 image: |
   https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/azure-vm.png
 keywords:

@@ -6,7 +6,7 @@ canonical: stack-compute-gcp
 status: public
 author: Cycloid
 description: |
-  Deploy a GCP Virtual Machine using Terraform.
+  Deploys a GCP Virtual Machine using Terraform.
 image: |
   https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/gcp-vm.png
 keywords:
