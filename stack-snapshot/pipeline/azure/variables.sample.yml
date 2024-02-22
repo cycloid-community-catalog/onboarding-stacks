@@ -10,15 +10,6 @@ azure_cred: ((azure))
 
 
 #
-# Key pair to use for newly created instances
-#
-
-#. key_pair_public (required): ((key_pair.public_key))
-#+ The public SSH key to provision for external access through SSH
-key_pair_public: ((key_pair.public_key))
-
-
-#
 # Default Stack Repository
 #
 
