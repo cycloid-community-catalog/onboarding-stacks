@@ -3,7 +3,7 @@
 version: '2'
 name: 'Nexus Repository'
 canonical: 'stack-nexus-repository'
-description: 'This stack deploys a Nexus Repository on a public or private instance using Terraform and Ansible or in a Kubernetes cluster using Helm.'
+description: 'Deploys a Nexus Repository on a public or private instance using Terraform and Ansible or in a Kubernetes cluster using Helm.'
 author: 'Cycloid'
 image: 'https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/nexus.png'
 status: 'public'
