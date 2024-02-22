@@ -9,7 +9,6 @@ description: |
   Snap Shot is a gallery created using React. This stack installs it on on a single instance.
 image: |
   https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/snapshot.png
-status: 'public'
 keywords:
 - snapshot
 - user data
