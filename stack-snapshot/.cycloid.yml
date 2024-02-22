@@ -1,0 +1,72 @@
+---
+# Configuration of the Cycloid stack
+version: '2'
+name: Snap Shot
+canonical: stack-snapshot
+status: public
+author: Cycloid
+description: |
+  Snap Shot is a gallery created using React. This stack installs it on on a single instance.
+image: |
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/snapshot.png
+status: 'public'
+keywords:
+- snapshot
+- user data
+- provider:aws
+- provider:azure
+- provider:gcp
+technologies:
+- technology: "n/a"
+
+config:
+  aws:
+    name: 'AWS'
+    description: 'Deploys SnapShot in a single AWS instance'
+    cloud_provider: aws
+    # Pipeline and variable configuration for the AWS CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/aws/pipeline.yml'
+      variables:
+        path: 'pipeline/aws/variables.sample.yml'
+        destination: '($ project $)/pipeline/aws/($ environment $)/variables.yml'
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/aws/main.tf'
+        destination: '($ project $)/terraform/aws/($ environment $)/main.tf'
+
+  azure:
+    name: 'Azure'
+    description: 'Deploys SnapShot in a single Azure instance'
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the Azure CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/azure/pipeline.yml'
+      variables:
+        path: 'pipeline/azure/variables.sample.yml'
+        destination: '($ project $)/pipeline/azure/($ environment $)/variables.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/azure/main.tf'
+        destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
+
+  gcp:
+    name: 'GCP'
+    description: 'Deploys SnapShot in a single GCP instance'
+    cloud_provider: google
+    # Pipeline and variable configuration for the GCP CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/gcp/pipeline.yml'
+      variables:
+        path: 'pipeline/gcp/variables.sample.yml'
+        destination: '($ project $)/pipeline/gcp/($ environment $)/variables.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/gcp/main.tf'
+        destination: '($ project $)/terraform/gcp/($ environment $)/main.tf'
