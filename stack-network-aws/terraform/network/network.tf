@@ -3,7 +3,7 @@ resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.project}-${var.env}"
+    Name = "${var.customer}-${var.project}-${var.env}-vpc"
     role = "vpc"
   })
 }
@@ -13,7 +13,7 @@ resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.project}-${var.env}"
+    Name = "${var.customer}-${var.project}-${var.env}-ig"
     role = "internet_gateway"
   })
 }
@@ -26,7 +26,7 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.project}-${var.env}"
+    Name = "${var.customer}-${var.project}-${var.env}-public-subnet"
     role = "public_subnet"
     Tier = "Public"
   })
@@ -40,7 +40,7 @@ resource "aws_subnet" "private_subnet" {
   map_public_ip_on_launch = false
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.project}-${var.env}"
+    Name = "${var.customer}-${var.project}-${var.env}-private-subnet"
     role = "private_subnet"
     Tier = "Private"
   })
@@ -57,7 +57,7 @@ resource "aws_route_table" "public_route_table" {
   }
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.project}-${var.env}"
+    Name = "${var.customer}-${var.project}-${var.env}-public-rt"
     role = "public_route_table"
   })
 }
@@ -75,7 +75,7 @@ resource "aws_eip" "eip_nat_gateway" {
   domain   = "vpc"
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.project}-${var.env}"
+    Name = "${var.customer}-${var.project}-${var.env}-eip"
     role = "eip_nat_gateway"
   })
 }
@@ -88,7 +88,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   subnet_id = aws_subnet.public_subnet.id
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.project}-${var.env}"
+    Name = "${var.customer}-${var.project}-${var.env}-nat-gw"
     role = "nat_gateway"
   })
 }
@@ -105,7 +105,7 @@ resource "aws_route_table" "private_route_table" {
   }
 
   tags = merge(local.merged_tags, {
-    Name = "${var.customer}-${var.project}-${var.env}"
+    Name = "${var.customer}-${var.project}-${var.env}-private-rt"
     role = "private_route_table"
   })
 }
