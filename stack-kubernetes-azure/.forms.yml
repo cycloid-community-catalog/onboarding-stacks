@@ -81,3 +81,25 @@ use_cases:
             type: azurerm_kubernetes_cluster
         type: string
         required: true
+      - name: "VM size"
+        description: "The SKU which should be used for the Virtual Machines used in this Node Pool. Changing this forces a new resource to be created."
+        key: nodepool_vm_size
+        widget: slider_list
+        type: string
+        default: "Standard_DS2_v2"
+        values:
+            - "Standard_DS1_v2"
+            - "Standard_DS2_v2"
+            - "Standard_DS3_v2"
+        required: true
+      - name: "Number of Nodes"
+        unit: Nodes
+        description: "The initial number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 (inclusive) for user pools and between 1 and 1000 (inclusive) for system pools and must be a value in the range min_count - max_count."
+        key: nodepool_node_count
+        widget: slider_range
+        type: integer
+        default: 1
+        values:
+            - 1
+            - 4
+        required: true
