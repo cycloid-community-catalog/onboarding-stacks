@@ -6,4 +6,5 @@ module "aks" {
   orchestrator_version   = var.kubernetes_version
   prefix                 = "${var.project}-${var.env}"
   network_plugin         = "azure"
+  rbac_aad               = false
 }
