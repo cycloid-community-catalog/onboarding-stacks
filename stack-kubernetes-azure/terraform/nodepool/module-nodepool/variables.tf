@@ -9,6 +9,11 @@ variable "kubernetes_cluster_id" {
   default     = ""
 }
 
+variable "nodepool_name" {
+  description = "The name of the Node Pool."
+  default     = ""
+}
+
 variable "nodepool_vm_size" {
   description = "The SKU which should be used for the Virtual Machines used in this Node Pool. Changing this forces a new resource to be created."
   default     = "Standard_DS2_v2"

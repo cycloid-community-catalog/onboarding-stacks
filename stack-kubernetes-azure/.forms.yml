@@ -81,7 +81,17 @@ use_cases:
             type: azurerm_kubernetes_cluster
         type: string
         required: true
-      - name: "VM size"
+      - name: "Node Pool Name"
+        description: "The name of the Node Pool."
+        key: nodepool_name
+        widget: simple_text
+        type: string
+        default: ""
+        validations: 
+        - regexp: "^[a-z]{1}[a-z0-9]{0,11}$"
+          error_message: "Must begin with a lowercase letter, contain only lowercase letters and numbers and no more than 12 chars in length."
+        required: true
+      - name: "VM Size"
         description: "The SKU which should be used for the Virtual Machines used in this Node Pool. Changing this forces a new resource to be created."
         key: nodepool_vm_size
         widget: slider_list

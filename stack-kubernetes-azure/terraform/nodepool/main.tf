@@ -18,6 +18,10 @@ module "nodepool" {
   #+ The existing Azure Kubernetes cluster (AKS) where the nodepool will be deployed.
   kubernetes_cluster_id = "Value injected by StackForms"
 
+  #. nodepool_name: ''
+  #+ The name of the Node Pool
+  nodepool_name = "Value injected by StackForms"
+
   #. nodepool_vm_size: ''
   #+ The SKU which should be used for the Virtual Machines used in this Node Pool. Changing this forces a new resource to be created
   nodepool_vm_size = "Value injected by StackForms"
