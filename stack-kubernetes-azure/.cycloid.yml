@@ -32,8 +32,8 @@ config:
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
-        path: 'terraform/($ .use_case $)/main.tf'
-        destination: '($ .project $)/terraform/($ .use_case $)/($ .environment $)/main.tf'
+        path: 'terraform/aks/main.tf'
+        destination: '($ .project $)/terraform/aks/($ .environment $)/main.tf'
 
   nodepool:
     name: 'AKS Node Pool'
@@ -49,5 +49,5 @@ config:
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
-        path: 'terraform/($ .use_case $)/main.tf'
-        destination: '($ .project $)/terraform/($ .use_case $)/($ .environment $)/main.tf'
+        path: 'terraform/nodepool/main.tf'
+        destination: '($ .project $)/terraform/nodepool/($ .environment $)/main.tf'
