@@ -78,6 +78,6 @@ use_cases:
         widget_config:
           attribute: id
           filters:
-            type: kubernetes_cluster_id
+            type: azurerm_kubernetes_cluster
         type: string
         required: true
