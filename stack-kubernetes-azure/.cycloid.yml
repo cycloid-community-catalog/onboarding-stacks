@@ -1,6 +1,6 @@
 ---
 # Configuration of the Cycloid stack
-version: '3'
+version: '2'
 name: Azure Kubernetes Service (AKS)
 canonical: stack-kubernetes-azure
 status: public
@@ -28,12 +28,12 @@ config:
         path: pipeline/pipeline.yaml
       variables:
         path: pipeline/variables.sample.yaml
-        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
+        destination: ($ project $)/pipeline/($ environment $)/variables.yaml
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
         path: 'terraform/aks/main.tf'
-        destination: '($ .project $)/terraform/aks/($ .environment $)/main.tf'
+        destination: '($ project $)/terraform/aks/($ environment $)/main.tf'
 
   nodepool:
     name: 'AKS Node Pool'
@@ -45,9 +45,9 @@ config:
         path: pipeline/pipeline.yaml
       variables:
         path: pipeline/variables.sample.yaml
-        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
+        destination: ($ project $)/pipeline/($ environment $)/variables.yaml
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
         path: 'terraform/nodepool/main.tf'
-        destination: '($ .project $)/terraform/nodepool/($ .environment $)/main.tf'
+        destination: '($ project $)/terraform/nodepool/($ environment $)/main.tf'

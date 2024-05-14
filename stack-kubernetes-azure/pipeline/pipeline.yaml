@@ -28,7 +28,7 @@ resources:
     env_name: ((env))
     backend_type: http
     backend_config:
-      address: '((cycloid_api_url))/inventory?jwt=($ .inventory_jwt $)'
+      address: '((cycloid_api_url))/inventory?jwt=($ inventory_jwt $)'
     vars:
       azure_cred: ((azure_cred))
       env: ((env))
