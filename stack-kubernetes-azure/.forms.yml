@@ -1,0 +1,81 @@
+---
+version: "2"
+use_cases:
+- name: aks
+  sections:
+  - name: Azure Kubernetes Service (AKS)
+    groups:
+    - name: Azure Cloud Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Azure Credentials"
+        description: "The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret."
+        key: azure_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - azure
+        type: string
+        default: "((azure))"
+        required: true
+    - name: Azure Infrastructure
+      technologies: [terraform]
+      vars:
+      - name: "Resource Group Name"
+        description: "The name of the existing resource group where the resources will be deployed."
+        key: resource_group_name
+        widget: cy_inventory_resource
+        widget_config:
+          attribute: name
+          filters:
+            type: azurerm_resource_group
+        type: string
+        required: true
+      - name: "Kubernetes Version"
+        description: "The Kubernetes version to use."
+        key: kubernetes_version
+        widget: auto_complete
+        type: string
+        values:
+        - 1.30
+        - 1.29
+        - 1.28
+        - 1.27
+        default: "1.30"
+        validations: 
+        - regexp: "^[1-9]{1}\.\\d+$" 
+          error_message: "Please enter a valid Kubernetes version such as `1.30`"
+        required: true
+
+- name: nodepool
+  sections:
+  - name: Azure Kubernetes Service (AKS)
+    groups:
+    - name: Azure Cloud Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Azure Credentials"
+        description: "The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret."
+        key: azure_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - azure
+        type: string
+        default: "((azure))"
+        required: true
+    - name: Azure Infrastructure
+      technologies: [terraform]
+      vars:
+      - name: "Azure Kubernetes cluster (AKS)"
+        description: "The existing Azure Kubernetes cluster (AKS) where the nodepool will be deployed."
+        key: kubernetes_cluster_id
+        widget: cy_inventory_resource
+        widget_config:
+          attribute: id
+          filters:
+            type: kubernetes_cluster_id
+        type: string
+        required: true

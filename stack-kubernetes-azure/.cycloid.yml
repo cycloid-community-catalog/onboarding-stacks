@@ -1,0 +1,53 @@
+---
+# Configuration of the Cycloid stack
+version: '2'
+name: Azure Kubernetes Service (AKS)
+canonical: stack-kubernetes-azure
+status: public
+author: Cycloid
+description: |
+  Deploy an Azure Kubernetes Service (AKS) cluster using Terraform.
+image: |
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/kubernetes.png
+keywords:
+  - kubernetes
+  - AKS
+  - nodepool
+  - provider:azure
+technologies:
+  - technology: n/a
+
+config:
+  aks:
+    name: 'Default'
+    description: 'Deploy an Azure Kubernetes Service (AKS) control plane using Terraform'
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the default CD pipeline use case
+    pipeline:
+      pipeline:
+        path: pipeline/pipeline.yaml
+      variables:
+        path: pipeline/variables.sample.yaml
+        destination: ($ project $)/pipeline/($ environment $)/variables.yaml
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/aks/main.tf'
+        destination: '($ project $)/terraform/aks/($ environment $)/main.tf'
+
+  nodepool:
+    name: 'Default'
+    description: 'Deploy an Azure Kubernetes Service (AKS) nodepool using Terraform'
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the default CD pipeline use case
+    pipeline:
+      pipeline:
+        path: pipeline/pipeline.yaml
+      variables:
+        path: pipeline/variables.sample.yaml
+        destination: ($ project $)/pipeline/($ environment $)/variables.yaml
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/nodepool/main.tf'
+        destination: '($ project $)/terraform/nodepool/($ environment $)/main.tf'
