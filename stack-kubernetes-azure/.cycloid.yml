@@ -19,7 +19,7 @@ technologies:
 
 config:
   aks:
-    name: 'Default'
+    name: 'AKS Control Plane'
     description: 'Deploy an Azure Kubernetes Service (AKS) control plane using Terraform'
     cloud_provider: azurerm
     # Pipeline and variable configuration for the default CD pipeline use case
@@ -33,10 +33,10 @@ config:
     terraform:
       main:
         path: 'terraform/aks/main.tf'
-        destination: '($ project $)/terraform/aks/($ environment $)/main.tf'
+        destination: '($ project $)/terraform/($ environment $)/main.tf'
 
   nodepool:
-    name: 'Default'
+    name: 'AKS Node Pool'
     description: 'Deploy an Azure Kubernetes Service (AKS) nodepool using Terraform'
     cloud_provider: azurerm
     # Pipeline and variable configuration for the default CD pipeline use case
@@ -50,4 +50,4 @@ config:
     terraform:
       main:
         path: 'terraform/nodepool/main.tf'
-        destination: '($ project $)/terraform/nodepool/($ environment $)/main.tf'
+        destination: '($ project $)/terraform/($ environment $)/main.tf'
