@@ -1,5 +1,5 @@
 resource "azurerm_kubernetes_cluster_node_pool" "nodepool" {
-  name                  = "${var.project}-${var.env}"
+  name                  = "cynodepool"
   kubernetes_cluster_id = var.kubernetes_cluster_id
   vm_size               = var.nodepool_vm_size
   node_count            = var.nodepool_node_count
