@@ -33,7 +33,7 @@ config:
     terraform:
       main:
         path: 'terraform/aks/main.tf'
-        destination: '($ project $)/terraform/($ environment $)/main.tf'
+        destination: '($ project $)/terraform/aks/($ environment $)/main.tf'
 
   nodepool:
     name: 'AKS Node Pool'
@@ -50,4 +50,4 @@ config:
     terraform:
       main:
         path: 'terraform/nodepool/main.tf'
-        destination: '($ project $)/terraform/($ environment $)/main.tf'
+        destination: '($ project $)/terraform/nodepool/($ environment $)/main.tf'
