@@ -35,11 +35,11 @@ resources:
       project: ((project))
       customer: ((customer))
     env:
-      AZURE_SUBSCRIPTION_ID: ((((azure_cred)).subscription_id))
-      AZURE_TENANT_ID: ((((azure_cred)).tenant_id))
-      AZURE_TENANT: ((((azure_cred)).tenant_id))
-      AZURE_CLIENT_ID: ((((azure_cred)).client_id))
-      AZURE_SECRET: ((((azure_cred)).client_secret))
+      AZURE_SUBSCRIPTION_ID: ((azure_subscription_id))
+      AZURE_TENANT_ID: ((azure_tenant_id))
+      AZURE_TENANT: ((azure_tenant_id))
+      AZURE_CLIENT_ID: ((azure_client_id))
+      AZURE_SECRET: ((azure_client_secret))
 
 
 # The Terraform stack (will be merged with the config)
