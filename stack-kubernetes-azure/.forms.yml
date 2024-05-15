@@ -109,9 +109,9 @@ use_cases:
         type: string
         default: "Standard_DS2_v2"
         values:
-            - "Standard_DS1_v2"
             - "Standard_DS2_v2"
             - "Standard_DS3_v2"
+            - "Standard_DS4_v2"
         required: true
       - name: "Number of Nodes"
         unit: Nodes
