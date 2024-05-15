@@ -9,6 +9,11 @@ variable "kubernetes_version" {
   default     = "1.30"
 }
 
+variable "kubernetes_sku_tier" {
+  description = "The SKU Tier that should be used for this Kubernetes Cluster."
+  default     = "Free"
+}
+
 variable "resource_group_name" {
   description = "The name of the existing resource group where the resources will be deployed."
   default     = ""

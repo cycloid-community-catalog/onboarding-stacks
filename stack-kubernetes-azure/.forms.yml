@@ -49,6 +49,17 @@ use_cases:
         - regexp: "^1.[0-9]{2}.*$"
           error_message: "Please enter a valid Kubernetes version such as `1.29` or `1.29.2`"
         required: true
+      - name: "Kubernetes SKU Tier"
+        description: "The SKU Tier that should be used for this Kubernetes Cluster."
+        key: kubernetes_sku_tier
+        widget: dropdown
+        type: string
+        values:
+        - "Free"
+        - "Standard"
+        - "Premium"
+        default: "Free"
+        required: true
 
 - name: nodepool
   sections:
