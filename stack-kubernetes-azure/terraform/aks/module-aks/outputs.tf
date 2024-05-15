@@ -29,7 +29,7 @@ output "admin_password" {
 
 output "admin_username" {
   description = "The `username` in the `azurerm_kubernetes_cluster`'s `kube_admin_config` block. A username used to authenticate to the Kubernetes cluster."
-  value       = module.aks.admin_password
+  value       = module.aks.admin_username
 }
 
 output "kube_admin_config_raw" {
