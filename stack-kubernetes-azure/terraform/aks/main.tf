@@ -26,4 +26,7 @@ module "aks" {
   #+ The name of the existing resource group where the resources will be deployed
   resource_group_name = "Value injected by StackForms"
 
+  depends_on = [
+    null_resource.env-cred
+  ]
 }
