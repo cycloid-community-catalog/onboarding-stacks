@@ -6,7 +6,7 @@ variable "project" {}
 # Infra
 variable "kubernetes_version" {
   description = "Specify which Kubernetes release to use. The default used is the latest Kubernetes version available in the region."
-  default     = "1.30"
+  default     = "1.29.2"
 }
 
 variable "kubernetes_sku_tier" {
