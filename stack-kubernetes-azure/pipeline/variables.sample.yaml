@@ -8,10 +8,6 @@
 #+ The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret. See value format [here](https://docs.cycloid.io/advanced-guide/integrate-and-use-cycloid-credentials-manager.html#vault-in-the-pipeline)
 azure_cred: ((azure))
 
-azure_subscription_id: ((((azure)).subscription_id))
-azure_tenant_id: ((((azure)).tenant_id))
-azure_client_id: ((((azure)).client_id))
-azure_client_secret: ((((azure)).client_secret))
 
 #
 # Stack Git repository
