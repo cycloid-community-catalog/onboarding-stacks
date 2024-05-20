@@ -1,0 +1,60 @@
+---
+version: "2"
+use_cases:
+- name: default
+  sections:
+  - name: Instance
+    groups:
+    - name: Azure Cloud Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Azure credentials"
+        description: "The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret."
+        key: azure_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - azure
+        type: string
+        default: "((azure))"
+        required: true
+    - name: Azure Infrastructure
+      technologies: [terraform]
+      vars:
+      - name: "Existing resource group name"
+        description: "The name of the existing resource group where the resources will be deployed."
+        key: resource_group_name
+        type: string
+        widget: cy_inventory_resource
+        widget_config:
+          attribute: name
+          filters:
+            type: azurerm_resource_group
+        required: true
+
+    - name: Virtual machine specifications
+      technologies: [terraform]
+      vars:
+      - name: "Virtual Machine SKU"
+        description: "The Virtual Machine SKU for the Scale Set."
+        key: vmss_instance_type
+        widget: slider_list
+        type: string
+        default: "Standard_DS2_v2"
+        values:
+            - "Standard_DS1_v2"
+            - "Standard_DS2_v2"
+            - "Standard_DS3_v2"
+        required: true
+      - name: "Instances in the Scale Set"
+        unit: Instances
+        description: "The number of Virtual Machines in the Scale Set."
+        key: vmss_instances
+        widget: slider_range
+        type: integer
+        default: 1
+        values:
+            - 0
+            - 3
+        required: true

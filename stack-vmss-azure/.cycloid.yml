@@ -1,0 +1,38 @@
+---
+# Configuration of the Cycloid stack
+version: '3'
+name: Azure VM Scale Set (VMSS)
+canonical: stack-scaleset-azure
+status: public
+author: Cycloid
+description: |
+  Simple Node app counting page hits using an Azure VM Scale Set (VMSS), a Load Balancer with a public IP and a Redis caching instance using Terraform.
+image: |
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/azure-vmss.png
+keywords:
+  - ScaleSet
+  - Scale
+  - Set
+  - LoadBalancer
+  - Load
+  - Balancer
+  - Redis
+  - provider:azure
+technologies:
+  - technology: n/a
+
+config:
+  default:
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the default CD pipeline use case
+    pipeline:
+      pipeline:
+        path: pipeline/pipeline.yaml
+      variables:
+        path: pipeline/variables.sample.yaml
+        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'
