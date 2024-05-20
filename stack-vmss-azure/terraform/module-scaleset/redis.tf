@@ -8,7 +8,7 @@ resource "azurerm_redis_cache" "redis" {
   enable_non_ssl_port = true
 
   redis_configuration {
-    enable_authentication = false
+    enable_authentication = true
     maxmemory_policy = "noeviction"
   }
 }
