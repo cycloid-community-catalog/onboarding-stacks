@@ -17,7 +17,7 @@ resource_types:
   type: registry-image
   source:
     repository: cycloid/terraform-resource
-    tag: test
+    tag: ((terraform_version))
 
 
 resources:
