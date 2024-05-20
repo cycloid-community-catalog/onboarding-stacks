@@ -25,7 +25,7 @@ resources:
   type: terraform
   icon: terraform
   source:
-    env_name: ((env))
+    env_name: ($ .environment $)
     backend_type: http
     backend_config:
       address: '($ .api_url $)/inventory?jwt=($ .inventory_jwt $)'
