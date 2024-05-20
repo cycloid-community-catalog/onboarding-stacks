@@ -42,7 +42,6 @@ resource "azurerm_lb_probe" "web_lb_probe" {
   protocol            = "Tcp"
   port                = 80
   loadbalancer_id     = azurerm_lb.web_lb.id
-  resource_group_name = data.azurerm_resource_group.rg.name
 }
 
 # Create LB Rule
