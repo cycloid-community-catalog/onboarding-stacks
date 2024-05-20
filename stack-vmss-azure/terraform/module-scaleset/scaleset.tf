@@ -2,7 +2,7 @@
 resource "azurerm_network_security_group" "web" {
   name                = "${var.project}-${var.env}"
   resource_group_name = data.azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  location            = data.azurerm_resource_group.rg.location
 
   security_rule {
     name                       = "inbound-webapp"
@@ -25,7 +25,7 @@ resource "azurerm_network_security_group" "web" {
 resource "azurerm_linux_virtual_machine_scale_set" "web" {
   name                = "${var.project}-${var.env}"
   resource_group_name = data.azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  location            = data.azurerm_resource_group.rg.location
   sku                 = var.vmss_instance_type
   instances           = var.vmss_instances # number of instances
 

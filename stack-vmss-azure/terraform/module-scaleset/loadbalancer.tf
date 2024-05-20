@@ -2,7 +2,7 @@
 resource "azurerm_public_ip" "lbpublicip" {
   name                = "${var.project}-${var.env}"
   resource_group_name = data.azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  location            = data.azurerm_resource_group.rg.location
   allocation_method   = "Static"
   sku = "Standard"
 
@@ -15,7 +15,7 @@ resource "azurerm_public_ip" "lbpublicip" {
 # Create Azure Standard Load Balancer
 resource "azurerm_lb" "web_lb" {
   name                = "${var.project}-${var.env}"
-  location            = azurerm_resource_group.rg.location
+  location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
   sku = "Standard"
 
