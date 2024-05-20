@@ -9,6 +9,4 @@ resource "azurerm_redis_cache" "redis" {
 
   redis_configuration {
     enable_authentication = false
-    maxmemory_policy   = "allkeys-lru"
-  }
-}
+    maxmemory_policy   = "allkeys-
