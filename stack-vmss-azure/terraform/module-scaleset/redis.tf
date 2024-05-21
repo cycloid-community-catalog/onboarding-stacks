@@ -39,8 +39,20 @@ resource "azurerm_network_security_group" "redis" {
   resource_group_name = data.azurerm_resource_group.rg.name
 
   security_rule {
-    name                       = "inbound-redis"
+    name                       = "inbound-ssh"
     priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "inbound-redis"
+    priority                   = 101
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -66,6 +78,7 @@ resource "azurerm_network_interface" "redis" {
       name                          = "${var.project}-${var.env}-redis"
       subnet_id                     = azurerm_subnet.subnet.id
       private_ip_address_allocation = "Dynamic"
+      public_ip_address_id          = azurerm_public_ip.redispublicip.id
   }
 
   tags = merge(local.merged_tags, {
@@ -78,4 +91,17 @@ resource "azurerm_network_interface" "redis" {
 resource "azurerm_network_interface_security_group_association" "redis" {
     network_interface_id      = azurerm_network_interface.redis.id
     network_security_group_id = azurerm_network_security_group.redis.id
+}
+
+resource "azurerm_public_ip" "redispublicip" {
+  name                = "${var.project}-${var.env}-redis-ip"
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  allocation_method   = "Static"
+  sku = "Standard"
+
+  tags = merge(local.merged_tags, {
+    Name = "${var.project}-${var.env}"
+    role = "public_ip"
+  })
 }

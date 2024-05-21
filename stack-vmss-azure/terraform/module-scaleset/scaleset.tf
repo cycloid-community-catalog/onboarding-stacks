@@ -5,8 +5,20 @@ resource "azurerm_network_security_group" "web" {
   location            = data.azurerm_resource_group.rg.location
 
   security_rule {
-    name                       = "inbound-http"
+    name                       = "inbound-ssh"
     priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "inbound-http"
+    priority                   = 101
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"

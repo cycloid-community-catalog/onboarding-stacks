@@ -19,7 +19,7 @@ output "web_lb_frontend_ip_configuration" {
 # User password to access the VMSS nodes
 output "vmss_password" {
   description = "User password to access the VMSS nodes"
-  value = random_password.vmss.result
+  value = random_password.pwd.result
   sensitive = true
 }
 
