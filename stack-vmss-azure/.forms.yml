@@ -71,5 +71,5 @@ use_cases:
           cred_types:
             - custom
         type: string
-        default: "((admin-api-key))"
+        default: "((admin-api-key.key))"
         required: true
