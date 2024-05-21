@@ -17,7 +17,7 @@ output "web_lb_frontend_ip_configuration" {
 }
 
 # User name to access the VMs
-output "vm_user" {
+output "vm_os_user" {
   description = "User name to access the VMs"
   value = var.vm_os_user
   sensitive = true
