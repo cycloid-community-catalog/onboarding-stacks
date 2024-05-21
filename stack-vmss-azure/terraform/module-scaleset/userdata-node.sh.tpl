@@ -5,7 +5,6 @@ cd /tmp
 git clone https://github.com/olivier2t/simple-counter-front.git webapp
 cd webapp
 sed -i 's/127.0.0.1/${redis_host}/g' /var/www/build/index.js
-sed -i 's/6379/${redis_port}/g' /var/www/build/index.js
 sed -i 's/"host": ".*"/"homepage": "."/g' package.json
 sudo npm install
 sudo npm run build
