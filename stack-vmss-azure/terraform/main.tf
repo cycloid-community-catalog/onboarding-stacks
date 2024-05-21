@@ -26,3 +26,22 @@ module "scaleset" {
   #+ The number of Virtual Machines in the Scale Set.
   vmss_instances = "Value injected by StackForms"
 }
+
+module "cycloid" {
+  #####################################
+  # Do not modify the following lines #
+  source   = "./module-cycloid"
+  project  = var.project
+  env      = var.env
+  customer = var.customer
+  #####################################
+
+  #. vm_os_user: ''
+  #+ Admin username to connect to instances
+  vm_os_user = module.scaleset.vm_os_user
+
+  #. vmss_instance_type: "Standard_DS2_v2"
+  #+ User password to connect to instances
+  vm_password = module.scaleset.vm_password
+
+}

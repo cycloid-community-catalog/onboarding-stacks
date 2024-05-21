@@ -16,13 +16,6 @@ output "web_lb_frontend_ip_configuration" {
   value = module.scaleset.web_lb_frontend_ip_configuration
 }
 
-# User password to access the VMSS nodes
-output "vmss_password" {
-  description = "User password to access the VMSS nodes"
-  value = module.scaleset.vmss_password
-  sensitive = true
-}
-
 # The Hostname of the Redis Instance
 output "redis_host" {
   description = "The private IP address of the Redis Instance."

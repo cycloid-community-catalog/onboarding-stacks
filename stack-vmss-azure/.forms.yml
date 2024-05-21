@@ -58,3 +58,18 @@ use_cases:
             - 0
             - 3
         required: true
+
+    - name: Cycloid Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "Cycloid API Key"
+        description: "The Cycloid API key of the current organization to save new credentials of the deployed infrastructure."
+        key: api_key
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - custom
+        type: string
+        default: "((admin-api-key))"
+        required: true

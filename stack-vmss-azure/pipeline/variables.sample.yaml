@@ -13,6 +13,10 @@ azure_cred: ((azure))
 # Default variables
 #
 
+#. api_key (required): ''
+#+ Cycloid API key to provision Cycloid resources such as credentials.
+api_key: ''
+
 #. terraform_version (required): '1.8.3'
 #+ terraform version used to execute your code.
 terraform_version: '1.8.3'

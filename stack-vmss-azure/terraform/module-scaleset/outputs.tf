@@ -16,9 +16,16 @@ output "web_lb_frontend_ip_configuration" {
   value = [azurerm_lb.web_lb.frontend_ip_configuration]
 }
 
-# User password to access the VMSS nodes
-output "vmss_password" {
-  description = "User password to access the VMSS nodes"
+# User name to access the VMs
+output "vm_user" {
+  description = "User name to access the VMs"
+  value = var.vm_os_user
+  sensitive = true
+}
+
+# User password to access the VMs
+output "vm_password" {
+  description = "User password to access the VMs"
   value = random_password.pwd.result
   sensitive = true
 }

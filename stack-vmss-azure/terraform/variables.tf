@@ -2,6 +2,8 @@
 variable "env" {}
 variable "project" {}
 variable "customer" {}
+variable "api_url" {}
+variable "api_key" {}
 
 # Cloud variables
 variable "azure_cred" {
