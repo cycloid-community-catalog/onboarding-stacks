@@ -56,8 +56,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "web" {
   custom_data = base64encode(templatefile(
     "${path.module}/userdata-node.sh.tpl",
     {
-      redis_host = azurerm_redis_cache.redis.hostname
-      redis_port = azurerm_redis_cache.redis.port
+      redis_host = azurerm_linux_virtual_machine.redis.private_ip_address
     }
   ))
 

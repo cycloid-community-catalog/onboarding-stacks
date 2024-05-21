@@ -25,18 +25,6 @@ output "vmss_password" {
 
 # The Hostname of the Redis Instance
 output "redis_host" {
-  description = "The Hostname of the Redis Instance."
-  value = azurerm_redis_cache.redis.hostname
-}
-
-# The SSL Port of the Redis Instance
-output "redis_ssl_port" {
-  description = "The SSL Port of the Redis Instance."
-  value = azurerm_redis_cache.redis.ssl_port
-}
-
-# The non-SSL Port of the Redis Instance
-output "redis_port" {
-  description = "The non-SSL Port of the Redis Instance."
-  value = azurerm_redis_cache.redis.port
+  description = "The private IP address of the Redis Instance."
+  value = azurerm_linux_virtual_machine.redis.private_ip_address
 }

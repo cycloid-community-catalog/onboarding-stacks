@@ -24,12 +24,7 @@ resource "azurerm_linux_virtual_machine" "redis" {
       version   = "latest"
   }
 
-  custom_data = base64encode(templatefile(
-    "${path.module}/userdata-redis.sh.tpl",
-    {
-      git_app_url = var.git_app_url
-    }
-  ))
+  custom_data = base64encode(file("${path.module}/userdata-redis.sh.tpl"))
 
   tags = merge(local.merged_tags, {
     Name = "${var.project}-${var.env}-redis"
