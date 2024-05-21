@@ -5,7 +5,7 @@ resource "azurerm_network_security_group" "web" {
   location            = data.azurerm_resource_group.rg.location
 
   security_rule {
-    name                       = "inbound-webapp"
+    name                       = "inbound-http"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
@@ -33,7 +33,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "web" {
   single_placement_group = false
 
   admin_username      = var.vm_os_user
-  admin_password      = random_password.vmss.result
+  admin_password      = random_password.pwd.result
 
   disable_password_authentication = false
 
@@ -54,7 +54,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "web" {
   }
 
   custom_data = base64encode(templatefile(
-    "${path.module}/userdata.sh.tpl",
+    "${path.module}/userdata-node.sh.tpl",
     {
       redis_host = azurerm_redis_cache.redis.hostname
       redis_port = azurerm_redis_cache.redis.port
@@ -81,11 +81,4 @@ resource "azurerm_linux_virtual_machine_scale_set" "web" {
     Name = "${var.project}-${var.env}"
     role = "scaleset"
   })
-}
-
-# Create random password
-resource "random_password" "vmss" {
-  length           = 16
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
 }

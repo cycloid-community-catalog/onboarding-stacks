@@ -19,6 +19,16 @@ variable "vm_os_user" {
   default     = "cycloid"
 }
 
+variable "redis_instance_type" {
+  description = "The Virtual Machine size for the Redis instance."
+  default     = "Standard_DS2_v2"
+}
+
+variable "redis_disk_size" {
+  description = "Disk size for the Redis instance (Go)"
+  default = "30"
+}
+
 variable "resource_group_name" {
   type        = string
   description = "The name of the existing resource group where the resources will be deployed."
