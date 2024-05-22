@@ -53,7 +53,7 @@ resource "azurerm_lb_rule" "web_lb_rule_app1" {
   frontend_ip_configuration_name = azurerm_lb.web_lb.frontend_ip_configuration[0].name
   probe_id                       = azurerm_lb_probe.web_lb_probe.id
   loadbalancer_id                = azurerm_lb.web_lb.id
-  disable_outbound_snat          = false
+  disable_outbound_snat          = true
 }
 
 resource "azurerm_lb_outbound_rule" "web_lb_internet" {
