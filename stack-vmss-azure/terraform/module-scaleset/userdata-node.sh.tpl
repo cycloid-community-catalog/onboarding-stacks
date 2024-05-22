@@ -1,6 +1,6 @@
 #!/bin/bash
-until sudo apt update; do sleep 1; done
-sudo apt install nodejs npm nginx -y
+until sudo apt-get update; do sleep 1; done
+sudo apt-get install nodejs npm nginx -y
 
 sudo mkdir -p /var/www/html
 rm -rf /var/www/html/*
