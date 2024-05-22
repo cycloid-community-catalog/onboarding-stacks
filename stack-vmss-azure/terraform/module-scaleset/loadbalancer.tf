@@ -59,10 +59,10 @@ resource "azurerm_lb_rule" "web_lb_rule_app1" {
 resource "azurerm_lb_outbound_rule" "web_lb_internet" {
   name                    = "${var.project}-${var.env}-internet"
   loadbalancer_id         = azurerm_lb.web_lb.id
-  protocol                = "Tcp"
+  protocol                = "All"
   backend_address_pool_id = azurerm_lb_backend_address_pool.web_lb_backend_address_pool.id
 
-  frontend_ip_configuration {
-    name = "PublicIPAddress"
-  }
+  # frontend_ip_configuration {
+  #   name = "PublicIPAddress"
+  # }
 }
