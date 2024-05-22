@@ -77,13 +77,13 @@ resource "azurerm_linux_virtual_machine_scale_set" "web" {
   network_interface {
     name    = "${var.project}-${var.env}"
     primary = true
+    network_security_group_id = azurerm_network_security_group.web.id
 
     ip_configuration {
       name      = "internal"
       primary   = true
       subnet_id = azurerm_subnet.subnet.id
       load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.web_lb_backend_address_pool.id]
-      network_security_group_id = azurerm_network_security_group.web.id
     }
   }
 
