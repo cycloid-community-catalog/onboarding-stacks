@@ -1,10 +1,12 @@
 #!/bin/bash
-until sudo apt-get update; do sleep 1; done
-sudo apt-get install nodejs npm -y
-cd /tmp
-mkdir simple-counter-app
-cd simple-counter-app
-npm init
+until sudo apt update; do sleep 1; done
+sudo apt install nodejs npm nginx -y
+
+sudo mkdir -p /var/www/html
+rm -rf /var/www/html/*
+cd /var/www/html
+
+npm init -y
 npm install express --save
 
 cat << EOF >index.js
@@ -35,18 +37,14 @@ console.log("Listening on port ${node_port}");
 EOF
 
 npm install
-npm run build
-sudo mkdir /var/www/
-sudo mv build/ /var/www/
-sudo apt-get install nginx -y
 
 sudo cat << EOF >/etc/nginx/sites-enabled/default
 server {
     listen 0.0.0.0:${node_port};
     server_name _;
     access_log /var/log/nginx/app.log;
-    root /var/www/build;
-    index index.html index.htm;
+    root /var/www/html;
+    index index.html index.htm index.js;
 }
 EOF
 
