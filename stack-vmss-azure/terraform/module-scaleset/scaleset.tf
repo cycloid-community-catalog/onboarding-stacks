@@ -69,6 +69,8 @@ resource "azurerm_linux_virtual_machine_scale_set" "web" {
     "${path.module}/userdata-node.sh.tpl",
     {
       redis_host = azurerm_linux_virtual_machine.redis.private_ip_address
+      redis_port = 6379
+      node_port = 80
     }
   ))
 
