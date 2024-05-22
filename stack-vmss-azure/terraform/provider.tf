@@ -6,9 +6,3 @@ provider "azurerm" {
   tenant_id       = var.azure_cred.tenant_id
   environment     = "public"
 }
-
-provider "cycloid" {
-  url                    = var.api_url
-  jwt                    = var.api_key
-  organization_canonical = var.customer
-}
