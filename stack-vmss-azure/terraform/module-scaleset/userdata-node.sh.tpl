@@ -1,13 +1,10 @@
 #!/bin/bash
 until sudo apt-get update; do sleep 1; done
-sudo apt-get install nodejs npm nginx -y
-
-sudo mkdir -p /var/www/html
-rm -rf /var/www/html/*
-cd /var/www/html
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install nodejs -y
 
 npm init -y
-npm install express --save
+npm install express redis --save
 
 cat << EOF >index.js
 express = require("express"),
@@ -36,17 +33,6 @@ app.listen(${node_port});
 console.log("Listening on port ${node_port}");
 EOF
 
+rm -rf node_modules
 npm install
-
-sudo cat << EOF >/etc/nginx/sites-enabled/default
-server {
-    listen 0.0.0.0:${node_port};
-    server_name _;
-    access_log /var/log/nginx/app.log;
-    root /var/www/html;
-    index index.html index.htm index.js;
-}
-EOF
-
-sudo service nginx stop
-sudo service nginx start
+node index.js
