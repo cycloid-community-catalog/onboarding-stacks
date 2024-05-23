@@ -36,6 +36,15 @@ resource "azurerm_lb_backend_address_pool" "web_lb_backend_address_pool" {
   loadbalancer_id     = azurerm_lb.web_lb.id
 }
 
+# Create LB probe
+resource "azurerm_lb_probe" "web_lb_probe" {
+  name            = "${var.project}-${var.env}-probe"
+  loadbalancer_id = azurerm_lb.web_lb.id
+  protocol        = "Http"
+  request_path    = "/"
+  port            = 80
+}
+
 resource "azurerm_lb_rule" "web_lb_rule_app1" {
   name                           = "${var.project}-${var.env}-HTTP"
   protocol                       = "Tcp"

@@ -11,6 +11,7 @@ variable "vm_os_user" {
 variable "vm_password" {
   description = "User password to connect to instances."
   default     = "Standard_DS2_v2"
+  sensitive   = true
 }
 
 # Tags
