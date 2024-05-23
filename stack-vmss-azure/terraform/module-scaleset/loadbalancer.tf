@@ -36,7 +36,6 @@ resource "azurerm_lb_backend_address_pool" "web_lb_backend_address_pool" {
   loadbalancer_id     = azurerm_lb.web_lb.id
 }
 
-Create LB Rule
 resource "azurerm_lb_rule" "web_lb_rule_app1" {
   name                           = "${var.project}-${var.env}-HTTP"
   protocol                       = "Tcp"
