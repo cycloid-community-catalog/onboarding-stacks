@@ -1,7 +1,7 @@
 #!/bin/bash
 until sudo apt-get update; do sleep 1; done
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install nodejs -y
+sudo apt-get install nsolid -y
 
 npm init -y
 npm install express redis --save
