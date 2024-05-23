@@ -3,6 +3,8 @@ until sudo apt-get update; do sleep 1; done
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install nsolid -y
 
+mkdir -p /tmp/myapp
+cd /tmp/myapp
 npm init -y
 npm install express redis --save
 
@@ -35,4 +37,4 @@ EOF
 
 rm -rf node_modules
 npm install
-node index.js
+sudo node index.js
