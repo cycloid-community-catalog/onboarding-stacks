@@ -7,31 +7,38 @@ mkdir -p /tmp/myapp
 cd /tmp/myapp
 npm init -y
 npm install express redis --save
-npm install forever-monitor
+npm install forever
 
 cat << EOF >index.js
-express = require("express"),
-db = require('redis').createClient({
-    host: '${redis_host}',
-    port: ${redis_port}
+express = require("express");
+redis = require('redis');
+client = redis.createClient({
+  url: 'redis://${redis_host}:${redis_port}'
 });
+client.connect().then(() => {
+    console.log('Connected to Redis');
+}).catch((err) => {
+    console.log(err.message);
+})
 
 // Create server
 var app = express();
 
-app.get('/', function(req, res) {
-    
-    db.incr('visits', (err, reply) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send(err.message);
-            return;
-        }
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end('Visitor number: ' + reply);
-    });
-
+app.get('/status', function(req, res) {
+    res.end();
 });
+
+app.get('/', function(req, res) {
+    client.incr('visits').then((visits) => {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('Visitor number: ' + visits);
+    }).catch((err) => {
+        console.log(err.message);
+        res.status(500).send(err.message);
+        return;
+    });
+});
+
 app.listen(${node_port});
 console.log("Listening on port ${node_port}");
 EOF
