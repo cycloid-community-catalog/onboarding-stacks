@@ -42,14 +42,14 @@ resource "azurerm_lb_probe" "web_lb_probe" {
   loadbalancer_id = azurerm_lb.web_lb.id
   protocol        = "Http"
   request_path    = "/"
-  port            = 80
+  port            = 8080
 }
 
 resource "azurerm_lb_rule" "web_lb_rule_app1" {
   name                           = "${var.project}-${var.env}-HTTP"
   protocol                       = "Tcp"
   frontend_port                  = 80
-  backend_port                   = 80
+  backend_port                   = 8080
   frontend_ip_configuration_name = azurerm_lb.web_lb.frontend_ip_configuration[0].name
   loadbalancer_id                = azurerm_lb.web_lb.id
   probe_id                       = azurerm_lb_probe.web_lb_probe.id

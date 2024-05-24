@@ -70,7 +70,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "web" {
     {
       redis_host = azurerm_linux_virtual_machine.redis.private_ip_address
       redis_port = 6379
-      node_port = 80
+      node_port = 8080
     }
   ))
 
