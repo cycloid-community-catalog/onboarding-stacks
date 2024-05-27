@@ -34,7 +34,7 @@ use_cases:
         required: true
       - name: "Select Existing Subnet"
         description: "The Subnet ID where to deploy the resources."
-        key: subnet_id
+        key: module.scaleset.subnet_id
         widget: cy_inventory_resource
         widget_config:
           attribute: id
