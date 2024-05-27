@@ -30,8 +30,9 @@ app.get('/status', function(req, res) {
 
 app.get('/', function(req, res) {
     client.incr('visits').then((visits) => {
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end('Visitor number: ' + visits);
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        instance = `hostname | rev | cut -c 1-2 | rev`
+        res.end('<HTML><HEAD><TITLE>Hit Counts</TITLE></HEAD><BODY><P>Page hit counter on a Azure Scale Set using a Redis instance !</P><P>Page Hits: <strong>' + visits + '</strong></P><P>Scale Set Instance #: <strong>' + instance + '</strong></P></BODY></HTML>');
     }).catch((err) => {
         console.log(err.message);
         res.status(500).send(err.message);

@@ -22,7 +22,7 @@ use_cases:
     - name: Azure Infrastructure
       technologies: [terraform]
       vars:
-      - name: "Existing resource group name"
+      - name: "Select Existing Resource Group"
         description: "The name of the existing resource group where the resources will be deployed."
         key: module.scaleset.resource_group_name
         type: string
@@ -31,6 +31,16 @@ use_cases:
           attribute: name
           filters:
             type: azurerm_resource_group
+        required: true
+      - name: "Select Existing Subnet"
+        description: "The Subnet ID where to deploy the resources."
+        key: subnet_id
+        widget: cy_inventory_resource
+        widget_config:
+          attribute: id
+          filters:
+            type: azurerm_subnet
+        type: string
         required: true
 
     - name: Virtual machine specifications

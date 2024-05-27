@@ -18,6 +18,10 @@ module "scaleset" {
   #+ The name of the resource group to create
   resource_group_name = "Value injected by StackForms"
 
+  #. subnet_id: ''
+  #+ The Subnet ID where to deploy the resources
+  subnet_id = "Value injected by StackForms"
+
   #. vmss_instance_type: "Standard_DS2_v2"
   #+ The Virtual Machine SKU for the Scale Set, such as Standard_DS2_v2
   vmss_instance_type = "Value injected by StackForms"

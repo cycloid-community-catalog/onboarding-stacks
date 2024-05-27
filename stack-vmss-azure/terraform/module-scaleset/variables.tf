@@ -35,6 +35,12 @@ variable "resource_group_name" {
   default     = ""
 }
 
+variable "subnet_id" {
+  type        = string
+  description = "The Subnet ID where to deploy the resources."
+  default     = ""
+}
+
 # Tags
 variable "extra_tags" {
   default = {}
