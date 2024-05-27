@@ -522,7 +522,6 @@ use_cases:
           cred_types:
             - custom
         type: string
-        required: true
         default: "((key_pair.public_key))"
         required: true
       - name: "Keypair private"
