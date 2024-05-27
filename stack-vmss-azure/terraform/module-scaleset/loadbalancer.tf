@@ -40,8 +40,7 @@ resource "azurerm_lb_backend_address_pool" "web_lb_backend_address_pool" {
 resource "azurerm_lb_probe" "web_lb_probe" {
   name            = "${var.project}-${var.env}-probe"
   loadbalancer_id = azurerm_lb.web_lb.id
-  protocol        = "Http"
-  request_path    = "/status"
+  protocol        = "TCP"
   port            = 8080
 }
 
@@ -51,6 +50,7 @@ resource "azurerm_lb_rule" "web_lb_rule_app1" {
   frontend_port                  = 80
   backend_port                   = 8080
   frontend_ip_configuration_name = azurerm_lb.web_lb.frontend_ip_configuration[0].name
+  backend_address_pool_ids       = [ azurerm_lb_backend_address_pool.web_lb_backend_address_pool.id ]
   loadbalancer_id                = azurerm_lb.web_lb.id
   probe_id                       = azurerm_lb_probe.web_lb_probe.id
   disable_outbound_snat          = true

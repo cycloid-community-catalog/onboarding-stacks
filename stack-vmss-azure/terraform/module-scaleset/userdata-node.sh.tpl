@@ -7,7 +7,7 @@ mkdir -p /tmp/myapp
 cd /tmp/myapp
 npm init -y
 npm install express redis --save
-npm install forever
+npm install -g forever
 
 cat << EOF >index.js
 express = require("express");
