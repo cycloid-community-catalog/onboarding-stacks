@@ -26,11 +26,7 @@ module "network" {
   #+ The CIDR of the Virtual Network
   network_cidr = "Value injected by StackForms"
 
-  #. private_subnet_cidr: "10.0.0.0/24"
-  #+ The private CIDR for the Subnet
-  private_subnet_cidr = "Value injected by StackForms"
-
-  #. public_subnet_cidr: "10.0.1.0/24"
-  #+ The public CIDR for the Subnet
-  public_subnet_cidr = "Value injected by StackForms"
+  #. subnet_cidr: "10.0.0.0/24"
+  #+ The CIDR for the Subnet
+  subnet_cidr = "Value injected by StackForms"
 }
