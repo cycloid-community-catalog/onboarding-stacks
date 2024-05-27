@@ -53,6 +53,7 @@ resource "azurerm_lb_rule" "web_lb_rule_app1" {
   backend_address_pool_ids       = [ azurerm_lb_backend_address_pool.web_lb_backend_address_pool.id ]
   loadbalancer_id                = azurerm_lb.web_lb.id
   probe_id                       = azurerm_lb_probe.web_lb_probe.id
+  load_distribution              = "Default"
   disable_outbound_snat          = true
 }
 
