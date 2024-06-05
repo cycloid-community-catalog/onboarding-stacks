@@ -1,0 +1,32 @@
+---
+# Configuration of the Cycloid stack
+version: '3'
+name: AWS S3 Bucket
+canonical: stack-storage-aws
+status: private
+author: Cycloid
+description: |
+  Provides a S3 bucket resource using Terraform.
+image: |
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/aws-s3.svg
+keywords:
+  - storage
+  - bucket
+  - S3
+  - provider:aws
+technologies:
+  - technology: n/a
+
+config:
+  default:
+    cloud_provider: aws
+    pipeline:
+      pipeline:
+        path: pipeline/pipeline.yaml
+      variables:
+        path: pipeline/variables.sample.yaml
+        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
+    terraform:
+      main:
+        path: 'terraform/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'

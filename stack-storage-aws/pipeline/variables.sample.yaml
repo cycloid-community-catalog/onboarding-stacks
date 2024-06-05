@@ -1,0 +1,16 @@
+#
+# Pipeline variables
+# (May be overridden by StackForms)
+#
+
+#. aws_cred (required): ((aws))
+#+ Amazon credentials containing access key and secret key for Terraform.
+aws_cred: ((aws))
+
+#. aws_default_region (required): eu-west-3
+#+ AWS region to use for Terraform.
+aws_region: eu-west-3
+
+#. terraform_version (required): '1.8.3'
+#+ terraform version used to execute your code.
+terraform_version: '1.8.3'

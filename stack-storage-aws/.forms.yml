@@ -1,0 +1,50 @@
+---
+version: "2"
+use_cases:
+- name: default
+  sections:
+  - name: AWS Cloud Provider
+    groups:
+    - name: Access Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "AWS Account"
+        description: "The AWS account where to deploy the infrastructure. It contains access key and secret key."
+        key: aws_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - aws
+        type: string
+        default: "((aws))"
+        required: true
+      - name: "AWS Region"
+        description: "AWS region to use for Terraform."
+        key: aws_region
+        widget: auto_complete
+        type: string
+        values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/aws-regions.json
+        default: eu-west-3
+        required: true
+        
+    - name: S3 Bucket
+      technologies: [terraform]
+      vars:
+      - name: "Bucket Name"
+        description: "The name of the bucket."
+        key: s3_bucket_name
+        widget: simple_text
+        type: string
+        default: ""
+        required: true
+        validations: 
+        - regexp: "^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$"
+          error_message: "Must be between 3 and 63 lowercase letters, numbers, dots (.), and hyphens (-). Must begin and end with a letter or number."
+      - name: "Force Destroy"
+        description: "Indicates if the bucket can be destroyed even when still containing objects. If enabled, the destruction of the bucket will result in lost objects (not recoverable)."
+        key: s3_force_destroy
+        widget: switch
+        type: boolean
+        default: true
+        required: true
