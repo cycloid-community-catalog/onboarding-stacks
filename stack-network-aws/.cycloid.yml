@@ -1,6 +1,6 @@
 ---
 # Configuration of the Cycloid stack
-version: '2'
+version: '3'
 name: 'AWS VPC Network'
 canonical: stack-network-aws
 status: private
