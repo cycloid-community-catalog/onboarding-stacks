@@ -44,6 +44,13 @@ resources:
   source:
     uri: ($ .scs_url $)
     branch: ($ .scs_branch $)
+    ($- if eq .scs_cred_type "basic_auth" $)
+    username: ((github-pocs-pat.username))
+    password: ((github-pocs-pat.password))
+    ($- end $)
+    ($- if eq .scs_cred_type "ssh" $)
+    private_key: ((git.ssh_key))
+    ($- end $)
     paths:
       - ($ .stack_path $)/terraform/*
 
@@ -54,6 +61,13 @@ resources:
   source:
     uri: ($ .cr_url $)
     branch: ($ .cr_branch $)
+    ($- if eq .cr_cred_type "basic_auth" $)
+    username: ((github-pocs-pat.username))
+    password: ((github-pocs-pat.password))
+    ($- end $)
+    ($- if eq .cr_cred_type "ssh" $)
+    private_key: ((git.ssh_key))
+    ($- end $)
     paths:
       - ($ .project $)/terraform/($ .environment $)/*
 
