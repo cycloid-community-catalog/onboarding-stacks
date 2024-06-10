@@ -81,7 +81,7 @@ use_cases:
         widget: simple_text
         type: string
         default: ""
-        required: true
         validations: 
         - regexp: "^ssh-[a-z]+\\s+[A-Za-z0-9+/=]+\\s[^\\s]+$"
           error_message: "Please enter a valid public SSH key"
+        required: true
