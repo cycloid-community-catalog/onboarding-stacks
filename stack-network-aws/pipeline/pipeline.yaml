@@ -47,8 +47,6 @@ resources:
     ($- if eq .scs_cred_type "basic_auth" $)
     username: ((github-pocs-pat.username))
     password: ((github-pocs-pat.password))
-    ($- else $)
-    private_key: ((git.ssh_key))
     ($- end $)
     paths:
       - ($ .stack_path $)/terraform/*
@@ -63,8 +61,6 @@ resources:
     ($- if eq .cr_cred_type "basic_auth" $)
     username: ((github-pocs-pat.username))
     password: ((github-pocs-pat.password))
-    ($- else $)
-    private_key: ((git.ssh_key))
     ($- end $)
     paths:
       - ($ .project $)/terraform/($ .environment $)/*
