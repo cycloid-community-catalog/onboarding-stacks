@@ -44,13 +44,13 @@ resources:
   source:
     uri: ($ .scs_url $)
     branch: ($ .scs_branch $)
-    ($- if eq .scs_cred_type "basic_auth" $)
-    username: ((($ .scs_cred_path $).username))
-    password: ((($ .scs_cred_path $).password))
-    ($- end $)
-    ($- if eq .scs_cred_type "ssh" $)
-    private_key: ((($ .scs_cred_path $).ssh_key))
-    ($- end $)
+    # ($- if eq .scs_cred_type "basic_auth" $)
+    # username: ((($ .scs_cred_path $).username))
+    # password: ((($ .scs_cred_path $).password))
+    # ($- end $)
+    # ($- if eq .scs_cred_type "ssh" $)
+    # private_key: ((($ .scs_cred_path $).ssh_key))
+    # ($- end $)
     paths:
       - ($ .stack_path $)/terraform/*
 
