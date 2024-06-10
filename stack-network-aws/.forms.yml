@@ -73,16 +73,12 @@ use_cases:
         required: true
 
     - name: Key Pair
-      technologies: [pipeline]
+      technologies: [terraform]
       vars:
       - name: "SSH Public key"
-        description: "The public SSH key to connect via SSH to newly created instances. The public key must be provisionned in the credentials module beforehand."
+        description: "The public SSH key to provision to newly created instances."
         key: module.key_pair.key_pair_public
-        widget: cy_cred
-        widget_config:
-          display_keys: true
-          cred_types:
-            - custom
+        widget: text_area
         type: string
-        default: ((key_pair.public_key))
+        default: ""
         required: true

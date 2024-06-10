@@ -54,5 +54,5 @@ module "key_pair" {
 
   #. key_pair_public: ""
   #+ Public key to create
-  key_pair_public = var.key_pair_public
+  key_pair_public = "Value injected by StackForms"
 }

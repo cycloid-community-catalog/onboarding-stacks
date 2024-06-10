@@ -3,7 +3,7 @@
 version: '2'
 name: 'AWS VPC Network'
 canonical: stack-network-aws
-status: public
+status: private
 author: Cycloid
 description: |
   Deploys a VPC with public and private subnets.
