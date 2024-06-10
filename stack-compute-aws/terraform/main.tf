@@ -26,9 +26,9 @@ module "compute" {
   #+ Disk size for the VM (Go)
   vm_disk_size = "Value injected by StackForms"
 
-  #. subnet_id: ''
-  #+ Subnet ID where to deploy the EC2 instance
-  subnet_id = "Value injected by StackForms"
+  #. vpc_id: ''
+  #+ VPC ID where to deploy the EC2 instance
+  vpc_id = "Value injected by StackForms"
 
   #. key_pair_name: ''
   #+ Public Key pair name to provision to the EC2 instance

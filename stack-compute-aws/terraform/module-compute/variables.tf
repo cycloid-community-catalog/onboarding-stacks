@@ -19,8 +19,8 @@ variable "vm_os_user" {
   default     = "admin"
 }
 
-variable "subnet_id" {
-  description = "Subnet ID where to deploy the EC2 instance"
+variable "vpc_id" {
+  description = "VPC ID where to deploy the EC2 instance"
 }
 
 variable "key_pair_name" {

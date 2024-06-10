@@ -3,8 +3,6 @@ version: "2"
 use_cases:
 - name: default
   sections:
-  - name: EC2 Instance
-    groups:
   - name: AWS Cloud Provider
     groups:
     - name: Access Configuration
@@ -21,6 +19,7 @@ use_cases:
         type: string
         default: "((aws))"
         required: true
+
       - name: "AWS Region"
         description: "AWS region to use for Terraform."
         key: aws_region
@@ -30,6 +29,20 @@ use_cases:
         default: eu-west-3
         required: true
         
+    - name: Networking
+      technologies: [terraform]
+      vars:
+      - name: "VPC"
+        description: "VPC where to deploy the ec2 instance."
+        key: vpc_id
+        widget: cy_inventory_resource
+        widget_config:
+          attribute: id
+          filters:
+            type: aws_vpc
+        type: string
+        required: true
+
     - name: Virtual machine specifications
       technologies: [terraform]
       vars:
@@ -44,6 +57,7 @@ use_cases:
             - "t3a.medium"
             - "t3a.large"
         required: true
+
       - name: "Disk size"
         unit: Go
         description: "Disk size for the VM."
@@ -70,16 +84,3 @@ use_cases:
         type: string
         required: true
 
-    - name: Networking
-      technologies: [terraform]
-      vars:
-      - name: "Subnet"
-        description: "Subnet ID where to deploy the ec2 instance."
-        key: subnet_id
-        widget: cy_inventory_resource
-        widget_config:
-          attribute: id
-          filters:
-            type: aws_subnet
-        type: string
-        required: true

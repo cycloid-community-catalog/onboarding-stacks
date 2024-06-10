@@ -3,7 +3,7 @@
 version: '2'
 name: 'AWS EC2 Instance'
 canonical: stack-compute-aws
-status: public
+status: private
 author: Cycloid
 description: |
   Deploys an AWS EC2 instance using Terraform.
