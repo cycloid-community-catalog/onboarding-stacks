@@ -18,9 +18,26 @@ technologies:
   - technology: n/a
 
 config:
-  default:
-    name: 'Default'
-    description: 'Deploy an AWS EC2 instance using Terraform'
+  inventory:
+    name: 'Select VPC ID using Cycloid Asset Inventory'
+    description: 'Deploy an AWS EC2 instance using Terraform. **Prerequisite**: a VPC is required to be deployed with Cycloid to select it from the Asset Inventory.'
+    cloud_provider: aws
+    # Pipeline and variable configuration for the default CD pipeline use case
+    pipeline:
+      pipeline:
+        path: pipeline/pipeline.yaml
+      variables:
+        path: pipeline/variables.sample.yaml
+        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'
+
+  manual:
+    name: 'Enter VPC ID manually in a text field'
+    description: 'Deploy an AWS EC2 instance using Terraform. The VPC ID will need to be entered manually in a text field.'
     cloud_provider: aws
     # Pipeline and variable configuration for the default CD pipeline use case
     pipeline:
