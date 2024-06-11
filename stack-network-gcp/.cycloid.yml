@@ -1,9 +1,9 @@
 ---
 # Configuration of the Cycloid stack
-version: '2'
+version: '3'
 name: 'GCP VPC Network'
 canonical: stack-network-gcp
-status: public
+status: private
 author: Cycloid
 description: |
   Deploys networking resources such as a virtual network and associated subnets, as well as a bastion instance.
@@ -16,7 +16,7 @@ keywords:
 - provider:gcp
 technologies:
 - technology: terraform
-  version: 1.5.7
+  version: 1.8.3
 
 config:
   default:
@@ -29,9 +29,9 @@ config:
         path: pipeline/pipeline.yaml
       variables:
         path: pipeline/variables.sample.yaml
-        destination: ($ project $)/pipeline/($ environment $)/variables.yaml
+        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
         path: 'terraform/main.tf'
-        destination: '($ project $)/terraform/($ environment $)/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'
