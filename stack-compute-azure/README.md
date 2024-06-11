@@ -22,7 +22,7 @@ Deploy an Azure Virtual Machine.
 |`git_repository`|Git repository url containing the config of the stack.|`-`|`git@github.com:cycloidio/cycloid-stacks-test.git`|`True`|
 |`git_branch`|Branch of the config git repository.|`-`|`config`|`True`|
 |`git_private_key`|SSH key pair to fetch the config git repository.|`-`|`((git_github.ssh_key))`|`True`|
-|`terraform_storage_bucket_name`|AWS S3 bucket name to store terraform remote state file.|`-`|`($ organization_canonical $)-terraform-remote-state`|`True`|
+|`terraform_storage_bucket_name`|AWS S3 bucket name to store terraform remote state file.|`-`|`($ .organization_canonical $)-terraform-remote-state`|`True`|
 
 
 ## Terraform

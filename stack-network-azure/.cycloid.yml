@@ -1,9 +1,9 @@
 ---
 # Configuration of the Cycloid stack
-version: '2'
+version: '3'
 name: 'Azure Virtual Network'
 canonical: stack-network-azure
-status: public
+status: private
 author: Cycloid
 description: |
   Deploys a Virtual Network with public and private subnets, in a new resource group.
@@ -19,7 +19,7 @@ keywords:
 - provider:azure
 technologies:
 - technology: terraform
-  version: 1.5.7
+  version: 1.8.3
 
 config:
   default:
@@ -32,9 +32,9 @@ config:
         path: pipeline/pipeline.yaml
       variables:
         path: pipeline/variables.sample.yaml
-        destination: ($ project $)/pipeline/($ environment $)/variables.yaml
+        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
         path: 'terraform/main.tf'
-        destination: '($ project $)/terraform/($ environment $)/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'

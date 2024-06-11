@@ -36,6 +36,6 @@ module "compute" {
 
   #. key_pair_public: ''
   #+ Public key to provision to the instance
-  key_pair_public = var.key_pair_public
+  key_pair_public = "Value injected by StackForms"
 
 }

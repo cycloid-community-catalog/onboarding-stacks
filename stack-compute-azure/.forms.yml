@@ -64,13 +64,16 @@ use_cases:
             - 250
         required: true
 
-    - name: Security
-      technologies: [pipeline]
+    - name: Key Pair
+      technologies: [terraform]
       vars:
-      - name: "Public SSH key"
-        description: "The public SSH key, for SSH access to newly-created instances."
+      - name: "SSH Public Key"
+        description: "The public SSH key to provision to newly created instances."
         key: key_pair_public
-        widget: cy_cred
+        widget: simple_text
         type: string
-        default: "((key_pair.public_key))"
+        default: ""
+        validations: 
+        - regexp: "^ssh-[a-z]+\\s+[A-Za-z0-9+/=]+\\s[^\\s]+$"
+          error_message: "Please enter a valid public SSH key"
         required: true

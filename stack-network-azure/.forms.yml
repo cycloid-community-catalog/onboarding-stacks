@@ -29,7 +29,7 @@ use_cases:
         type: string
         default: "cycloid"
         validations: 
-        - regexp: "^[A-Za-z0-9_-]+$"
+        - regexp: "^[-\\w\\._\\(\\)]+$"
           error_message: "Please enter a valid Azure Resource Group such as MyResourceGroup"
         required: true
       - name: "Azure Location"
