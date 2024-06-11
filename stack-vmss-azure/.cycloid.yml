@@ -3,7 +3,7 @@
 version: '3'
 name: Azure VM Scale Set (VMSS)
 canonical: stack-scaleset-azure
-status: public
+status: private
 author: Cycloid
 description: |
   Simple Node app counting page hits using an Azure VM Scale Set (VMSS), a Load Balancer with a public IP and a Redis caching instance using Terraform.
@@ -19,7 +19,8 @@ keywords:
   - Redis
   - provider:azure
 technologies:
-  - technology: n/a
+- technology: terraform
+  version: 1.8.3
 
 config:
   default:

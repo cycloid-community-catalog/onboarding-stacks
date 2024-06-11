@@ -1,6 +1,6 @@
 ---
 # Configuration of the Cycloid stack
-version: '2'
+version: '3'
 name: 'OWASP Zed Attack Proxy'
 canonical: 'stack-owasp-zap'
 description: "Deploys the world's most widely used web app scanner. Free and open source. Actively maintained by a dedicated international team of volunteers. A GitHub Top 1000 project."
@@ -18,6 +18,8 @@ keywords:
 technologies:
 - technology: zap
   version: "2.14.0"
+- technology: terraform
+  version: 1.8.3
 
 config:
   aws:
@@ -30,9 +32,9 @@ config:
         path: 'pipeline/pipeline.yml'
       variables:
         path: 'pipeline/variables.sample.yml'
-        destination: '($ project $)/pipeline/($ environment $)/variables.yml'
+        destination: '($ .project $)/pipeline/($ .environment $)/variables.yml'
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
         path: 'terraform/main.tf'
-        destination: '($ project $)/terraform/($ environment $)/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'

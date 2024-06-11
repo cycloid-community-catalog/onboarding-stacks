@@ -1,9 +1,9 @@
 ---
 # Configuration of the Cycloid stack
-version: '2'
+version: '3'
 name: Snap Shot
 canonical: stack-snapshot
-status: public
+status: private
 author: Cycloid
 description: |
   Snap Shot is a gallery created using React. Deploys it on on a single instance.
@@ -16,7 +16,8 @@ keywords:
 - provider:azure
 - provider:gcp
 technologies:
-- technology: "n/a"
+- technology: terraform
+  version: 1.8.3
 
 config:
   aws:
@@ -29,12 +30,12 @@ config:
         path: 'pipeline/aws/pipeline.yml'
       variables:
         path: 'pipeline/aws/variables.sample.yml'
-        destination: '($ project $)/pipeline/aws/($ environment $)/variables.yml'
+        destination: '($ .project $)/pipeline/aws/($ .environment $)/variables.yml'
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
         path: 'terraform/aws/main.tf'
-        destination: '($ project $)/terraform/aws/($ environment $)/main.tf'
+        destination: '($ .project $)/terraform/aws/($ .environment $)/main.tf'
 
   azure:
     name: 'Azure'
@@ -46,12 +47,12 @@ config:
         path: 'pipeline/azure/pipeline.yml'
       variables:
         path: 'pipeline/azure/variables.sample.yml'
-        destination: '($ project $)/pipeline/azure/($ environment $)/variables.yml'
+        destination: '($ .project $)/pipeline/azure/($ .environment $)/variables.yml'
     # Configuration of terraform
     terraform:
       main:
         path: 'terraform/azure/main.tf'
-        destination: '($ project $)/terraform/azure/($ environment $)/main.tf'
+        destination: '($ .project $)/terraform/azure/($ .environment $)/main.tf'
 
   gcp:
     name: 'GCP'
@@ -63,9 +64,9 @@ config:
         path: 'pipeline/gcp/pipeline.yml'
       variables:
         path: 'pipeline/gcp/variables.sample.yml'
-        destination: '($ project $)/pipeline/gcp/($ environment $)/variables.yml'
+        destination: '($ .project $)/pipeline/gcp/($ .environment $)/variables.yml'
     # Configuration of terraform
     terraform:
       main:
         path: 'terraform/gcp/main.tf'
-        destination: '($ project $)/terraform/gcp/($ environment $)/main.tf'
+        destination: '($ .project $)/terraform/gcp/($ .environment $)/main.tf'

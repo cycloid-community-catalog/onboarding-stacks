@@ -15,7 +15,8 @@ keywords:
   - S3
   - provider:aws
 technologies:
-  - technology: n/a
+- technology: terraform
+  version: 1.8.3
 
 config:
   default:
