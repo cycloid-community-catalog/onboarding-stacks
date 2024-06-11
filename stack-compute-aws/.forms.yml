@@ -3,7 +3,7 @@ version: "2"
 use_cases:
 - name: cycloid-common
   sections:
-  - name: AWS Compute
+  - name: Compute
     groups:
     - name: Access Configuration
       technologies: [pipeline]
@@ -74,7 +74,7 @@ use_cases:
 
 - name: inventory
   sections:
-  - name: AWS Compute
+  - name: Compute
     groups:
     - name: Networking
       technologies: [terraform]
@@ -92,7 +92,7 @@ use_cases:
 
 - name: manual
   sections:
-  - name: AWS Compute
+  - name: Compute
     groups:
     - name: Networking
       technologies: [terraform]
