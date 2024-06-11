@@ -3,7 +3,7 @@ version: "2"
 use_cases:
 - name: cycloid-common
   sections:
-  - name: AWS Cloud Provider
+  - name: AWS Compute
     groups:
     - name: Access Configuration
       technologies: [pipeline]
@@ -73,6 +73,9 @@ use_cases:
         required: true
 
 - name: inventory
+  sections:
+  - name: AWS Compute
+    groups:
     - name: Networking
       technologies: [terraform]
       vars:
@@ -88,6 +91,9 @@ use_cases:
         required: true
 
 - name: manual
+  sections:
+  - name: AWS Compute
+    groups:
     - name: Networking
       technologies: [terraform]
       vars:
