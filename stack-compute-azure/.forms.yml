@@ -1,11 +1,11 @@
 ---
 version: "2"
 use_cases:
-- name: default
+- name: cycloid-common
   sections:
-  - name: Instance
+  - name: Compute
     groups:
-    - name: Azure Cloud Configuration
+    - name: Access Configuration
       technologies: [pipeline]
       vars:
       - name: "Azure credentials"
@@ -19,7 +19,8 @@ use_cases:
         type: string
         default: "((azure))"
         required: true
-    - name: Azure Infrastructure
+
+    - name: Infrastructure
       technologies: [terraform]
       vars:
       - name: "Azure location"
@@ -29,13 +30,6 @@ use_cases:
         type: string
         values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/azure-locations.json
         default: "West Europe"
-        required: true
-      - name: "Existing resource group name"
-        description: "The name of the existing resource group where the resources will be deployed."
-        key: resource_group_name
-        widget: simple_text
-        type: string
-        default: ""
         required: true
 
     - name: Virtual machine specifications
@@ -76,4 +70,38 @@ use_cases:
         validations: 
         - regexp: "^ssh-[a-z]+\\s+[A-Za-z0-9+/=]+\\s[^\\s]+$"
           error_message: "Please enter a valid public SSH key"
+        required: true
+
+- name: inventory
+  sections:
+  - name: Compute
+    groups:
+    - name: Access Configuration
+    - name: Infrastructure
+      technologies: [terraform]
+      vars:
+      - name: "Existing Resource Group Name"
+        description: "The name of the existing resource group where the resources will be deployed."
+        key: resource_group_name
+        widget: cy_inventory_resource
+        widget_config:
+          attribute: name
+          filters:
+            type: azurerm_resource_group
+        type: string
+        required: true
+
+- name: manual
+  sections:
+  - name: Compute
+    groups:
+    - name: Access Configuration
+    - name: Infrastructure
+      technologies: [terraform]
+      vars:
+      - name: "Existing Resource Group Name"
+        description: "The name of the existing resource group where the resources will be deployed."
+        key: resource_group_name
+        widget: simple_text
+        type: string
         required: true
