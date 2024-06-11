@@ -36,7 +36,7 @@ config:
         destination: '($ .project $)/terraform/($ .environment $)/main.tf'
 
   manual:
-    name: 'Enter resources IDs manually in a text field'
+    name: 'Enter resource IDs manually in a text field.'
     description: 'A VPC ID and a Key Pair name will need to be entered manually in a text field.'
     cloud_provider: aws
     # Pipeline and variable configuration for the default CD pipeline use case
