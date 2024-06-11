@@ -93,8 +93,8 @@ use_cases:
     - name: VM Specs
       technologies: [terraform]
       vars:
-      - name: "VPC"
-        description: "VPC where to deploy the ec2 instance."
+      - name: "VPC ID"
+        description: "VPC ID where to deploy the ec2 instance."
         key: vpc_id
         widget: simple_text
         type: string

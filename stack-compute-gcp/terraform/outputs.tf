@@ -1,9 +1,9 @@
 #
 # VPC outputs
 #
-output "vpc_id" {
-  description = "The VPC ID for the VPC"
-  value       = module.compute.vpc_id
+output "vpc_name" {
+  description = "The name for the VPC"
+  value       = module.compute.vpc_name
 }
 
 #

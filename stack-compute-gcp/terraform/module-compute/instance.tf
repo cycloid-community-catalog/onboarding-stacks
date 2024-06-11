@@ -1,6 +1,6 @@
 resource "google_compute_firewall" "compute" {
   name    = "${var.customer}-${var.project}-${var.env}"
-  network = google_compute_network.compute.name
+  network = data.google_compute_network.selected.name
 
   allow {
     protocol = "tcp"
@@ -33,7 +33,7 @@ resource "google_compute_instance" "compute" {
   }
 
   network_interface {
-    subnetwork = google_compute_subnetwork.compute.name
+    subnetwork = data.google_compute_subnetwork.selected.name
 
     access_config {
       // Ephemeral public IP

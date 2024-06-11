@@ -14,7 +14,8 @@ keywords:
   - instance
   - provider:azure
 technologies:
-  - technology: n/a
+- technology: terraform
+  version: 1.8.3
 
 config:
   inventory:

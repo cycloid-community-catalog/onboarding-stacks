@@ -1,9 +1,9 @@
 #
 # VPC outputs
 #
-output "vpc_id" {
-  description = "The VPC ID for the VPC"
-  value       = google_compute_network.compute.id
+output "vpc_name" {
+  description = "The name for the VPC"
+  value       = data.google_compute_network.selected.name
 }
 
 #

@@ -1,9 +1,9 @@
 ---
 # Configuration of the Cycloid stack
-version: '2'
+version: '3'
 name: GCP Virtual Machine
 canonical: stack-compute-gcp
-status: public
+status: private
 author: Cycloid
 description: |
   Deploys a GCP Virtual Machine using Terraform.
@@ -14,12 +14,13 @@ keywords:
   - instance
   - provider:gcp
 technologies:
-  - technology: n/a
+- technology: terraform
+  version: 1.8.3
 
 config:
-  default:
-    name: 'Default'
-    description: 'Deploy an GCP VM using Terraform'
+  inventory:
+    name: 'Select resources using Cycloid Asset Inventory.'
+    description: 'A VPC is required to be present in the Cycloid Asset Inventory beforehand. You can use the GCP VPC Network to provision these resources.'
     cloud_provider: gcp
     # Pipeline and variable configuration for the default CD pipeline use case
     pipeline:
@@ -27,9 +28,26 @@ config:
         path: pipeline/pipeline.yaml
       variables:
         path: pipeline/variables.sample.yaml
-        destination: ($ project $)/pipeline/($ environment $)/variables.yaml
+        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
         path: 'terraform/main.tf'
-        destination: '($ project $)/terraform/($ environment $)/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'
+
+  manual:
+    name: 'Enter resource IDs manually in a text field.'
+    description: 'A VPC name will need to be entered manually in a text field.'
+    cloud_provider: gcp
+    # Pipeline and variable configuration for the default CD pipeline use case
+    pipeline:
+      pipeline:
+        path: pipeline/pipeline.yaml
+      variables:
+        path: pipeline/variables.sample.yaml
+        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'

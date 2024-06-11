@@ -15,11 +15,12 @@ keywords:
   - instance
   - provider:aws
 technologies:
-  - technology: n/a
+- technology: terraform
+  version: 1.8.3
 
 config:
   inventory:
-    name: 'Select resources using Cycloid Asset Inventory'
+    name: 'Select resources using Cycloid Asset Inventory.'
     description: 'A VPC and a Key Pair are required to be present in the Cycloid Asset Inventory beforehand. You can use the AWS VPC Network to provision these resources.'
     cloud_provider: aws
     # Pipeline and variable configuration for the default CD pipeline use case

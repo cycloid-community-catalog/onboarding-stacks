@@ -1,11 +1,11 @@
 ---
 version: "2"
 use_cases:
-- name: default
+- name: cycloid-common
   sections:
-  - name: Instance
+  - name: Compute
     groups:
-    - name: GCP Cloud Configuration
+    - name: Access Configuration
       technologies: [pipeline]
       vars:
       - name: "GCP credentials"
@@ -98,7 +98,7 @@ use_cases:
               values: ['us-west4-a', 'us-west4-b', 'us-west4-c']
         required: true
         
-    - name: Virtual machine specifications
+    - name: VM Specs
       technologies: [terraform]
       vars:
       - name: "Machine type"
@@ -112,6 +112,7 @@ use_cases:
             - n2-standard-2
             - n2d-standard-2
         required: true
+
       - name: "Disk size"
         unit: Go
         description: "Disk size for the VM."
@@ -127,10 +128,47 @@ use_cases:
     - name: Security
       technologies: [pipeline]
       vars:
-      - name: "Key pair public"
-        description: "The public SSH key, for SSH access to newly-created instances."
+      - name: "SSH Public Key"
+        description: "The public SSH key to provision to newly created instances."
         key: key_pair_public
-        widget: cy_cred
+        widget: simple_text
         type: string
-        default: "((key_pair.public_key))"
+        default: ""
+        validations: 
+        - regexp: "^ssh-[a-z]+\\s+[A-Za-z0-9+/=]+\\s[^\\s]+$"
+          error_message: "Please enter a valid public SSH key"
+        required: true
+
+- name: inventory
+  sections:
+  - name: Compute
+    groups:
+    - name: Access Configuration
+    - name: VM Specs
+      technologies: [terraform]
+      vars:
+      - name: "VPC"
+        description: "VPC where to deploy the ec2 instance."
+        key: vpc_name
+        widget: cy_inventory_resource
+        widget_config:
+          attribute: name
+          filters:
+            type: google_compute_network
+        type: string
+        required: true
+
+- name: manual
+  sections:
+  - name: Compute
+    groups:
+    - name: Access Configuration
+    - name: VM Specs
+      technologies: [terraform]
+      vars:
+      - name: "VPC Name"
+        description: "VPC name where to deploy the ec2 instance."
+        key: vpc_name
+        widget: simple_text
+        type: string
         required: true

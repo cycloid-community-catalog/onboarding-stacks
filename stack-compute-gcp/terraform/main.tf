@@ -26,8 +26,12 @@ module "compute" {
   #+ Disk size for the VM (Go)
   vm_disk_size = "Value injected by StackForms"
 
+  #. vpc_name: ''
+  #+ VPC name where to deploy the instance
+  vpc_name = "Value injected by StackForms"
+
   #. key_pair_public: ''
   #+ Public key to provision to the instance
-  key_pair_public = var.key_pair_public
+  key_pair_public = "Value injected by StackForms"
 
 }

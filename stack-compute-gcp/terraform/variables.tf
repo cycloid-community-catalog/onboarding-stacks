@@ -13,4 +13,3 @@ variable "gcp_zone" {
   description = "GCP zone where to create servers."
   default     = "europe-west1-b"
 }
-variable "key_pair_public" {}
