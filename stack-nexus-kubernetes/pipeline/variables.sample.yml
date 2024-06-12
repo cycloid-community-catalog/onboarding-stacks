@@ -1,0 +1,14 @@
+#
+# Kubernetes
+#
+
+kubeconfig: ((kubeconfig.config))
+
+
+#
+# Default variables
+#
+
+#. terraform_version (required): '1.8.3'
+#+ terraform version used to execute your code.
+terraform_version: '1.8.3'
