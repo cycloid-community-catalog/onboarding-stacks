@@ -1,0 +1,306 @@
+# YAML anchors
+shared:
+# Task : sync and merge with rsync 2 rep. Used to merge stack and config
+- &merge-stack-and-config
+  platform: linux
+  image_resource:
+    type: registry-image
+    source:
+      repository: cycloid/cycloid-toolkit
+      tag: latest
+  run:
+    path: /usr/bin/merge-stack-and-config
+
+
+resource_types:
+- name: terraform
+  type: registry-image
+  source:
+    repository: cycloid/terraform-resource
+    tag: ((terraform_version))
+
+
+resources:
+- name: tfstate
+  type: terraform
+  icon: terraform
+  source:
+    env_name: ($ .environment $)
+    backend_type: http
+    backend_config:
+      address: '($ .api_url $)/inventory?jwt=($ .inventory_jwt $)'
+    vars:
+      vsphere_user: ((vsphere_user))
+      vsphere_password: ((vsphere_password))
+      vsphere_server: ((vsphere_server))
+      env: ($ .environment $)
+      project: ($ .project $)
+      customer: ($ .organization_canonical $)
+
+
+# The Terraform stack (will be merged with the config)
+- name: git_stack-terraform
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .scs_url $)
+    branch: ($ .scs_branch $)
+    ($- if eq .scs_cred_type "basic_auth" $)
+    username: ((($ .scs_cred_path $).username))
+    password: ((($ .scs_cred_path $).password))
+    ($- end $)
+    ($- if eq .scs_cred_type "ssh" $)
+    private_key: ((($ .scs_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .stack_path $)/terraform/*
+
+# The Terraform config (will be merged with the stack)
+- name: git_config-terraform
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .cr_url $)
+    branch: ($ .cr_branch $)
+    ($- if eq .cr_cred_type "basic_auth" $)
+    username: ((($ .cr_cred_path $).username))
+    password: ((($ .cr_cred_path $).password))
+    ($- end $)
+    ($- if eq .cr_cred_type "ssh" $)
+    private_key: ((($ .cr_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .project $)/terraform/($ .environment $)/*
+
+# The Ansible stack (will be merged with the config)
+- name: git_stack-ansible
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .scs_url $)
+    branch: ($ .scs_branch $)
+    ($- if eq .scs_cred_type "basic_auth" $)
+    username: ((($ .scs_cred_path $).username))
+    password: ((($ .scs_cred_path $).password))
+    ($- end $)
+    ($- if eq .scs_cred_type "ssh" $)
+    private_key: ((($ .scs_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .stack_path $)/ansible/*
+
+# The Ansible config (will be merged with the stack)
+- name: git_config-ansible
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .cr_url $)
+    branch: ($ .cr_branch $)
+    ($- if eq .cr_cred_type "basic_auth" $)
+    username: ((($ .cr_cred_path $).username))
+    password: ((($ .cr_cred_path $).password))
+    ($- end $)
+    ($- if eq .cr_cred_type "ssh" $)
+    private_key: ((($ .cr_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .project $)/ansible/($ .environment $)/*
+
+
+groups:
+- name: overview
+  jobs:
+    - terraform-plan
+    - terraform-apply
+    - deploy-applications
+
+- name: destroy
+  jobs:
+    - terraform-destroy
+
+
+jobs:
+  # Merge and trigger a plan whenever there is a commit in Terraform stack or config
+  - name: terraform-plan
+    serial: true
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-terraform
+          trigger: true
+
+        - get: git_config-terraform
+          trigger: true
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-terraform
+            path: "config"
+          - name: git_stack-terraform
+            path: "stack"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+        params:
+          CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
+          STACK_PATH: ($ .stack_path $)/terraform
+
+      - put: tfstate
+        params:
+          plan_only: true
+          terraform_source: merged-stack/
+
+
+  # Merge and trigger an apply whenever there is a terraform plan passed successfully
+  - name: terraform-apply
+    serial: true
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-terraform
+          passed:
+            - terraform-plan
+
+        - get: git_config-terraform
+          passed:
+            - terraform-plan
+
+        - get: tfstate
+          trigger: true
+          passed:
+            - terraform-plan
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-terraform
+            path: "config"
+          - name: git_stack-terraform
+            path: "stack"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+        params:
+          CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
+          STACK_PATH: ($ .stack_path $)/terraform
+
+      - put: tfstate
+        params:
+          plan_run: true
+          terraform_source: merged-stack/
+
+
+  - name: deploy-applications
+    serial: true
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-ansible
+          trigger: true
+
+        - get: git_config-ansible
+          trigger: true
+
+        - get: tfstate
+          trigger: true
+          passed:
+            - terraform-apply
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-ansible
+            path: "config"
+          - name: git_stack-ansible
+            path: "stack"
+          - name: tfstate
+            path: "terraform"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+          - name: output-var
+            path: "output-var"
+        params:
+          CONFIG_PATH: ($ .project $)/ansible/($ .environment $)
+          STACK_PATH: ($ .stack_path $)/ansible
+
+      - task: run-ansible
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+              tag: ((ansible_version))
+          run:
+            # Extract terraform metadata into shell and yaml scripts and store them into a new terraform-env resource
+            path: /bin/bash
+            args:
+              - '-ec'
+              - |
+                echo "${SSH_PRIVATE_KEY}" >id_rsa
+                chmod 600 id_rsa
+                echo "${vm_ip}" >inventory
+                ansible-playbook -u ${ANSIBLE_REMOTE_USER} -i inventory --private-key id_rsa -e env=${env} -e project=${project} -e customer=${customer} -e vm_nginx=${vm_nginx} -e vm_redis=${vm_redis} ${ANSIBLE_PLAYBOOK_PATH}/${ANSIBLE_PLAYBOOK_NAME}
+          caches:
+            - path: ansible-playbook/roles
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+
+        params:
+          #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
+          ANSIBLE_REMOTE_USER: ((vm_os_user))
+          SSH_PRIVATE_KEY: ((key_pair_private))
+          ANSIBLE_PLAYBOOK_PATH: ansible-playbook
+          ANSIBLE_PLAYBOOK_NAME: site.yml
+          vm_nginx: ((vm_nginx))
+          vm_redis: ((vm_redis))
+
+
+  # Destroy the demo infrastructure
+  - name: terraform-destroy
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-terraform
+          trigger: false
+          passed:
+            - terraform-plan
+
+        - get: git_config-terraform
+          trigger: false
+          passed:
+            - terraform-plan
+
+        - get: tfstate
+          trigger: false
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-terraform
+            path: "config"
+          - name: git_stack-terraform
+            path: "stack"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+        params:
+          CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
+          STACK_PATH: ($ .stack_path $)/terraform
+
+      - put: tfstate
+        params:
+          action: destroy
+          terraform_source: merged-stack/
+        get_params:
+          action: destroy

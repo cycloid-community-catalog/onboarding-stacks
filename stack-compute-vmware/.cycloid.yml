@@ -1,0 +1,46 @@
+---
+# Configuration of the Cycloid stack
+version: '3'
+name: 'VMware Virtual Machine'
+canonical: 'stack-vmware-demo'
+description: This stack deploys a VMware virtual machine with a selected operating system and applications.
+author: 'Olivier de Turckheim'
+image: 'https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/vmware.png'
+status: 'private'
+keywords:
+- VMware
+- vCenter
+- vSphere
+- ESXi
+- provider:vmware
+technologies:
+- technology: terraform
+  version: 1.8.3
+- technology: VMware
+- technology: ESXi
+  version: "7"
+- technology: vCenter
+  version: "7"
+
+config:
+  vcenter-template:
+    name: 'Clone a VM from a template using vCenter and deploy a selection of applications'
+    description: 'Clone a VM from a template using vCenter and deploy a selection of applications'
+    cloud_provider: vmware
+    # Pipeline and variable configuration for the vCenter-template pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/pipeline.yml'
+      variables:
+        path: 'pipeline/variables.sample.yml'
+        destination: '($ .project $)/pipeline/($ .environment $)/variables.yml'
+    # Configuration of ansible for provisionning
+    ansible:
+      main:
+        path: 'ansible/environments/vm.yml.sample'
+        destination: '($ .project $)/ansible/environments/($ .environment $)-vm.yml'
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'

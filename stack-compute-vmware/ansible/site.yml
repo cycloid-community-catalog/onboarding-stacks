@@ -1,0 +1,32 @@
+---
+- name: install applications
+  hosts: all
+  become: yes
+
+  vars_files:
+  - "environments/default_vm.yml"
+
+  tasks:
+  - name: whether to install package "nginx" to latest version
+    apt:
+      name: nginx
+      state: latest
+    when: vm_nginx | bool
+
+  - name: whether to remove package "nginx" to latest version
+    apt:
+      name: nginx
+      state: absent
+    when: not vm_nginx | bool
+
+  - name: whether to install package "redis-server" to latest version
+    apt:
+      name: redis-server
+      state: latest
+    when: vm_redis | bool
+
+  - name: whether to remove package "redis-server" to latest version
+    apt:
+      name: redis-server
+      state: absent
+    when: not vm_redis | bool

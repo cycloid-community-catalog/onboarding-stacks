@@ -1,0 +1,180 @@
+---
+version: "2"
+use_cases:
+- name: vcenter-template
+  sections:
+  - name: Service Catalog
+    groups:
+    - name: Virtual machine specifications
+      technologies: [terraform]
+      vars:
+      - name: "vCPU"
+        unit: vCPU
+        description: "Number of vCPU allocated to the virtual machine."
+        key: vm_cpu
+        widget: slider_range
+        type: integer
+        default: 2
+        values:
+            - 1
+            - 4
+        required: true
+        quota_config:
+          type: "cpu"
+      - name: "Memory"
+        unit: Mo
+        description: "Memory allocated to the virtual machine."
+        key: vm_memory
+        widget: slider_list
+        type: integer
+        default: 2048
+        values:
+            - 1024
+            - 2048
+            - 4096
+        required: true
+        quota_config:
+          type: "memory"
+      - name: "Disk"
+        unit: Go
+        description: "Disk size allocated to the virtual machine."
+        key: vm_disk_size
+        widget: slider_range
+        type: integer
+        default: 20
+        values:
+            - 10
+            - 200
+        required: true
+        quota_config:
+          type: "storage"
+      - name: "Operating System"
+        description: "Virtual Machine Operating System."
+        key: vsphere_template
+        widget: auto_complete
+        type: string
+        values: ["debian","ubuntu"]
+        default: "debian"
+        required: true
+      - name: "Network"
+        description: "Network where the virtual machine will be located."
+        key: vsphere_network
+        widget: simple_text
+        default: "VM Network"
+        type: string
+        required: true
+      - name: "IP Address"
+        description: "IP address to assign to the virtual machine network interface. You can also integrate Cycloid with an IP Address Management tool."
+        key: vm_ip
+        widget: simple_text
+        default: "212.129.18.92"
+        type: string
+        required: true
+      - name: "MAC Address"
+        description: "MAC address to assign to the virtual machine network interface. You can also integrate Cycloid with a MAC Address Management tool."
+        key: vm_mac
+        widget: simple_text
+        default: "00:50:56:01:f1:96"
+        type: string
+        required: true
+      - name: "Name"
+        description: "Name of the virtual machine."
+        key: vm_name
+        widget: simple_text
+        default: "($ .organization_canonical $)-($ .project $)-($ .environment $)-vm"
+        type: string
+        required: true
+    - name: Applications
+      technologies: [pipeline]
+      vars:
+      - name: "Web Server"
+        description: "Whether to deploy a NGINX web server."
+        key: vm_nginx
+        widget: switch
+        type: boolean
+        default: false
+        required: true
+      - name: "Redis"
+        description: "Whether to deploy a Redis in-memory data store."
+        key: vm_redis
+        widget: switch
+        type: boolean
+        default: false
+        required: true
+    - name: SSH connection to new instances
+      technologies: [pipeline]
+      vars:
+      - name: "User"
+        description: "The user to use to connect through SSH."
+        key: vm_os_user
+        widget: simple_text
+        type: string
+        default: "admin"
+        required: true
+      - name: "Keypair public"
+        description: "The public SSH key, for SSH access to newly-created instances."
+        key: keypair_public
+        widget: cy_cred
+        type: string
+        required: true
+        default: "((custom_keypair.ssh_pub))"
+      - name: "Keypair private"
+        description: "The private SSH key allowing ansible to run playbooks in the Nexus Repository instance via bastion."
+        key: keypair_private
+        widget: cy_cred
+        type: string
+        default: "((custom_keypair.ssh_prv))"
+        required: true
+
+  - name: VMware Cloud Provider
+    groups:
+    - name: Access Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "vCenter server"
+        description: "vCenter server for Terraform."
+        key: vsphere_server
+        widget: simple_text
+        type: string
+        default: "212.83.169.2"
+        required: true
+      - name: "vCenter admin username"
+        description: "vCenter admin username for Terraform."
+        key: vsphere_user
+        widget: cy_cred
+        type: string
+        default: "((basic_auth_vsphere.username))"
+        required: true
+      - name: "vCenter admin password"
+        description: "vCenter admin password for Terraform."
+        key: vsphere_password
+        widget: cy_cred
+        type: string
+        default: "((basic_auth_vsphere.password))"
+        required: true
+    - name: Deployment Configuration
+      technologies: [terraform]
+      vars:
+      - name: "Datacenter"
+        description: "Datacenter where to create the virtual machine."
+        key: vsphere_datacenter
+        widget: auto_complete
+        type: string
+        values: ["dc1","dc2"]
+        default: "dc1"
+        required: true
+      - name: "Datastore"
+        description: "Datastore where to create the virtual machine."
+        key: vsphere_datastore
+        widget: auto_complete
+        type: string
+        values: ["datastore1","datastore2"]
+        default: "datastore1"
+        required: true
+      - name: "Cluster"
+        description: "Cluster where the virtual machine will be located."
+        key: vsphere_cluster
+        widget: simple_text
+        default: "cluster1"
+        type: string
+        required: true

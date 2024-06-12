@@ -1,0 +1,58 @@
+#
+# Cloud Provider
+#
+
+#. vsphere_user (required): ((basic_auth_vsphere.username))
+#+ vSphere or ESXi admin username for Terraform
+vsphere_user: ((basic_auth_vsphere.username))
+
+#. vsphere_password (required): ((basic_auth_vsphere.password))
+#+ vSphere or ESXi admin password for Terraform
+vsphere_password: ((basic_auth_vsphere.password))
+
+#. vsphere_server (required): ""
+#+ vSphere or ESXi server for Terraform
+vsphere_server: "212.83.169.2"
+
+
+#
+# Key pair to provision in newly created instances
+#
+
+#. key_pair_public (required): ((key_pair.public_key))
+#+ The public SSH key to provision for external access through SSH
+key_pair_public: ((key_pair.public_key))
+
+#. key_pair_private (required): ((key_pair.public_key))
+#+ The private SSH key allowing ansible to run playbooks in the new VM
+key_pair_private: ((key_pair.private_key))
+
+
+#
+# Applications to deploy via ansible on newly created VM
+#
+
+#. vm_nginx (required): false
+#+ Whether to deploy a NGINX web server on newly created VM
+vm_nginx: false
+
+#. vm_redis (required): false
+#+ Whether to deploy a REDIS in-memory database on newly created VM
+vm_redis: false
+
+
+#
+# Default variables
+#
+
+#. api_key (required): ''
+#+ Cycloid API key to provision Cycloid resources such as credentials.
+api_key: ''
+
+#. terraform_version (required): '1.8.3'
+#+ terraform version used to execute your code.
+terraform_version: '1.8.3'
+
+#. ansible_version (required): 'v2.9'
+#+ cycloid-toolkit docker image tag to use (https://hub.docker.com/r/cycloid/cycloid-toolkit/tags).
+ansible_version: 'v2.9'
