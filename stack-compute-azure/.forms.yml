@@ -90,6 +90,16 @@ use_cases:
             type: azurerm_resource_group
         type: string
         required: true
+      - name: "VPC"
+        description: "VPC where to deploy the instance."
+        key: vpc_name
+        widget: cy_inventory_resource
+        widget_config:
+          attribute: name
+          filters:
+            type: azurerm_virtual_network
+        type: string
+        required: true
 
 - name: manual
   sections:
@@ -102,6 +112,12 @@ use_cases:
       - name: "Existing Resource Group Name"
         description: "The name of the existing resource group where the resources will be deployed."
         key: resource_group_name
+        widget: simple_text
+        type: string
+        required: true
+      - name: "VPC Name"
+        description: "VPC name where to deploy the instance."
+        key: vpc_name
         widget: simple_text
         type: string
         required: true
