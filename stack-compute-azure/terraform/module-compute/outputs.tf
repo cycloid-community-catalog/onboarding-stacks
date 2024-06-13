@@ -11,7 +11,7 @@ output "resource_group_name" {
 #
 output "vnet_name" {
   description = "The name for the virtual network"
-  value       = azurerm_virtual_network.compute.name
+  value       = data.azurerm_virtual_network.selected.name
 }
 
 #
