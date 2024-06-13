@@ -90,8 +90,8 @@ use_cases:
             type: azurerm_resource_group
         type: string
         required: true
-      - name: "VPC"
-        description: "VPC where to deploy the instance."
+      - name: "vNet"
+        description: "vNet where to deploy the instance."
         key: vpc_name
         widget: cy_inventory_resource
         widget_config:
@@ -115,8 +115,8 @@ use_cases:
         widget: simple_text
         type: string
         required: true
-      - name: "VPC Name"
-        description: "VPC name where to deploy the instance."
+      - name: "vNet Name"
+        description: "vNet name where to deploy the instance."
         key: vpc_name
         widget: simple_text
         type: string
