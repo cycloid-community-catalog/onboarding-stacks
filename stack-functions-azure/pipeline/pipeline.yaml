@@ -118,6 +118,8 @@ jobs:
           outputs:
           - name: merged-stack
             path: "merged-stack"
+          - name: git_function
+            path: "git_function"
         params:
           CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
           STACK_PATH: ($ .stack_path $)/terraform
