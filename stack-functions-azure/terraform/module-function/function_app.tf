@@ -3,7 +3,7 @@ resource "azurerm_function_app" "function_app" {
   resource_group_name = data.azurerm_resource_group.resource_group.name
   location            = var.azure_location
 
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
+  app_service_plan_id = azurerm_service_plan.service_plan.id
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" = "",
     "FUNCTIONS_WORKER_RUNTIME" = "node",
