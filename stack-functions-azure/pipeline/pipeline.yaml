@@ -198,6 +198,11 @@ jobs:
           passed:
             - terraform-plan
 
+        - get: git_function
+          trigger: false
+          passed:
+            - terraform-plan
+
         - get: tfstate
           trigger: false
 
@@ -209,6 +214,8 @@ jobs:
             path: "config"
           - name: git_stack-terraform
             path: "stack"
+          - name: git_function
+            path: "git_function"
           outputs:
           - name: merged-stack
             path: "merged-stack"
