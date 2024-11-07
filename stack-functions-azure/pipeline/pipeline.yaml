@@ -35,6 +35,14 @@ resources:
       project: ($ .project $)
       customer: ($ .organization_canonical $)
 
+- name: git_function
+  type: git
+  icon: github-circle
+  source:
+    uri: https://github.com/cycloid-community-catalog/onboarding-functions.git
+    branch: master
+    paths:
+      - azure-vnet/*
 
 # The Terraform stack (will be merged with the config)
 - name: git_stack-terraform
@@ -94,6 +102,9 @@ jobs:
           trigger: true
 
         - get: git_config-terraform
+          trigger: true
+
+        - get: git_function
           trigger: true
 
       - task: merge-stack-and-config
