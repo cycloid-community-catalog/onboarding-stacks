@@ -1,4 +1,4 @@
-resource "azurerm_linux_function_app" "example" {
+resource "azurerm_linux_function_app" "linux_function_app" {
   name                = "${var.customer}-${var.project}-${var.env}"
   resource_group_name = data.azurerm_resource_group.resource_group.name
   location            = var.azure_location
