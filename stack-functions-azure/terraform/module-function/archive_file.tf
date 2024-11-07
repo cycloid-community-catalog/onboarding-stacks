@@ -4,6 +4,12 @@ data "archive_file" "function_package" {
   output_path = "${path.module}/function.zip"
   
   depends_on = [
-    random_string.r
+    random_string.random
   ]
+}
+
+resource "random_string" "random" {
+  length = 16
+  special = true
+  override_special = "/@£$"
 }
