@@ -1,0 +1,33 @@
+---
+# Configuration of the Cycloid stack
+version: '3'
+name: Azure Function
+canonical: stack-functions-azure
+status: private
+author: Cycloid
+description: |
+  Deploys an Azure Function with a new Storage Account and a new Service Plan using Terraform.
+image: |
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/azure-vm.png
+keywords:
+  - function
+  - provider:azure
+technologies:
+- technology: terraform
+  version: 1.8.3
+
+config:
+  default:
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the default CD pipeline use case
+    pipeline:
+      pipeline:
+        path: pipeline/pipeline.yaml
+      variables:
+        path: pipeline/variables.sample.yaml
+        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/main.tf'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'
