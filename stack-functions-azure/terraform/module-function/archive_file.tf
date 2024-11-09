@@ -1,6 +1,6 @@
 data "archive_file" "function_package" {
   type = "zip"
-  source_dir = "${path.module}/../../git_function/azure-vnet"
+  source_dir = "${path.module}/../../git_function"
   output_path = "${path.module}/function.zip"
   
   depends_on = [
