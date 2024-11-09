@@ -14,6 +14,11 @@ variable "azure_location" {
   default = "West Europe"
 }
 
+variable "git_func_path" {
+  description = "Git repository path where the azure function is stored"
+  default = ""
+}
+
 # Tags
 variable "extra_tags" {
   default = {}
