@@ -6,7 +6,7 @@ use_cases:
   - name: Azure Function
     groups:
     - name: Function Code
-      technologies: [terraform]
+      technologies: [pipeline]
       vars:
       - name: "Function Git Repository URL"
         description: "Public git URL of the function to deploy."
