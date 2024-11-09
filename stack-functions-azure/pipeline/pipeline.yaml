@@ -39,10 +39,14 @@ resources:
   type: git
   icon: github-circle
   source:
-    uri: https://github.com/cycloid-community-catalog/onboarding-functions.git
-    branch: master
+    uri: ((git_func_url))
+    branch: ((git_func_branch))
     paths:
-      - azure-vnet/*
+      - ((git_func_path))/*
+    #uri: https://github.com/cycloid-community-catalog/onboarding-functions.git
+    #branch: master
+    #paths:
+    #  - azure-vnet/*
 
 # The Terraform stack (will be merged with the config)
 - name: git_stack-terraform
