@@ -31,6 +31,7 @@ resources:
       address: '($ .api_url $)/inventory?jwt=($ .inventory_jwt $)'
     vars:
       azure_cred: ((azure_cred))
+      git_func_path: ((git_func_path))
       env: ($ .environment $)
       project: ($ .project $)
       customer: ($ .organization_canonical $)
