@@ -8,7 +8,6 @@ resource "azurerm_linux_function_app" "linux_function_app" {
   service_plan_id            = azurerm_service_plan.service_plan.id
   app_settings = {
     "WEBSITE_RUN_FROM_PACKAGE" = 1,
-    "FUNCTIONS_WORKER_RUNTIME" = "node",
     "APPINSIGHTS_INSTRUMENTATIONKEY" = azurerm_application_insights.application_insights.instrumentation_key,
   }
 
@@ -22,10 +21,4 @@ resource "azurerm_linux_function_app" "linux_function_app" {
     Name = "${var.customer}-${var.project}-${var.env}"
     role = "function_app"
   })
-
-  lifecycle {
-    ignore_changes = [
-      app_settings["WEBSITE_RUN_FROM_PACKAGE"],
-    ]
-  }
 }
