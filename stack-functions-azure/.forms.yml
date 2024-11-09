@@ -25,13 +25,13 @@ use_cases:
         default: "master"
         required: true
       - name: "Function Git Repository Path"
-        description: "Git Repository Path of the function to deploy."
+        description: "Git Repository Path of the function to deploy. It can be left blank if the function code is located at the root of the repository."
         key: git_func_path
         widget: auto_complete
         type: string
         values: ["azurevnets"]
         default: ""
-        required: true
+        required: false
 
     - name: Azure Access Configuration
       technologies: [pipeline]
