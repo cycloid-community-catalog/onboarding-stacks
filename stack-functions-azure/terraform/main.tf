@@ -22,4 +22,8 @@ module "function" {
   #+ Azure location
   azure_location = "Value injected by StackForms"
 
+  #. git_func_path: "West Europe"
+  #+ Git repository path where the azure function is stored.
+  git_func_path = var.git_func_path
+
 }
