@@ -16,7 +16,7 @@ resource "azurerm_linux_function_app" "linux_function_app" {
     application_insights_key               = azurerm_application_insights.application_insights.instrumentation_key
     application_insights_connection_string = azurerm_application_insights.application_insights.connection_string
     application_stack {
-      node_version = "20"
+      node_version = "18"
     }
   }
 
