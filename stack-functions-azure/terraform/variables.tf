@@ -8,6 +8,6 @@ variable "azure_cred" {
   description = "The azure credential used to deploy the infrastructure. It contains subscription_id, tenant_id, client_id, and client_secret"
 }
 
-variable "git_func_package" {
+variable "git_func_path" {
   description = "The git repository path where the azure function package (zip file) is stored."
 }

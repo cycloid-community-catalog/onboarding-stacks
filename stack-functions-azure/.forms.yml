@@ -26,7 +26,7 @@ use_cases:
         required: true
       - name: "Function Git Repository Package Path"
         description: "Git Repository Path of the function package (zip file) to deploy."
-        key: git_func_package
+        key: git_func_path
         widget: auto_complete
         type: string
         values: ["azurevnets/azurevnets.zip"]

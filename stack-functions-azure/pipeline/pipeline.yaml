@@ -31,7 +31,7 @@ resources:
       address: '($ .api_url $)/inventory?jwt=($ .inventory_jwt $)'
     vars:
       azure_cred: ((azure_cred))
-      git_func_package: ((git_func_package))
+      git_func_path: ((git_func_path))
       env: ($ .environment $)
       project: ($ .project $)
       customer: ($ .organization_canonical $)
@@ -43,7 +43,7 @@ resources:
     uri: ((git_func_url))
     branch: ((git_func_branch))
     paths:
-      - ((git_func_package))/*
+      - ((git_func_path))/*
 
 # The Terraform stack (will be merged with the config)
 - name: git_stack-terraform
