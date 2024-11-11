@@ -14,8 +14,8 @@ variable "azure_location" {
   default = "West Europe"
 }
 
-variable "git_func_path" {
-  description = "Git repository path where the azure function is stored"
+variable "git_func_package" {
+  description = "Git repository path where the azure function package (zip file) is stored"
   default = ""
 }
 
