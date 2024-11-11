@@ -23,7 +23,7 @@ resource "azurerm_storage_blob" "storage_blob" {
     storage_account_name = azurerm_storage_account.storage_account.name
     storage_container_name = azurerm_storage_container.storage_container.name
     type = "Block"
-    source = "${path.module}/../../git_function/azurevnets/azurevnets.zip"
+    source = data.archive_file.function_package.output_path
 }
 
 data "azurerm_storage_account_sas" "storage_account_sas" {
