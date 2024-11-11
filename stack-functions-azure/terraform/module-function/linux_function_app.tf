@@ -25,22 +25,3 @@ resource "azurerm_linux_function_app" "linux_function_app" {
     role = "function_app"
   })
 }
-
-
-resource "azurerm_function_app" "functions" {
-    name = "${var.prefix}-${var.environment}"
-    location = "${var.location}"
-    resource_group_name = "${azurerm_resource_group.rg.name}"
-    app_service_plan_id = "${azurerm_app_service_plan.asp.id}"
-    storage_connection_string = "${azurerm_storage_account.storage.primary_connection_string}"
-    version = "~2"
-
-    app_settings = {
-        https_only = true
-        FUNCTIONS_WORKER_RUNTIME = "node"
-        WEBSITE_NODE_DEFAULT_VERSION = "~10"
-        FUNCTION_APP_EDIT_MODE = "readonly"
-        HASH = "${base64encode(filesha256("${var.functionapp}"))}"
-        WEBSITE_RUN_FROM_PACKAGE = "https://${azurerm_storage_account.storage.name}.blob.core.windows.net/${azurerm_storage_container.deployments.name}/${azurerm_storage_blob.appcode.name}${data.azurerm_storage_account_sas.sas.sas}"
-    }
-}
