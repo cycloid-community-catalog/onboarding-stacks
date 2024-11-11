@@ -11,7 +11,6 @@ resource "azurerm_linux_function_app" "linux_function_app" {
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key,
   }
 
-  zip_deploy_file = "${path.module}/../../git_function/${var.git_func_package}"
   site_config {
     application_insights_key               = azurerm_application_insights.application_insights.instrumentation_key
     application_insights_connection_string = azurerm_application_insights.application_insights.connection_string

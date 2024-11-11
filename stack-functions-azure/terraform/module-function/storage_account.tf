@@ -18,11 +18,11 @@ resource "azurerm_storage_container" "storage_container" {
 }
 
 resource "azurerm_storage_blob" "storage_blob" {
-    name = "function.zip"
+    name = "${var.project}${var.env}.zip"
     storage_account_name = azurerm_storage_account.storage_account.name
     storage_container_name = azurerm_storage_container.storage_container.name
     type = "Block"
-    source = "${path.module}/../../git_function/${var.git_func_package}"
+    source = data.archive_file.function_package.output_path
 }
 
 data "azurerm_storage_account_sas" "storage_account_sas" {
