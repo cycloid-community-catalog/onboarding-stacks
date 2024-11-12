@@ -28,8 +28,8 @@ resource "azurerm_linux_function_app" "linux_function_app" {
     }
   }
 
-  # zip_deploy_file = data.archive_file.function_package.output_path
-  zip_deploy_file = azurerm_storage_blob.storage_blob.name
+  zip_deploy_file = data.archive_file.function_package.output_path
+  # zip_deploy_file = azurerm_storage_blob.storage_blob.name
 
   tags = merge(local.merged_tags, {
     Name = "${var.customer}-${var.project}-${var.env}"
