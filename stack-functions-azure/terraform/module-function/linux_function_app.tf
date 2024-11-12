@@ -9,6 +9,8 @@ resource "azurerm_linux_function_app" "linux_function_app" {
   https_only                 = true
   
   app_settings = {
+    AzureWebJobsStorage = azurerm_storage_account.storage_account.primary_connection_string
+    AzureWebJobsFeatureFlags = "EnableWorkerIndexing"
     ENABLE_ORYX_BUILD = true
     SCM_DO_BUILD_DURING_DEPLOYMENT = true
     FUNCTIONS_WORKER_RUNTIME = "python"
