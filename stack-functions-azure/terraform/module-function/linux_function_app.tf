@@ -9,12 +9,12 @@ resource "azurerm_linux_function_app" "linux_function_app" {
   https_only                 = true
   
   app_settings = {
-    "ENABLE_ORYX_BUILD" = "true"
-    "SCM_DO_BUILD_DURING_DEPLOYMENT" = "true"
-    "FUNCTIONS_WORKER_RUNTIME" = "python"
+    ENABLE_ORYX_BUILD = true
+    SCM_DO_BUILD_DURING_DEPLOYMENT = true
+    FUNCTIONS_WORKER_RUNTIME = "python"
     # WEBSITE_RUN_FROM_PACKAGE = "https://${azurerm_storage_account.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.storage_container.name}/${azurerm_storage_blob.storage_blob.name}"
     # WEBSITE_RUN_FROM_PACKAGE = "https://${azurerm_storage_account.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.storage_container.name}/${azurerm_storage_blob.storage_blob.name}${data.azurerm_storage_account_sas.storage_account_sas.sas}"
-    "APPINSIGHTS_INSTRUMENTATIONKEY" = azurerm_application_insights.application_insights.instrumentation_key,
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
   }
 
   site_config {
