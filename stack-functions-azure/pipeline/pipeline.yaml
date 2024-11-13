@@ -176,6 +176,7 @@ jobs:
           trigger: true
           passed:
             - terraform-apply
+
         - get: git_function
           trigger: true
 
@@ -192,15 +193,15 @@ jobs:
             args:
               - '-c'
               - |
-                apt-get install curl jq -y
+                sudo apt-get install curl jq -y
                 export AZURE_CLIENT_ID=$(echo ${AZURE_CRED} | jq -r .client_id)
                 export AZURE_CLIENT_SECRET=$(echo ${AZURE_CRED} | jq -r .client_secret)
                 export AZURE_TENANT_ID=$(echo ${AZURE_CRED} | jq -r .tenant_id)
                 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-                mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-                sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/debian/$(lsb_release -rs 2>/dev/null | cut -d'.' -f 1)/prod $(lsb_release -cs 2>/dev/null) main" > /etc/apt/sources.list.d/dotnetdev.list'
-                apt-get update
-                apt-get install azure-functions-core-tools-4 -y
+                sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+                sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/debian/$(lsb_release -rs 2>/dev/null | cut -d'.' -f 1)/prod $(lsb_release -cs 2>/dev/null) main" > /etc/apt/sources.list.d/dotnetdev.list'
+                sudo apt-get update
+                sudo apt-get install azure-functions-core-tools-4 -y
                 az login --service-principal --username ${AZURE_CLIENT_ID} --password ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
                 cd git_function
                 func azure functionapp publish ${customer}-${project}-${env}
