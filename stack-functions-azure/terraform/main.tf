@@ -22,4 +22,12 @@ module "function" {
   #+ Azure location
   azure_location = "Value injected by StackForms"
 
+  #. python_version: "3.11"
+  #+ Python version
+  python_version = "Value injected by StackForms"
+
+  #. service_plan_sku_name: "Y1"
+  #+ Service plan SKU name
+  service_plan_sku_name = "Value injected by StackForms"
+
 }

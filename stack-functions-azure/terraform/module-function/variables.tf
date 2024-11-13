@@ -14,6 +14,17 @@ variable "azure_location" {
   default = "West Europe"
 }
 
+variable "python_version" {
+  description = "Python version"
+  default = "3.11"
+}
+
+variable "service_plan_sku_name" {
+  description = "Service plan SKU name."
+  default = "Y1"
+}
+
+
 # Tags
 variable "extra_tags" {
   default = {}

@@ -1,16 +1,17 @@
 ---
 # Configuration of the Cycloid stack
 version: '3'
-name: Azure Function
+name: Azure Function (Python)
 canonical: stack-functions-azure
 status: private
 author: Cycloid
 description: |
-  Deploys an Azure Function with a new Storage Account and a new Service Plan using Terraform.
+  Create a Python Azure Function App with its new Storage Account and Service Plan using Terraform and deploy the function endpoints using Azure Functions Core Tools.
 image: |
-  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/azure-vm.png
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/azure-functions.png
 keywords:
-  - function
+  - functions
+  - python
   - provider:azure
 technologies:
 - technology: terraform
