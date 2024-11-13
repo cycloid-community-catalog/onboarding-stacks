@@ -24,14 +24,6 @@ use_cases:
         values: ["master","main","develop"]
         default: "master"
         required: true
-      - name: "Function Git Repository Package Path"
-        description: "Git Repository Path of the function package (zip file) to deploy."
-        key: git_func_path
-        widget: auto_complete
-        type: string
-        values: ["azurevnets/azurevnets.zip"]
-        default: ""
-        required: false
 
     - name: Azure Access Configuration
       technologies: [pipeline]
