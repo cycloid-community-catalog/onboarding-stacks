@@ -12,8 +12,9 @@ resource "azurerm_linux_function_app" "linux_function_app" {
     AzureWebJobsStorage = azurerm_storage_account.storage_account.primary_connection_string
     AzureWebJobsFeatureFlags = "EnableWorkerIndexing"
     # ENABLE_ORYX_BUILD = true
-    SCM_DO_BUILD_DURING_DEPLOYMENT = true
+    #SCM_DO_BUILD_DURING_DEPLOYMENT = true
     FUNCTIONS_WORKER_RUNTIME = "python"
+    # WEBSITE_RUN_FROM_PACKAGE = 1
     # WEBSITE_RUN_FROM_PACKAGE = "https://${azurerm_storage_account.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.storage_container.name}/${azurerm_storage_blob.storage_blob.name}"
     # WEBSITE_RUN_FROM_PACKAGE = "https://${azurerm_storage_account.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.storage_container.name}/${azurerm_storage_blob.storage_blob.name}${data.azurerm_storage_account_sas.storage_account_sas.sas}"
     # APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
@@ -29,7 +30,7 @@ resource "azurerm_linux_function_app" "linux_function_app" {
   }
 
   # zip_deploy_file = data.archive_file.function_package.output_path
-  zip_deploy_file = azurerm_storage_blob.storage_blob.name
+  # zip_deploy_file = azurerm_storage_blob.storage_blob.name
 
   tags = merge(local.merged_tags, {
     Name = "${var.customer}-${var.project}-${var.env}"
