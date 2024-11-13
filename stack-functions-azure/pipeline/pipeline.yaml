@@ -180,7 +180,6 @@ jobs:
           trigger: true
 
       - task: deploy-functions
-        privileged: true
         config:
           platform: linux
           image_resource:
