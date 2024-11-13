@@ -42,8 +42,6 @@ resources:
   source:
     uri: ((git_func_url))
     branch: ((git_func_branch))
-    paths:
-      - ((git_func_path))/*
 
 # The Terraform stack (will be merged with the config)
 - name: git_stack-terraform
