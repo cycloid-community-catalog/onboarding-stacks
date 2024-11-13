@@ -103,9 +103,6 @@ jobs:
         - get: git_config-terraform
           trigger: true
 
-        - get: git_function
-          trigger: true
-
       - task: merge-stack-and-config
         config:
           <<: *merge-stack-and-config
@@ -114,13 +111,9 @@ jobs:
             path: "config"
           - name: git_stack-terraform
             path: "stack"
-          - name: git_function
-            path: "git_function"
           outputs:
           - name: merged-stack
             path: "merged-stack"
-          - name: git_function
-            path: "git_function"
         params:
           CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
           STACK_PATH: ($ .stack_path $)/terraform
@@ -148,11 +141,6 @@ jobs:
           passed:
             - terraform-plan
 
-        - get: git_function
-          trigger: false
-          passed:
-            - terraform-plan
-
         - get: tfstate
           trigger: true
           passed:
@@ -166,8 +154,6 @@ jobs:
             path: "config"
           - name: git_stack-terraform
             path: "stack"
-          - name: git_function
-            path: "git_function"
           outputs:
           - name: merged-stack
             path: "merged-stack"
@@ -239,11 +225,6 @@ jobs:
           passed:
             - terraform-plan
 
-        - get: git_function
-          trigger: false
-          passed:
-            - terraform-plan
-
         - get: tfstate
           trigger: false
 
@@ -255,8 +236,6 @@ jobs:
             path: "config"
           - name: git_stack-terraform
             path: "stack"
-          - name: git_function
-            path: "git_function"
           outputs:
           - name: merged-stack
             path: "merged-stack"
