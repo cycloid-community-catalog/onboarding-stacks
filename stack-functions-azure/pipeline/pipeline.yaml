@@ -176,7 +176,6 @@ jobs:
           trigger: true
           passed:
             - terraform-apply
-
         - get: git_function
           trigger: true
 
