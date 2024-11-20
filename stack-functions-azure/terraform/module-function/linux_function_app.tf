@@ -7,7 +7,6 @@ resource "azurerm_linux_function_app" "linux_function_app" {
   storage_account_access_key = azurerm_storage_account.storage_account.primary_access_key
   service_plan_id            = azurerm_service_plan.service_plan.id
   https_only                 = false
-  version                    = "~4"
 
   app_settings = {
     AzureWebJobsStorage = azurerm_storage_account.storage_account.primary_connection_string
