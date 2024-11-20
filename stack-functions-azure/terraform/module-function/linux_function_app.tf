@@ -7,12 +7,11 @@ resource "azurerm_linux_function_app" "linux_function_app" {
   storage_account_access_key = azurerm_storage_account.storage_account.primary_access_key
   service_plan_id            = azurerm_service_plan.service_plan.id
   https_only                 = false
-
+  
   app_settings = {
     AzureWebJobsStorage = azurerm_storage_account.storage_account.primary_connection_string
     AzureWebJobsFeatureFlags = "EnableWorkerIndexing"
     FUNCTIONS_WORKER_RUNTIME = "python"
-    WEBSITE_RUN_FROM_PACKAGE = 1
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
   }
 
@@ -22,9 +21,8 @@ resource "azurerm_linux_function_app" "linux_function_app" {
     }
   }
 
-  identity {
-    type = "SystemAssigned"
-  }
+  # zip_deploy_file = data.archive_file.function_package.output_path
+  # zip_deploy_file = azurerm_storage_blob.storage_blob.name
 
   tags = merge(local.merged_tags, {
     Name = "${var.customer}-${var.project}-${var.env}"
