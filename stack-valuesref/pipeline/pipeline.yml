@@ -96,6 +96,9 @@ groups:
   jobs:
     - terraform-plan
     - terraform-apply
+
+- name: deploy-functions
+  jobs:
     - deploy-functions
 
 - name: destroy
