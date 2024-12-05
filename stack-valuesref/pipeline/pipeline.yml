@@ -244,7 +244,6 @@ jobs:
                 az login --service-principal --username ${AZURE_CLIENT_ID} --password ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
                 cd git_functions/${use_case}
                 func azure functionapp publish ${customer}-${project}-${env}
-                done
           inputs:
           - name: git_functions
             path: git_functions

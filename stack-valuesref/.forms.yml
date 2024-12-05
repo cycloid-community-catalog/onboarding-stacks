@@ -98,8 +98,8 @@ use_cases:
         key: git_func_url
         widget: auto_complete
         type: string
-        values: ["https://github.com/cycloid-community-catalog/onboarding-azure-functions.git"]
-        default: "https://github.com/cycloid-community-catalog/onboarding-azure-functions.git"
+        values: ["https://github.com/cycloid-community-catalog/onboarding-functions.git"]
+        default: "https://github.com/cycloid-community-catalog/onboarding-functions.git"
         required: true
       - name: "Function Git Repository Branch"
         description: "Git Repository Branch of the function to deploy."
