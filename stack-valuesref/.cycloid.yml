@@ -1,0 +1,71 @@
+---
+# Configuration of the Cycloid stack
+version: '3'
+name: Cloud Functions for values_ref
+canonical: stack-valuesref
+author: Cycloid
+description: |
+  Deploy Python Cloud Functions to get values_ref endpoints for common things like VPC, subnets and resource groups on AWS, Azure and GCP.
+image: |
+  https://www.cycloid.io/themes/cycloid/images/owl_logo.png
+keywords:
+  - functions
+  - python
+  - provider:aws
+  - provider:azure
+  # - provider:gcp
+technologies:
+- technology: terraform
+  version: 1.8.3
+
+config:
+  aws:
+    name: 'AWS'
+    description: 'Deploys common AWS Lambda Functions for Cycloid values_ref feature'
+    cloud_provider: aws
+    # Pipeline and variable configuration for the AWS CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/pipeline.yml'
+      variables:
+        path: 'pipeline/variables.sample.yml'
+        destination: '($ .project $)/pipeline/($ .environment $)/variables.yml'
+    # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
+    terraform:
+      main:
+        path: 'terraform/aws/main.tf'
+        destination: '($ .project $)/($ .environment $)/terraform/aws/main.tf'
+
+  azure:
+    name: 'Azure'
+    description: 'Deploys common Azure Functions for Cycloid values_ref feature'
+    cloud_provider: azurerm
+    # Pipeline and variable configuration for the Azure CD pipeline use case
+    pipeline:
+      pipeline:
+        path: 'pipeline/pipeline.yml'
+      variables:
+        path: 'pipeline/variables.sample.yml'
+        destination: '($ .project $)/pipeline/($ .environment $)/variables.yml'
+    # Configuration of terraform
+    terraform:
+      main:
+        path: 'terraform/azure/main.tf'
+        destination: '($ .project $)/($ .environment $)/terraform/azure/main.tf'
+
+  # gcp:
+  #   name: 'GCP'
+  #   description: 'Deploys common GCP Functions for Cycloid values_ref feature'
+  #   cloud_provider: google
+  #   # Pipeline and variable configuration for the GCP CD pipeline use case
+  #   pipeline:
+  #     pipeline:
+  #       path: 'pipeline/pipeline.yml'
+  #     variables:
+  #       path: 'pipeline/variables.sample.yml'
+  #      destination: '($ .project $)/pipeline/($ .environment $)/variables.yml'
+  #   # Configuration of terraform
+  #   terraform:
+  #     main:
+  #       path: 'terraform/gcp/main.tf'
+  #      destination: '($ .project $)/($ .environment $)/terraform/gcp/main.tf'
