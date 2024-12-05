@@ -33,8 +33,6 @@ resources:
       cyenv: ($ .environment $)
       cyproject: ($ .project $)
       cyorg: ($ .organization_canonical $)
-      cyorg_jwt: ((cycloid_api_key))
-      cycloid_api_url: ($ .api_url $)
 ($ if eq .use_case "aws" $)
       aws_cred: ((aws_cred))
       aws_region: ((aws_region))

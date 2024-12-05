@@ -1,7 +1,7 @@
 # Cycloid
-variable "customer" {}
-variable "env" {}
-variable "project" {}
+variable "cyorg" {}
+variable "cyenv" {}
+variable "cyproject" {}
 
 variable "resource_group_name" {
   type        = string
@@ -33,9 +33,9 @@ variable "extra_tags" {
 locals {
   standard_tags = {
     "cycloid" = "true"
-    env          = var.env
-    project      = var.project
-    customer     = var.customer
+    env          = var.cyenv
+    project      = var.cyproject
+    customer     = var.cyorg
   }
   merged_tags = merge(local.standard_tags, var.extra_tags)
 }

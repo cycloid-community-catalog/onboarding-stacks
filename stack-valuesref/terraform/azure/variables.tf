@@ -1,7 +1,7 @@
 # Cycloid variables
-variable "env" {}
-variable "project" {}
-variable "customer" {}
+variable "cyenv" {}
+variable "cyproject" {}
+variable "cyorg" {}
 
 # Cloud variables
 variable "azure_cred" {
