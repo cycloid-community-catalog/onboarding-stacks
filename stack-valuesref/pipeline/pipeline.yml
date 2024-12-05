@@ -92,7 +92,7 @@ resources:
 
 
 groups:
-- name: overview
+- name: deploy-infra
   jobs:
     - terraform-plan
     - terraform-apply
