@@ -2,9 +2,9 @@ module "function" {
   #####################################
   # Do not modify the following lines #
   source   = "./module-function"
-  project  = var.cyproject
-  env      = var.cyenv
-  customer = var.cyorg
+  cyproject  = var.cyproject
+  cyenv      = var.cyenv
+  cyorg = var.cyorg
   #####################################
 
   #. extra_tags (optional): {}
