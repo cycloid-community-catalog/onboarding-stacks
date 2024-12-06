@@ -94,7 +94,7 @@ use_cases:
       technologies: [pipeline]
       vars:
       - name: "Function Git Repository URL"
-        description: "Public git URL of the function to deploy."
+        description: "Public git URL of the function to deploy. The deployed functions are expected to be located in a folder named after the chosen user case (aws, azure or gcp)."
         key: git_func_url
         widget: auto_complete
         type: string
