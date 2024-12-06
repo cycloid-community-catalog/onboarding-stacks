@@ -13,6 +13,7 @@ resource "azurerm_linux_function_app" "linux_function_app" {
     AzureWebJobsFeatureFlags = "EnableWorkerIndexing"
     FUNCTIONS_WORKER_RUNTIME = "python"
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
+    SUBSCRIPTION_ID = var.subscription_id
   }
 
   site_config {
