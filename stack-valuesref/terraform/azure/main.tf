@@ -16,7 +16,7 @@ module "function" {
 
   #. subscription_id: ''
   #+ The subscription ID that will be queried. This is to create the correct role to the function attached identity.
-  subscription_id = var.azure_cred.subscription_id
+  subscription_id = var.azure_cred["subscription_id"]
 
   #. resource_group_name: ''
   #+ The name of the existing resource group where the resources will be deployed
