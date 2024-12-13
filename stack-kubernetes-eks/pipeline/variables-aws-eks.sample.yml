@@ -1,0 +1,31 @@
+################################################################################
+# Terraform variables
+################################################################################
+
+# "Terraform version to use."
+terraform_version:
+
+# "Amazon AWS access key for Terraform."
+aws_access_key:
+
+# "Amazon AWS secret key for Terraform."
+aws_secret_key:
+
+aws_default_region:
+
+### Terraform variables provided by stackforms
+node_instance_type: ""
+node_desired_size: ""
+node_max_size: ""
+subnet_ip_digit: ""
+node_disk_size: ""
+
+################################################################################
+# Cycloid/Pipeline variables
+################################################################################
+# kubectl version used to run extra cmd. Using alpine/k8s image.
+# https://hub.docker.com/r/alpine/k8s/tags?page=1
+kubectl_version:
+
+# disable by default the advance options on the forms
+advanced_opt: false
