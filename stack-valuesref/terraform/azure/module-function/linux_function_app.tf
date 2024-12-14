@@ -20,6 +20,7 @@ resource "azurerm_linux_function_app" "linux_function_app" {
     application_stack {
       python_version = var.python_version
     }
+    elastic_instance_minimum = 1
   }
 
   identity {
