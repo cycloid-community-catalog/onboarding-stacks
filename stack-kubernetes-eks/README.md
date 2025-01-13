@@ -12,7 +12,6 @@ It creates:
   * **fluent bit**: forward k8s logs to cloudwatch
   * **nginx ingress controller**: redirect traffic to the right service
   * **metrics-server**: collects CPU/memory metrics used by pod HPA
-  * **prometheus**: monitors the Kubernetes cluster
 
 ### How use kubectl ?
 

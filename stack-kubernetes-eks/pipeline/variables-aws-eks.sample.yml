@@ -1,31 +1,40 @@
-################################################################################
-# Terraform variables
-################################################################################
+#
+# Cloud Provider
+#
 
-# "Terraform version to use."
-terraform_version:
+#. aws_access_key (required): ((aws.access_key))
+#+ Amazon access key for Terraform and accessing your EKS cluster.
+aws_access_key: ((aws.access_key))
 
-# "Amazon AWS access key for Terraform."
-aws_access_key:
+#. aws_secret_key (required): ((aws.secret_key))
+#+ Amazon secret key for Terraform and accessing your EKS cluster.
+aws_secret_key: ((aws.secret_key))
 
-# "Amazon AWS secret key for Terraform."
-aws_secret_key:
+#. aws_region (required): eu-west-1
+#+ AWS region to use for Terraform.
+aws_region: eu-west-1
 
-aws_default_region:
 
-### Terraform variables provided by stackforms
-node_instance_type: ""
-node_desired_size: ""
-node_max_size: ""
-subnet_ip_digit: ""
-node_disk_size: ""
+#
+# Default variables
+#
+
+#. terraform_version (required): '1.8.3'
+#+ terraform version used to execute your code.
+terraform_version: '1.8.3'
 
 ################################################################################
 # Cycloid/Pipeline variables
 ################################################################################
 # kubectl version used to run extra cmd. Using alpine/k8s image.
 # https://hub.docker.com/r/alpine/k8s/tags?page=1
-kubectl_version:
+kubectl_version: "1.31.4"
 
-# disable by default the advance options on the forms
-advanced_opt: false
+### Terraform variables provided by StackForms
+managed_domain: "cycloid.io"
+node_instance_type: ""
+node_desired_size: ""
+node_max_size: ""
+subnet_ip_digit: ""
+node_disk_size: ""
+

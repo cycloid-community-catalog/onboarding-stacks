@@ -2,29 +2,13 @@
 # Stackforms: documentation at https://docs.cycloid.io/deploy/stackforms/feature.html
 ################################################################################
 
-# YAML anchors
-shared:
-- &global
-  name: Global
-  groups:
-  - name: Global
-    technologies: [pipeline]
-    vars:
-    - name: Display advanced options
-      description: Check to see advanced options to configure your project.
-      key: advanced_opt
-      widget: switch
-      type: boolean
-      default: false
-
 version: "2"
 use_cases:
-- name: cycloid-common
+- name: default
   sections:
-  - name: Advanced (optional)
+  - name: AWS EKS
     groups:
-    - name: Terraform
-      condition: advanced_opt==true
+    - name: AWS Account and Region
       technologies: [pipeline]
       vars:
         - name: "AWS access key"
@@ -40,24 +24,22 @@ use_cases:
           type: string
           default: "((cycloid-admin.secret_key))"
         - name: "Aws region"
-          key: aws_default_region
+          key: aws_region
           type: string
           widget: auto_complete
           values: ["eu-north-1", "ap-south-1", "eu-west-3", "eu-west-2", "eu-west-1", "ap-northeast-2", "ap-northeast-1", "sa-east-1", "ca-central-1", "ap-southeast-1", "ap-southeast-2", "eu-central-1", "us-east-1", "us-east-2", "us-west-1", "us-west-2"]
           default: "eu-west-1"
-        - name: "Terraform version"
-          description: "Terraform version to use."
-          key: terraform_version
-          widget: simple_text
-          type: string
-          default: "1.8.2"
 
-- name: aws_eks
-  sections:
-  - *global
+    - name: VPC
+      technologies: [pipeline]
+      vars:
+      - name: "VPC second digit to use in the /16"
+        description: "Second digit to use in the CIDR 10.X.0.0/16 (Example: enter 0 to use 10.0.0.0/16 in a prod environment and enter 1 to use 10.1.0.0/16 in a staging environment)."
+        key: subnet_ip_digit
+        widget: simple_text
+        type: string
+        required: true
 
-  - name: EKS control plane
-    groups:
     - name: Global
       technologies: [terraform]
       vars:
@@ -66,19 +48,9 @@ use_cases:
         key: module.eks.cluster_version
         widget: simple_text
         type: string
-        default: "1.29"
+        default: "1.31"
 
-    - name: VPC
-      technologies: [pipeline]
-      vars:
-      - name: "VPC ip digite to generate the /16"
-        description: "Digite use by the CIDR 10.X.0.0/16. (Example: **prod**: **0** = 10.0.0.0/16, **staging**: **1** = 10.1.0.0/16, **dev**: **2** = 10.2.0.0/16) (Should change on **prod**)"
-        key: subnet_ip_digit
-        widget: simple_text
-        type: string
-        required: true
-
-    - name: Node-pipeline
+    - name: Kubernetes Cluster
       technologies: [pipeline]
       vars:
       - name: "Kubectl version"
@@ -86,9 +58,17 @@ use_cases:
         key: kubectl_version
         widget: simple_text
         type: string
-        default: "1.29.2"
+        default: "1.31.4"
+
+      - name: "Domain name"
+        description: "Domain used to configure cert & ingress."
+        key: managed_domain
+        widget: simple_text
+        type: string
+        default: "demo.cycloid.io"
+
       - name: "EKS Node type"
-        description: "Type of Aws EC2 instance for nodes. (Should change on **prod**)"
+        description: "Type of Aws EC2 instance for EKS nodes."
         key: node_instance_type
         widget: auto_complete
         type: string
@@ -102,6 +82,7 @@ use_cases:
             - "c6a.large"
             - "c6a.xlarge"
             - "c6a.2xlarge"
+
       - name: "EKS node disk size"
         unit: Go
         description: "Disk size of Aws EKS nodes."
@@ -132,12 +113,6 @@ use_cases:
     - name: Global
       technologies: [pipeline]
       vars:
-      - name: "Create Prometheus server ?"
-        description: "If true, deploy Prometheus server."
-        key: prometheus_enabled
-        widget: switch
-        type: boolean
-        default: false
       - name: "Create fluent-bit server ?"
         description: "If true, deploy fluent-bit server."
         key: fluentbit_enabled

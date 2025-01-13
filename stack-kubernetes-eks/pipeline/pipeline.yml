@@ -1,22 +1,27 @@
-################################################################################
-# Pipeline - More info here: https://docs.cycloid.io/manage/pipeline/pipeline.html
-################################################################################
-
 # YAML anchors
 shared:
-  # Task : sync and merge with rsync 2 repositories. Used to merge stack and config
-  - &merge-stack-and-config
-    platform: linux
-    image_resource:
-      type: registry-image
-      source:
-        repository: cycloid/cycloid-toolkit
-        tag: "v8.3"
-    run:
-      path: /usr/bin/merge-stack-and-config
-    outputs:
-    - name: merged-stack
-      path: "merged-stack"
+# Task : sync and merge with rsync 2 rep. Used to merge stack and config
+- &merge-stack-and-config
+  platform: linux
+  image_resource:
+    type: registry-image
+    source:
+      repository: cycloid/cycloid-toolkit
+      tag: "v8.3"
+  run:
+    path: /usr/bin/merge-stack-and-config
+  outputs:
+  - name: merged-stack
+    path: "merged-stack"
+
+
+resource_types:
+- name: terraform
+  type: registry-image
+  source:
+    repository: cycloid/terraform-resource
+    tag: ((terraform_version))
+    
 
 # group jobs to organize the view in console
 groups:
@@ -27,28 +32,10 @@ groups:
   - kubernetes-configs
   - access
 
-# - name: workaround
-#   jobs:
-#   - kubernetes-vpccni-workaround
-
 - name: destroy
   jobs:
   - terraform-destroy
 
-# resource types not included by default in concourse
-resource_types:
-- name: terraform
-  type: registry-image
-  source:
-    repository: cycloid/terraform-resource
-    tag: ((terraform_version))
-
-# Workaround to trigger job only once when pipeline created
-- name: static
-  type: registry-image
-  source:
-    repository: ktchen14/static-resource
-    tag: latest
 
 resources:
 # the infrastucture tfstate stored in s3
@@ -65,19 +52,20 @@ resources:
       env: ($ .environment $)
       project: ($ .project $)
       organization: ($ .organization_canonical $)
-      aws_region: ((aws_default_region))
+      aws_region: ((aws_region))
+      managed_domain: ((managed_domain))
       node_instance_type: ((node_instance_type))
       node_desired_size: ((node_desired_size))
       node_max_size: ((node_max_size))
       subnet_ip_digit: ((subnet_ip_digit))
       node_disk_size: ((node_disk_size))
-      prometheus_enabled: ((prometheus_enabled))
       fluentbit_enabled: ((fluentbit_enabled))
     env:
       AWS_ACCESS_KEY_ID: ((aws_access_key))
       AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
 
-- name: git_stack
+# The Terraform stack (will be merged with the config)
+- name: git_stack-terraform
   type: git
   icon: github-circle
   source:
@@ -86,14 +74,15 @@ resources:
     ($- if eq .scs_cred_type "basic_auth" $)
     username: ((($ .scs_cred_path $).username))
     password: ((($ .scs_cred_path $).password))
-    ($- else $)
+    ($- end $)
+    ($- if eq .scs_cred_type "ssh" $)
     private_key: ((($ .scs_cred_path $).ssh_key))
     ($- end $)
     paths:
-      - terraform/aws-eks/*
+      - ($ .stack_path $)/terraform/*
 
 # The Terraform config (will be merged with the stack)
-- name: git_config
+- name: git_config-terraform
   type: git
   icon: github-circle
   source:
@@ -102,82 +91,87 @@ resources:
     ($- if eq .cr_cred_type "basic_auth" $)
     username: ((($ .cr_cred_path $).username))
     password: ((($ .cr_cred_path $).password))
-    ($- else $)
+    ($- end $)
+    ($- if eq .cr_cred_type "ssh" $)
     private_key: ((($ .cr_cred_path $).ssh_key))
     ($- end $)
     paths:
       - ($ .project $)/terraform/($ .environment $)/*
 
+
 jobs:
-
 - name: terraform-plan
-  serial: True
+  serial: true
   max_in_flight: 1
   build_logs_to_retain: 10
   plan:
-    - do:
-      - get: git_stack
-        params: {depth: 1}
-        trigger: true
-      - get: git_config
-        params: {depth: 1}
+    - in_parallel:
+      - get: git_stack-terraform
         trigger: true
 
-      - task: merge-stack-and-config
-        config:
-          <<: *merge-stack-and-config
-          inputs:
-          - name: git_config
-            path: "config"
-          - name: git_stack
-            path: "stack"
-        params:
-          CONFIG_PATH: ((config_terraform_path))
-          STACK_PATH: terraform/aws-eks
+      - get: git_config-terraform
+        trigger: true
 
-      - put: tfstate
-        params:
-          plan_only: true
-          terraform_source: merged-stack/
+    - task: merge-stack-and-config
+      config:
+        <<: *merge-stack-and-config
+        inputs:
+        - name: git_config-terraform
+          path: "config"
+        - name: git_stack-terraform
+          path: "stack"
+      params:
+        CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
+        STACK_PATH: ($ .stack_path $)/terraform
 
+    - put: tfstate
+      params:
+        plan_only: true
+        terraform_source: merged-stack/
+
+
+  # Merge and trigger an apply whenever there is a terraform plan passed successfully
 - name: terraform-apply
-  serial: True
+  serial: true
   max_in_flight: 1
   build_logs_to_retain: 10
   plan:
-    - do:
-      - get: git_stack
+    - in_parallel:
+      - get: git_stack-terraform
         trigger: false
         passed:
           - terraform-plan
-      - get: git_config
+
+      - get: git_config-terraform
         trigger: false
         passed:
           - terraform-plan
+
       - get: tfstate
-        trigger: false
+        trigger: true
         passed:
           - terraform-plan
 
-      - task: merge-stack-and-config
-        config:
-          <<: *merge-stack-and-config
-          inputs:
-          - name: git_config
-            path: "config"
-          - name: git_stack
-            path: "stack"
-        params:
-          CONFIG_PATH: ((config_terraform_path))
-          STACK_PATH: terraform/aws-eks
+    - task: merge-stack-and-config
+      config:
+        <<: *merge-stack-and-config
+        inputs:
+        - name: git_config-terraform
+          path: "config"
+        - name: git_stack-terraform
+          path: "stack"
+      params:
+        CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
+        STACK_PATH: ($ .stack_path $)/terraform
 
-      - put: tfstate
-        params:
-          plan_run: true
-          terraform_source: merged-stack/
+    - put: tfstate
+      params:
+        plan_run: true
+        terraform_source: merged-stack/
+
 
 - name: kubernetes-configs
-  serial: True
+  serial: true
   max_in_flight: 1
   build_logs_to_retain: 10
   plan:
@@ -251,11 +245,6 @@ jobs:
               pip3 install awscli --break-system-packages
               aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig  --name ${CLUSTER_NAME}
 
-              # kubectl set env daemonset aws-node -n kube-system ENABLE_PREFIX_DELEGATION=true
-
-              # enable annotation used to monitor pod from this NS
-              kubectl annotate namespace kube-system prometheus/monitoring="false" --overwrite
-
               # Do not use gp2 as default storageClass
               kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
           inputs:
@@ -265,58 +254,6 @@ jobs:
             AWS_ACCESS_KEY_ID: ((aws_access_key))
             AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
 
-# - name: kubernetes-vpccni-workaround
-#   serial: True
-#   max_in_flight: 1
-#   build_logs_to_retain: 10
-#   plan:
-#     - do:
-#       - get: tfstate
-#         trigger: false
-#         passed:
-#           - kubernetes-configs
-#
-#       - get: pipeline-first-trigger
-#         trigger: true
-#
-#       - task: exec-cmd
-#         config:
-#           platform: linux
-#           image_resource:
-#             type: registry-image
-#             source:
-#               repository: alpine/k8s
-#               tag: ((kubectl_version))
-#           run:
-#             path: /bin/bash
-#             args:
-#             - -ec
-#             - |
-#               DIR=${PWD}
-#
-#               export AWS_DEFAULT_REGION="$(jq -r .aws_region tfstate/metadata)"
-#               pip3 install awscli --break-system-packages
-#               aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig  --name ${CLUSTER_NAME}
-#
-#               # VPC CNI is installed by aws_eks_addon. The issue is we can't congifure ENABLE_PREFIX_DELEGATION on addon
-#               # https://github.com/aws/amazon-vpc-cni-k8s/issues/1571#issuecomment-895446721
-#               # https://github.com/aws/containers-roadmap/issues/1333
-#               # Helm release could be used but we would avoid managing it.
-#               # So here is a woraround until we can set ENABLE_PREFIX_DELEGATION on addon
-#               # Delete all pods created before ENABLE_PREFIX_DELEGATION defined
-#               for line in $(kubectl get pod -A -o json 2> /dev/null | jq -r '.items[].metadata | "\(.namespace)/\(.name)"');do
-#                 pod=${line#*/}
-#                 ns=${line%/*}
-#                 echo "Delete POD: $ns / $pod"
-#                 kubectl -n $ns delete pod $pod
-#               done
-#
-#           inputs:
-#           - name: tfstate
-#           params:
-#             CLUSTER_NAME: ($ .project $)-($ .environment $)
-#             AWS_ACCESS_KEY_ID: ((aws_access_key))
-#             AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
 
 # manage/display access
 - name: access
@@ -363,8 +300,6 @@ jobs:
             echo -e "${Yellow}  CIDR:${NC} $(jq -r .vpc_cidr_block tfstate/metadata)"
             echo -e "${Yellow}  NAT IPs:${NC} $(jq -r .nat_public_ips tfstate/metadata)"
             echo ""
-            echo -e "${Blue}# Access Monitoring"
-            echo -e "${Yellow}  Access:${NC} $(jq -r .monitoring_access tfstate/metadata)"
             echo -e "${Blue}# Access K8S Basic Auth infra"
             echo -e "${Yellow}  BasicAuth User:${NC} $(jq -r .k8s_secret_infra_basic_auth_user tfstate/metadata)"
             echo -e "${Yellow}  BasicAuth Password:${NC} $(jq -r .k8s_secret_infra_basic_auth_password tfstate/metadata)"
@@ -374,99 +309,99 @@ jobs:
         params:
           INFRA_NAME: ($ .project $)-($ .environment $)
 
+
+# Destroy the infrastructure
 - name: terraform-destroy
-  serial: True
   max_in_flight: 1
   build_logs_to_retain: 10
   plan:
-    - do:
-        - get: git_stack
-          params: {depth: 1}
-          trigger: false
-          passed:
-            - terraform-apply
-        - get: git_config
-          params: {depth: 1}
-          trigger: false
-          passed:
-            - terraform-apply
-        - get: tfstate
-          trigger: false
-          passed:
-            - terraform-apply
-        - task: merge-stack-and-config
-          config:
-            <<: *merge-stack-and-config
-            inputs:
-            - name: git_config
-              path: "config"
-            - name: git_stack
-              path: "stack"
-          params:
-            CONFIG_PATH: ((config_terraform_path))
-            STACK_PATH: terraform/aws-eks
+    - in_parallel:
+      - get: git_stack-terraform
+        trigger: false
+        passed:
+          - terraform-plan
 
-        - task: remove-k8s-dependencies
-          config:
-            platform: linux
-            image_resource:
-              type: registry-image
-              source:
-                repository: alpine/k8s
-                tag: ((kubectl_version))
-            run:
-              path: /bin/bash
-              args:
-              - -ec
-              - |
-                DIR=${PWD}
+      - get: git_config-terraform
+        trigger: false
+        passed:
+          - terraform-plan
 
-                export AWS_DEFAULT_REGION="$(jq -r .aws_region tfstate/metadata)"
-                pip3 install awscli --break-system-packages
-                aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig  --name ${CLUSTER_NAME}
+      - get: tfstate
+        trigger: false
 
-                # Delete applications namespaces
-                export IGNORE_NS='.*-mgmt|infra|default|kube-.*'
-                for ns in $(kubectl get ns -o json | jq -r .items[].metadata.name | grep -Ev ${IGNORE_NS});do
-                  echo "Delete Namespace: $ns"
-                  kubectl delete ns $ns
-                done
+    - task: merge-stack-and-config
+      config:
+        <<: *merge-stack-and-config
+        inputs:
+        - name: git_config-terraform
+          path: "config"
+        - name: git_stack-terraform
+          path: "stack"
+      params:
+        CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
+        STACK_PATH: ($ .stack_path $)/terraform
 
-                # Delete ingress controller ALB
-                # Currently ALB
-                for svc in $(kubectl -n infra get svc ingress-nginx-controller -o json 2> /dev/null | jq -r .metadata.name);do
-                  echo "Delete Service: $svc"
-                  kubectl -n infra delete svc $svc
-                done
+    - task: remove-k8s-dependencies
+      config:
+        platform: linux
+        image_resource:
+          type: registry-image
+          source:
+            repository: alpine/k8s
+            tag: ((kubectl_version))
+        run:
+          path: /bin/bash
+          args:
+          - -ec
+          - |
+            DIR=${PWD}
 
-                # Delete deployment to release PVC
-                # Currently only prometheus
-                for deploy in $(kubectl -n infra get deploy kube-prometheus-stack-operator -o json 2> /dev/null | jq -r .metadata.name);do
-                  echo "Delete Deployment: $deploy"
-                  kubectl -n infra delete deploy $deploy
-                done
-                for statefulset in $(kubectl -n infra get statefulset prometheus-kube-prometheus-stack-prometheus -o json 2> /dev/null | jq -r .metadata.name);do
-                  echo "Delete Deployment: $statefulset"
-                  kubectl -n infra delete statefulset $statefulset
-                done
+            export AWS_DEFAULT_REGION="$(jq -r .aws_region tfstate/metadata)"
+            pip3 install awscli --break-system-packages
+            aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig  --name ${CLUSTER_NAME}
 
-                # Delete extra PVC
-                for line in $(kubectl  get pvc -A -o json 2> /dev/null | jq -r '.items[].metadata | "\(.namespace)/\(.name)"');do
-                  pvc=${line#*/}
-                  ns=${line%/*}
-                  echo "Delete PVC: $ns / $pvc"
-                  kubectl -n $ns delete pvc $pvc
-                done
-            inputs:
-            - name: tfstate
-            params:
-              CLUSTER_NAME: ($ .project $)-($ .environment $)
-              AWS_ACCESS_KEY_ID: ((aws_access_key))
-              AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
+            # Delete applications namespaces
+            # export IGNORE_NS='.*-mgmt|infra|default|kube-.*'
+            # for ns in $(kubectl get ns -o json | jq -r .items[].metadata.name | grep -Ev ${IGNORE_NS});do
+            #   echo "Delete Namespace: $ns"
+            #   kubectl delete ns $ns
+            # done
 
-        - put: tfstate
-          params:
-            action: destroy
-            terraform_source: merged-stack/
-          get_params:
-            action: destroy
+            # Delete ingress controller ALB
+            # Currently ALB
+            for svc in $(kubectl -n infra get svc ingress-nginx-controller -o json 2> /dev/null | jq -r .metadata.name);do
+              echo "Delete Service: $svc"
+              kubectl -n infra delete svc $svc
+            done
+
+            # Delete deployment to release PVC
+            # Currently only prometheus
+            for deploy in $(kubectl -n infra get deploy kube-prometheus-stack-operator -o json 2> /dev/null | jq -r .metadata.name);do
+              echo "Delete Deployment: $deploy"
+              kubectl -n infra delete deploy $deploy
+            done
+            for statefulset in $(kubectl -n infra get statefulset prometheus-kube-prometheus-stack-prometheus -o json 2> /dev/null | jq -r .metadata.name);do
+              echo "Delete Deployment: $statefulset"
+              kubectl -n infra delete statefulset $statefulset
+            done
+
+            # Delete extra PVC
+            for line in $(kubectl  get pvc -A -o json 2> /dev/null | jq -r '.items[].metadata | "\(.namespace)/\(.name)"');do
+              pvc=${line#*/}
+              ns=${line%/*}
+              echo "Delete PVC: $ns / $pvc"
+              kubectl -n $ns delete pvc $pvc
+            done
+        inputs:
+        - name: tfstate
+        params:
+          CLUSTER_NAME: ($ .project $)-($ .environment $)
+          AWS_ACCESS_KEY_ID: ((aws_access_key))
+          AWS_SECRET_ACCESS_KEY: ((aws_secret_key))
+
+    - put: tfstate
+      params:
+        action: destroy
+        terraform_source: merged-stack/
+      get_params:
+        action: destroy
