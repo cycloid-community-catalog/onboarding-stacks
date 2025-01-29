@@ -26,34 +26,24 @@ resource "aws_s3_bucket_public_access_block" "app" {
 
 resource "aws_s3_bucket_policy" "app" {
   bucket = aws_s3_bucket_public_access_block.app.bucket
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = "*"
-        Action = "s3:GetObject"
-        Resource = "${aws_s3_bucket_public_access_block.app.bucket}/*"
-      }
-    ]
-  })
+  policy = data.aws_iam_policy_document.app.json
 }
 
-# data "aws_iam_policy_document" "app" {
-#   statement {
-#     sid = "PublicReadGetObject"
+data "aws_iam_policy_document" "app" {
+  statement {
+    sid = "PublicReadGetObject"
     
-#     principals {
-#       type        = "*"
-#       identifiers = ["*"]
-#     }
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
 
-#     actions = [
-#       "s3:GetObject"
-#     ]
+    actions = [
+      "s3:GetObject"
+    ]
 
-#     resources = [
-#       "${aws_s3_bucket.app.arn}/*"
-#     ]
-#   }
-# }
+    resources = [
+      "${aws_s3_bucket.app.arn}/*"
+    ]
+  }
+}
