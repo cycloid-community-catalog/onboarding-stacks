@@ -1,0 +1,61 @@
+---
+# Configuration of the Cycloid stack
+version: '3'
+name: 'VueJS application’s lifecycle (IDP)'
+canonical: 'stack-idp-vuejs'
+description: |
+  Allows your developers to own a VueJS application’s lifecycle end to end, managing development, configuration, testing to production deployment without needing to be experts in each domain. Each open PR gets a test environment on AWS.
+keywords:
+  - 'VueJS'
+  - 'IDP'
+  - 'Internal Developer Platform'
+  - 'developer'
+  - 'application'
+  - 'provider:aws'
+author: 'Cycloid'
+image: |
+  https://cycloid-demo-stacks-logo.s3.eu-west-1.amazonaws.com/vuejs.png
+
+config:
+  scaffold:
+    name: 'Scaffold a New VueJS Application'
+    description: 'Create a VueJS application from a template in a new GitHub repository and create new Cycloid pipelines to manage application’s lifecycle end to end.'
+    # Configuration of the CI pipeline
+    pipeline:
+      pipeline:
+        path: 'pipeline/scaffold.yml'
+      variables:
+        path: 'pipeline/variables-scaffold.sample.yml'
+        destination: '($ .project $)/pipeline/($ .environment $)/variables.yml'
+    # Configuration of terraform to setup the infrastructure
+    terraform:
+      scaffold:
+        path: 'terraform-scaffold/main.tf.sample'
+        destination: '($ .project $)/terraform-scaffold/($ .environment $)/main.tf'
+
+  pull_requests:
+    name: 'Pull Requests'
+    description: 'Pipeline handling pull requests tests and feature branch pipeline creation.'
+    # Configuration of the CI pipeline
+    pipeline:
+      pipeline:
+        path: 'pipeline/pr.yml'
+      variables:
+        path: 'pipeline/variables-pr.sample.yml'
+        destination: '($ .project $)/pipeline/($ .environment $)/variables.yml'
+
+  deploy:
+    name: 'Deploy Application'
+    description: 'Pipeline used to deploy application.'
+    # Configuration of the CI pipeline
+    pipeline:
+      pipeline:
+        path: 'pipeline/deploy.yml'
+      variables:
+        path: 'pipeline/variables-deploy.sample.yml'
+        destination: '($ .project $)/pipeline/($ .environment $)/variables.yml'
+    # Configuration of terraform to setup the infrastructure
+    terraform:
+      main:
+        path: 'terraform/main.tf.sample'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'

@@ -1,0 +1,35 @@
+
+#
+# GitHub
+#
+
+#. github_pat (required): ''
+#+ GitHub Personal Access Token allowing to manage repositories and user SSH keys. We will create a repository with stacks and config branches as well as an SSH public key stored as Cycloid credential to connect to it.
+github_pat: "((github-pat.key))"
+
+
+#
+# Vue.js
+#
+
+#. vuejs_feature_flags (required): []
+#+ Feature flag to scaffold new Vue.js project.
+vuejs_feature_flags: []
+
+
+#
+# Cycloid
+#
+
+#. cyorg_jwt (required): ((admin-api-key.key))
+#+ Cycloid organization API key. Needs permission to create credentials.
+cyorg_jwt: ((admin-api-key.key))
+
+
+#
+# Default variables
+#
+
+#. terraform_version (required): '1.8.5'
+#+ terraform version used to execute your code.
+terraform_version: '1.8.5'

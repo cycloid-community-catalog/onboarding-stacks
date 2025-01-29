@@ -1,0 +1,291 @@
+# YAML anchors
+shared:
+# Task : sync and merge with rsync 2 rep. Used to merge stack and config
+- &merge-stack-and-config
+  platform: linux
+  image_resource:
+    type: registry-image
+    source:
+      repository: cycloid/cycloid-toolkit
+      tag: latest
+  run:
+    path: /usr/bin/merge-stack-and-config
+
+
+resource_types:
+- name: terraform
+  type: registry-image
+  source:
+    repository: cycloid/terraform-resource
+    tag: ((terraform_version))
+
+
+resources:
+- name: tfstate
+  type: terraform
+  icon: terraform
+  source:
+    env_name: ($ .environment $)
+    backend_type: http
+    backend_config:
+      address: '($ .api_url $)/inventory?jwt=($ .inventory_jwt $)'
+    vars:
+      aws_cred: ((aws_cred))
+      aws_region: ((aws_region))
+      cyenv: ($ .environment $)
+      cyproject: ($ .project $)
+      cyorg: ($ .organization_canonical $)
+
+
+# The Terraform stack (will be merged with the config)
+- name: git_stack-terraform
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .scs_url $)
+    branch: ($ .scs_branch $)
+    ($- if eq .scs_cred_type "basic_auth" $)
+    username: ((($ .scs_cred_path $).username))
+    password: ((($ .scs_cred_path $).password))
+    ($- end $)
+    ($- if eq .scs_cred_type "ssh" $)
+    private_key: ((($ .scs_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .stack_path $)/terraform/*
+
+# The Terraform config (will be merged with the stack)
+- name: git_config-terraform
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .cr_url $)
+    branch: ($ .cr_branch $)
+    ($- if eq .cr_cred_type "basic_auth" $)
+    username: ((($ .cr_cred_path $).username))
+    password: ((($ .cr_cred_path $).password))
+    ($- end $)
+    ($- if eq .cr_cred_type "ssh" $)
+    private_key: ((($ .cr_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .project $)/terraform/($ .environment $)/*
+
+# The git for the application code
+- name: git_code
+  type: git
+  icon: github-circle
+  check_every: 5s
+  source:
+    uri: "git@github.com:cycloid-demo/($ .organization_canonical $)-($ .project $).git"
+    branch: ((git_code_branch))
+    private_key: ((($ .project $).ssh_key))
+    fetch_tags: true
+
+
+groups:
+- name: overview
+  jobs:
+    - create-infra
+    - build-and-deploy-app
+
+- name: destroy
+  jobs:
+    - destroy-infra
+
+
+jobs:
+  - name: create-infra
+    serial: true
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-terraform
+          trigger: true
+
+        - get: git_config-terraform
+          trigger: true
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-terraform
+            path: "config"
+          - name: git_stack-terraform
+            path: "stack"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+        params:
+          CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
+          STACK_PATH: ($ .stack_path $)/terraform
+
+      - put: tfstate
+        params:
+          terraform_source: merged-stack/
+
+
+  # Deploy the application
+  - name: build-and-deploy-app
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_code
+          trigger: true
+
+        - get: tfstate
+          trigger: true
+          passed:
+            - create-infra
+
+      - task: build-app
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: node
+              tag: latest
+          outputs:
+          - name: git_code
+          run:
+            path: /bin/bash
+            args:
+            - -ecx
+            - |
+              cd git_code
+              npm install --no-progress
+              npm run build
+
+              echo "Application build completed."
+          inputs:
+          - name: git_code
+
+      - task: deploy-app
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: amazon/aws-cli
+              tag: latest
+          inputs:
+          - name: git_code
+          run:
+            path: /bin/bash
+            args:
+              - -ec
+              - |
+                yum install jq -y >/dev/null
+                export AWS_ACCESS_KEY_ID=$(echo ${CY_AWS_CRED} | jq -r .access_key)
+                export AWS_SECRET_ACCESS_KEY=$(echo ${CY_AWS_CRED} | jq -r .secret_key)
+                export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+                aws s3 cp git_code/dist s3://${BUCKET_NAME}/ --recursive
+
+                echo "Application deployment completed."
+        params:
+          CY_AWS_CRED: '((aws_cred))'
+          AWS_DEFAULT_REGION: '((aws_region))'
+          BUCKET_NAME: '($ .organization_canonical $)-($ .project $)-($ .environment $)'
+
+      - task: publish-comment
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+              tag: latest
+          inputs:
+          - name: tfstate
+          run:
+            path: /bin/bash
+            args:
+              - -ecx
+              - |
+                export GH_PR=$(echo $ENV | cut -c 3-)
+                export APP_URL=$(jq  -r .website_endpoint tfstate/metadata)
+                export MESSAGE="A test environment have been deployed under http://$APP_URL"
+                curl \
+                  -X POST \
+                  -H "Accept: application/vnd.github.v3+json" \
+                  -H "Authorization: Bearer $GH_TOKEN" \
+                  https://api.github.com/repos/cycloid-demo/$GH_REPO/issues/$GH_PR/comments \
+                  -d '{"body":"'"$MESSAGE"'"}'
+
+                echo "GitHub PR comment published:"
+                echo $MESSAGE
+        params:
+          GH_TOKEN: ((github-pat.key))
+          GH_REPO: ($ .organization_canonical $)-($ .project $)
+          ENV: ($ .environment $)
+
+
+  # Destroy the infrastructure
+  - name: destroy-infra
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-terraform
+          trigger: false
+
+        - get: git_config-terraform
+          trigger: false
+
+        - get: tfstate
+          trigger: false
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-terraform
+            path: "config"
+          - name: git_stack-terraform
+            path: "stack"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+        params:
+          CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
+          STACK_PATH: ($ .stack_path $)/terraform
+
+      - put: tfstate
+        params:
+          action: destroy
+          terraform_source: merged-stack/
+        get_params:
+          action: destroy
+
+      - task: pause-pipeline
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+              tag: latest
+          run:
+            path: sh
+            args:
+              - -ec
+              - |
+                # If not already created, create a new env for this pull request
+                cy pipeline pause \
+                  --org $CY_ORG \
+                  --project ${PROJECT} \
+                  --env "${ENV}"
+
+                # Construct the github message
+                echo "The pipeline have been paused for PR ${GH_PR}"
+        params:
+          PROJECT: ($ .project $)
+          ENV: ($ .environment $)
+          CY_ORG: ($ .organization_canonical $)
+          CY_API_URL: ($ .api_url $)
+          CY_API_TOKEN: ((admin-api-key.key))
+          INSECURE: "true"

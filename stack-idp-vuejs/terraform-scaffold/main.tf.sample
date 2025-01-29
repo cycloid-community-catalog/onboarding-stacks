@@ -1,0 +1,27 @@
+module "cycloid-cred-git" {
+  #####################################
+  # Do not modify the following lines #
+  source    = "./module-cycloid-cred-git"
+  cyorg     = var.cyorg
+  cyproject = var.cyproject
+  cyenv     = var.cyenv
+  #####################################
+
+  #. git_ssh_url: ''
+  #+ URL of a code git repository
+  #git_ssh_url = github_repository.scaffold.ssh_clone_url
+
+  #. git_branch_prod: 'main'
+  #+ Branch of a code git repository for the prod platform
+  #git_branch_prod = var.git_branch_prod
+
+  #. git_branch_staging: 'develop'
+  #+ Branch of a code git repository for the staging platform
+  #git_branch_staging = var.git_branch_staging
+
+  #. git_ssh_key: ''
+  #+ Git repository SSH private key for stacks and config
+  git_ssh_key = tls_private_key.github_generated_key.private_key_openssh
+
+  depends_on = [ github_repository.scaffold ]
+}

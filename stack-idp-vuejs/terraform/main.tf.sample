@@ -1,0 +1,9 @@
+module "s3" {
+  #####################################
+  # Do not modify the following lines #
+  source    = "./module-s3"
+  cyorg     = var.cyorg
+  cyproject = var.cyproject
+  cyenv     = var.cyenv
+  #####################################
+}

@@ -1,0 +1,8 @@
+
+#
+# GitHub
+#
+
+#. git_branch (required): 'develop'
+#+ Git base branch to monitor for new PRs
+git_branch: "develop"

@@ -1,0 +1,142 @@
+resource_types:
+  - name: github-pr
+    type: registry-image
+    source:
+      repository: seraf/github-pr-resource
+      tag: latest
+
+resources:
+  # Github
+  - name: github_open_pr
+    type: github-pr
+    icon: github-circle
+    check_every: 5s
+    source:
+      disable_ci_skip: false
+      repository: "cycloid-demo/($ .organization_canonical $)-($ .project $)"
+      base_branch: "staging"
+      states: ["OPEN"]
+      access_token: ((github-pat.key))
+
+  - name: github_merged_pr
+    type: github-pr
+    icon: github-circle
+    check_every: 5s
+    source:
+      disable_ci_skip: false
+      repository: "cycloid-demo/($ .organization_canonical $)-($ .project $)"
+      base_branch: "staging"
+      states: ["MERGED", "CLOSED"]
+      access_token: ((github-pat.key))
+
+groups:
+  - name: monitor_pr
+    jobs:
+      - create-feature-env
+      - destroy-feature-env
+
+jobs:
+  # Create feature environment for the pull-request
+  - name: create-feature-env
+    max_in_flight: 1
+    build_logs_to_retain: 20
+    plan:
+      - in_parallel:
+        - get: github_open_pr
+          trigger: true
+
+      - task: create-env
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+              tag: latest
+          inputs:
+            - name: github_open_pr
+          run:
+            path: sh
+            args:
+              - -ec
+              - |
+                # Gather information to create a feature-branch env
+                export GH_PR=$(cat github_open_pr/.git/resource/metadata.json | jq '.[] | select( .name | contains("pr")) | .value' -r)
+                export GH_BRANCH=$(cat github_open_pr/.git/resource/metadata.json | jq '.[] | select( .name | contains("head_name")) | .value' -r)
+
+                # If not already created, create a new env for this pull request
+                cy project create-stackforms-env \
+                  --org $CY_ORG \
+                  --project ${PROJECT} \
+                  --env "pr${GH_PR}" --use-case "deploy" \
+                  -V "config.github.git_code_branch=${GH_BRANCH}" \
+                  --update
+
+                # Construct the github message
+                echo "A dedicated Cycloid env have been created under ($ .console_url $)/organizations/${CY_ORG}/projects/${PROJECT}/environments/pr${GH_PR}/pipelines/${PROJECT}-pr${GH_PR}" > pull-request-comment/comment.txt
+          outputs:
+            - name: pull-request-comment
+        params:
+          PROJECT: ($ .project $)
+          CY_ORG: ($ .organization_canonical $)
+          CY_API_URL: ($ .api_url $)
+          CY_API_TOKEN: ((admin-api-key.key))
+          INSECURE: "true"
+
+        on_success:
+          put: github_open_pr
+          params:
+            path: github_open_pr
+            comment_file: pull-request-comment/comment.txt
+
+  - name: destroy-feature-env
+    max_in_flight: 1
+    build_logs_to_retain: 20
+    plan:
+      - in_parallel:
+        - get: github_merged_pr
+          trigger: true
+
+      - task: destroy-env
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+              tag: latest
+          inputs:
+            - name: github_merged_pr
+          run:
+            path: sh
+            args:
+              - -ec
+              - |
+                # Gather information to create a feature-branch env
+                export GH_PR=$(cat github_merged_pr/.git/resource/metadata.json | jq '.[] | select( .name | contains("pr")) | .value' -r)
+                export GH_BRANCH=$(cat github_merged_pr/.git/resource/metadata.json | jq '.[] | select( .name | contains("head_name")) | .value' -r)
+
+                # If not already created, create a new env for this pull request
+                cy pipeline trigger-build \
+                  --org $CY_ORG \
+                  --project ${PROJECT} \
+                  --env "pr${GH_PR}" \
+                  --job "destroy-infra"
+
+                # Construct the github message
+                echo "The test environment has been destroyed for PR ${GH_PR}" > pull-request-comment/comment.txt
+          outputs:
+            - name: pull-request-comment
+        params:
+          PROJECT: ($ .project $)
+          CY_ORG: ($ .organization_canonical $)
+          CY_API_URL: ($ .api_url $)
+          CY_API_TOKEN: ((admin-api-key.key))
+          INSECURE: "true"
+
+        on_success:
+          put: github_merged_pr
+          params:
+            path: github_merged_pr
+            comment_file: pull-request-comment/comment.txt
+

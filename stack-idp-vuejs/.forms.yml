@@ -1,0 +1,95 @@
+---
+version: "2"
+use_cases:
+- name: scaffold
+  sections:
+  - name: config
+    groups:
+    - name: github
+      technologies: [pipeline]
+      vars:
+      - name: "Feature flag to scaffold new Vue.js project"
+        key: vuejs_feature_flags
+        widget: dropdown
+        type: array
+        required: true
+        values:
+        - {"label": "default - Create a project with the default configuration without any additional features.", "value": "default"}
+        - {"label": "typescript - Add TypeScript support.", "value": "typescript"}
+        - {"label": "jsx - Add JSX support.", "value": "jsx"}
+        - {"label": "vue-router - Add Vue Router for SPA development.", "value": "vue-router"}
+        - {"label": "pinia - Add Pinia for state management.", "value": "pinia"}
+        - {"label": "vitest - Add Vitest for unit testing.", "value": "vitest"}
+        - {"label": "cypress - Add Cypress for end-to-end testing. If used without --vitest, it will also add Cypress Component Testing.", "value": "cypress"}
+        - {"label": "playwright - Add Playwright for end-to-end testing.", "value": "playwright"}
+        - {"label": "nightwatch - Add Nightwatch for end-to-end testing. If used without --vitest, it will also add Nightwatch Component Testing.", "value": "nightwatch"}
+        - {"label": "eslint - Add ESLint for code quality.", "value": "eslint"}
+        - {"label": "eslint-with-prettier - Add Prettier for code formatting in addition to ESLint.", "value": "eslint-with-prettier"}
+        widget_config:
+          multiselect: true
+        validations:
+          - array:
+              max_elems: 4
+            error_message: "4 feature flags can be selected at most."
+      - name: "GitHub PAT"
+        description: "GitHub Personal Access Token allowing to create the new code repository"
+        key: github_pat
+        widget: cy_cred
+        widget_config:
+          cred_types: ["custom"]
+        type: string
+        default: "((github-pat.key))"
+        required: true
+
+- name: pull_requests
+  sections:
+  - name: config
+    groups:
+    - name: github
+      technologies: [pipeline]
+      vars:
+      - name: "Git base branch to monitor for new PRs"
+        key: git_branch
+        widget: simple_text
+        type: string
+        default: "develop"
+        required: true
+
+- name: deploy
+  sections:
+  - name: config
+    groups:
+    - name: github
+      technologies: [pipeline]
+      vars:
+      - name: "Git branch name of the code to deploy"
+        key: git_code_branch
+        widget: simple_text
+        type: string
+        default: ""
+        required: true
+    - name: AWS Cloud Configuration
+      technologies: [pipeline]
+      vars:
+      - name: "AWS account"
+        description: "The AWS account where to deploy the infrastructure. It contains access key and secret key."
+        key: aws_cred
+        widget: cy_cred
+        widget_config:
+          display_keys: false
+          cred_types:
+            - aws
+        type: string
+        default: "((aws))"
+        required: true
+      - name: "AWS region"
+        description: "AWS region to use for Terraform."
+        key: aws_region
+        widget: auto_complete
+        type: string
+        values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/aws-regions.json
+        default: us-east-1
+        validations: 
+        - regexp: "^[a-z]{2}-[a-z]+-\\d+$" 
+          error_message: "Please enter a valid AWS region such as us-east-3"
+        required: true
