@@ -29,12 +29,12 @@ config:
         path: pipeline/pipeline.yaml
       variables:
         path: pipeline/variables.sample.yaml
-        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
+        destination: ($ .project $)/($ .environment $)/pipeline/variables.yaml
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
         path: 'terraform/aks/main.tf'
-        destination: '($ .project $)/terraform/aks/($ .environment $)/main.tf'
+        destination: '($ .project $)/($ .environment $)/terraform/aks/main.tf'
 
   nodepool:
     name: 'AKS Node Pool'
@@ -46,9 +46,9 @@ config:
         path: pipeline/pipeline.yaml
       variables:
         path: pipeline/variables.sample.yaml
-        destination: ($ .project $)/pipeline/($ .environment $)/variables.yaml
+        destination: ($ .project $)/($ .environment $)/pipeline/variables.yaml
     # Configuration of terraform (leave .sample extension to prevent terraform executing the sample file)
     terraform:
       main:
         path: 'terraform/nodepool/main.tf'
-        destination: '($ .project $)/terraform/nodepool/($ .environment $)/main.tf'
+        destination: '($ .project $)/($ .environment $)/terraform/nodepool/main.tf'

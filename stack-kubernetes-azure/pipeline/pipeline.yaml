@@ -51,7 +51,7 @@ resources:
     private_key: ((($ .scs_cred_path $).ssh_key))
     ($- end $)
     paths:
-      - ($ .stack_path $)/terraform/*
+      - ($ .stack_path $)/terraform/($ .use_case $)/*
 
 # The Terraform config (will be merged with the stack)
 - name: git_config-terraform
@@ -68,7 +68,7 @@ resources:
     private_key: ((($ .cr_cred_path $).ssh_key))
     ($- end $)
     paths:
-      - ($ .project $)/terraform/($ .environment $)/*
+      - ($ .project $)/($ .environment $)/terraform/($ .use_case $)/*
 
 
 groups:
@@ -108,8 +108,8 @@ jobs:
           - name: merged-stack
             path: "merged-stack"
         params:
-          CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
-          STACK_PATH: ($ .stack_path $)/terraform
+          CONFIG_PATH: ($ .project $)/($ .environment $)/terraform/($ .use_case $)
+          STACK_PATH: ($ .stack_path $)/terraform/($ .use_case $)
 
       - put: tfstate
         params:
@@ -151,8 +151,8 @@ jobs:
           - name: merged-stack
             path: "merged-stack"
         params:
-          CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
-          STACK_PATH: ($ .stack_path $)/terraform
+          CONFIG_PATH: ($ .project $)/($ .environment $)/terraform/($ .use_case $)
+          STACK_PATH: ($ .stack_path $)/terraform/($ .use_case $)
 
       - put: tfstate
         params:
@@ -191,8 +191,8 @@ jobs:
           - name: merged-stack
             path: "merged-stack"
         params:
-          CONFIG_PATH: ($ .project $)/terraform/($ .environment $)
-          STACK_PATH: ($ .stack_path $)/terraform
+          CONFIG_PATH: ($ .project $)/($ .environment $)/terraform/($ .use_case $)
+          STACK_PATH: ($ .stack_path $)/terraform/($ .use_case $)
 
       - put: tfstate
         params:
