@@ -1,0 +1,688 @@
+# YAML anchors
+shared:
+# Task : sync and merge with rsync 2 rep. Used to merge stack and config
+- &merge-stack-and-config
+  platform: linux
+  image_resource:
+    type: registry-image
+    source:
+      repository: cycloid/cycloid-toolkit
+      tag: latest
+  run:
+    path: /usr/bin/merge-stack-and-config
+
+
+resource_types:
+- name: terraform
+  type: registry-image
+  source:
+    repository: cycloid/terraform-resource
+    tag: ((terraform_version))
+
+
+resources:
+- name: tfstate
+  type: terraform
+  icon: terraform
+  source:
+    env_name: ($ .environment $)
+    backend_type: http
+    backend_config:
+      address: '($ .api_url $)/inventory?jwt=($ .inventory_jwt $)'
+    vars:
+      cyenv: ($ .environment $)
+      cyproject: ($ .project $)
+      cyorg: ($ .organization_canonical $)
+      cyorg_jwt: ((cycloid_api_key))
+      cycloid_api_url: ($ .api_url $)
+($ if eq .use_case "aws" $)
+      aws_cred: ((aws_cred))
+      aws_region: ((aws_region))
+($ else if eq .use_case "azure" $)
+      azure_cred: ((azure_cred))
+($ else if eq .use_case "gcp" $)
+      gcp_project: ((gcp_project))
+      gcp_region: ((gcp_region))
+      gcp_zone: ((gcp_zone))
+    env:
+      GOOGLE_PROJECT: ((gcp_project))
+      GOOGLE_REGION: ((gcp_region))
+      GOOGLE_ZONE: ((gcp_zone))
+      GOOGLE_CREDENTIALS: ((gcp.json_key))
+($ else if eq .use_case "vmware" $)
+      vsphere_server: ((vsphere_server))
+      vsphere_cred: ((vsphere_cred))
+($ end $)
+
+
+# The Terraform stack (will be merged with the config)
+- name: git_stack-terraform
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .scs_url $)
+    branch: ($ .scs_branch $)
+    ($- if eq .scs_cred_type "basic_auth" $)
+    username: ((($ .scs_cred_path $).username))
+    password: ((($ .scs_cred_path $).password))
+    ($- end $)
+    ($- if eq .scs_cred_type "ssh" $)
+    private_key: ((($ .scs_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .stack_path $)/terraform/($ .use_case $)/*
+
+# The Terraform config (will be merged with the stack)
+- name: git_config-terraform
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .cr_url $)
+    branch: ($ .cr_branch $)
+    ($- if eq .cr_cred_type "basic_auth" $)
+    username: ((($ .cr_cred_path $).username))
+    password: ((($ .cr_cred_path $).password))
+    ($- end $)
+    ($- if eq .cr_cred_type "ssh" $)
+    private_key: ((($ .cr_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .project $)/($ .environment $)/terraform/($ .use_case $)/*
+
+# The Ansible stack (will be merged with the config)
+- name: git_stack-ansible
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .scs_url $)
+    branch: ($ .scs_branch $)
+    ($- if eq .scs_cred_type "basic_auth" $)
+    username: ((($ .scs_cred_path $).username))
+    password: ((($ .scs_cred_path $).password))
+    ($- end $)
+    ($- if eq .scs_cred_type "ssh" $)
+    private_key: ((($ .scs_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .stack_path $)/ansible/*
+
+# The Ansible config (will be merged with the stack)
+- name: git_config-ansible
+  type: git
+  icon: github-circle
+  source:
+    uri: ($ .cr_url $)
+    branch: ($ .cr_branch $)
+    ($- if eq .cr_cred_type "basic_auth" $)
+    username: ((($ .cr_cred_path $).username))
+    password: ((($ .cr_cred_path $).password))
+    ($- end $)
+    ($- if eq .cr_cred_type "ssh" $)
+    private_key: ((($ .cr_cred_path $).ssh_key))
+    ($- end $)
+    paths:
+      - ($ .project $)/ansible/environments/*
+
+# 60 minutes timer to trigger destroy periodically
+- name: every-1h
+  type: time
+  icon: timer
+  source:
+    interval: 60m
+
+
+groups:
+- name: overview
+  jobs:
+    - terraform-plan
+    - terraform-apply
+    - ansible-playbook
+
+- name: destroy
+  jobs:
+    - terraform-destroy
+
+
+jobs:
+  # Merge and trigger a plan whenever there is a commit in Terraform stack or config
+  - name: terraform-plan
+    serial: true
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-terraform
+          trigger: true
+
+        - get: git_config-terraform
+          trigger: true
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-terraform
+            path: "config"
+          - name: git_stack-terraform
+            path: "stack"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+        params:
+          CONFIG_PATH: ($ .project $)/($ .environment $)/terraform/($ .use_case $)
+          STACK_PATH: ($ .stack_path $)/terraform/($ .use_case $)
+
+      - put: tfstate
+        params:
+          plan_only: true
+          terraform_source: merged-stack/
+
+
+  # Merge and trigger an apply whenever there is a terraform plan passed successfully
+  - name: terraform-apply
+    serial: true
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-terraform
+          trigger: false
+          passed:
+            - terraform-plan
+
+        - get: git_config-terraform
+          trigger: false
+          passed:
+            - terraform-plan
+
+        - get: tfstate
+          trigger: true
+          passed:
+            - terraform-plan
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-terraform
+            path: "config"
+          - name: git_stack-terraform
+            path: "stack"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+        params:
+          CONFIG_PATH: ($ .project $)/($ .environment $)/terraform/($ .use_case $)
+          STACK_PATH: ($ .stack_path $)/terraform/($ .use_case $)
+
+      - put: tfstate
+        params:
+          plan_run: true
+          terraform_source: merged-stack/
+
+
+  - name: ansible-playbook
+    serial: true
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-ansible
+          trigger: true
+
+        - get: git_config-ansible
+          trigger: true
+
+        - get: tfstate
+          trigger: true
+          passed:
+            - terraform-apply
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-ansible
+            path: "config"
+          - name: git_stack-ansible
+            path: "stack"
+          - name: tfstate
+            path: "terraform"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+          - name: output-var
+            path: "output-var"
+        params:
+          CONFIG_PATH: ($ .project $)/ansible/environments
+          STACK_PATH: ($ .stack_path $)/ansible
+
+($ if eq .use_case "aws" $)
+      - task: start-aws-instances
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: amazon/aws-cli
+              tag: latest
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                source ansible-playbook/env
+                yum install jq wget less -y >/dev/null
+                wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq >/dev/null
+                chmod +x /usr/bin/yq
+                export AWS_ACCESS_KEY_ID=$(echo ${CY_AWS_CRED} | jq -r .access_key)
+                export AWS_SECRET_ACCESS_KEY=$(echo ${CY_AWS_CRED} | jq -r .secret_key)
+                export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+                export TERM=xterm
+                for instance_id in $(echo "${instance_ids}" | yq 'to_entries | .[].value'); do
+                  echo "Starting instance ${instance_id}..."
+                  aws ec2 start-instances --instance-ids ${instance_id}
+                done
+                sleep 30
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+        params:
+          CY_AWS_CRED: '((aws_cred))'
+          AWS_DEFAULT_REGION: '((aws_region))'
+
+      - task: run-ansible
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+              tag: ((ansible_version))
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                source ansible-playbook/env
+                apk add yq
+                export AWS_ACCESS_KEY_ID=$(echo ${CY_AWS_CRED} | jq -r .access_key)
+                export AWS_SECRET_ACCESS_KEY=$(echo ${CY_AWS_CRED} | jq -r .secret_key)
+                export AWS_DEFAULT_REGION=${AWS_REGION}
+                export TERM=xterm
+                export ANSIBLE_EXTRA_ARGS="-i ,"
+                for instance_id in $(echo "${instance_ids}" | yq 'to_entries | .[].value'); do
+                  echo "Adding instance ${instance_id}..."
+                  export ip=$(aws ec2 describe-instances --instance-ids ${instance_id} --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
+                  export ANSIBLE_EXTRA_ARGS=${ANSIBLE_EXTRA_ARGS}${ip},
+                done
+                unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_DEFAULT_REGION
+                /usr/bin/ansible-runner
+          caches:
+            - path: ansible-playbook/roles
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+        params:
+          #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
+          SSH_PRIVATE_KEY: ((($ .organization_canonical $)-($ .project $)-($ .environment $).ssh_key))
+          ANSIBLE_PLAYBOOK_PATH: ansible-playbook
+          ANSIBLE_PLAYBOOK_NAME: site.yml
+          CY_AWS_CRED: '((aws_cred))'
+          AWS_REGION: '((aws_region))'
+          ANSIBLE_EXTRA_VARS:
+            cyenv: ($ .environment $)
+            cyproject: ($ .project $)
+            cyorg: ($ .organization_canonical $)
+            hosts_service: ((hosts_service))
+            hosts_package: ((hosts_package))
+            hosts_user: ((hosts_user))
+
+      - task: run-aws-cli-operations
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: amazon/aws-cli
+              tag: latest
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                source ansible-playbook/env
+                yum install jq wget less -y >/dev/null
+                wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq >/dev/null
+                chmod +x /usr/bin/yq
+                export AWS_ACCESS_KEY_ID=$(echo ${CY_AWS_CRED} | jq -r .access_key)
+                export AWS_SECRET_ACCESS_KEY=$(echo ${CY_AWS_CRED} | jq -r .secret_key)
+                export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+                export TERM=xterm
+                for instance_id in $(echo "${instance_ids}" | yq 'to_entries | .[].value'); do
+                  if [[ "$vm_instance_status" = "Started" ]]; then
+                    echo "Starting instance ${instance_id}..."
+                    aws ec2 start-instances --instance-ids ${instance_id}
+                  elif [[ "$vm_instance_status" = "Stopped" ]]; then
+                    echo "Stopping instance ${instance_id}..."
+                    aws ec2 stop-instances --instance-ids ${instance_id}
+                  fi
+                done
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+        params:
+          vm_instance_status: '((vm_instance_status))'
+          CY_AWS_CRED: '((aws_cred))'
+          AWS_DEFAULT_REGION: '((aws_region))'
+
+($ else if eq .use_case "azure" $)
+      - task: start-azure-instances
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: public.ecr.aws/cycloid-demo/azure-resource
+              tag: latest
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                source ansible-playbook/env
+                export AZURE_CLIENT_ID=$(echo ${CY_AZURE_CRED} | jq -r .client_id)
+                export AZURE_CLIENT_SECRET=$(echo ${CY_AZURE_CRED} | jq -r .client_secret)
+                export AZURE_TENANT_ID=$(echo ${CY_AZURE_CRED} | jq -r .tenant_id)
+                export AZURE_SUBSCRIPTION_ID=$(echo ${CY_AZURE_CRED} | jq -r .subscription_id)
+                echo "Starting instance ${vm_name} in RG ${resource_group_name}..."
+                az login --service-principal --username ${AZURE_CLIENT_ID} --password ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
+                az vm start --resource-group ${resource_group_name} --name ${vm_name}
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+        params:
+          CY_AZURE_CRED: '((azure_cred))'
+
+      - task: run-ansible
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+              tag: ((ansible_version))
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                source ansible-playbook/env
+                export ANSIBLE_REMOTE_USER=${vm_os_user:-admin}
+                export AZURE_CLIENT_ID=$(echo ${AZURE_CRED} | jq -r .client_id)
+                export AZURE_CLIENT_SECRET=$(echo ${AZURE_CRED} | jq -r .client_secret)
+                export AZURE_TENANT_ID=$(echo ${AZURE_CRED} | jq -r .tenant_id)
+                export AZURE_SUBSCRIPTION_ID=$(echo ${AZURE_CRED} | jq -r .subscription_id)
+                export ANSIBLE_EXTRA_ARGS="-i ${vm_ip},"
+                unset CY_AZURE_CRED AZURE_CLIENT_ID AZURE_CLIENT_SECRET AZURE_TENANT_ID AZURE_SUBSCRIPTION_ID
+                echo "Targeting VM ${vm_name} with IP ${vm_ip} in RG ${resource_group_name}..."
+                /usr/bin/ansible-runner
+          caches:
+            - path: ansible-playbook/roles
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+        params:
+          #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
+          SSH_PRIVATE_KEY: ((($ .organization_canonical $)-($ .project $)-($ .environment $).ssh_key))
+          ANSIBLE_PLAYBOOK_PATH: ansible-playbook
+          ANSIBLE_PLAYBOOK_NAME: site.yml
+          CY_AZURE_CRED: '((azure_cred))'
+          ANSIBLE_EXTRA_VARS:
+            cyenv: ($ .environment $)
+            cyproject: ($ .project $)
+            cyorg: ($ .organization_canonical $)
+            hosts_service: ((hosts_service))
+            hosts_package: ((hosts_package))
+            hosts_user: ((hosts_user))
+
+      - task: run-azure-cli-operations
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: public.ecr.aws/cycloid-demo/azure-resource
+              tag: latest
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                source ansible-playbook/env
+                export AZURE_CLIENT_ID=$(echo ${CY_AZURE_CRED} | jq -r .client_id)
+                export AZURE_CLIENT_SECRET=$(echo ${CY_AZURE_CRED} | jq -r .client_secret)
+                export AZURE_TENANT_ID=$(echo ${CY_AZURE_CRED} | jq -r .tenant_id)
+                export AZURE_SUBSCRIPTION_ID=$(echo ${CY_AZURE_CRED} | jq -r .subscription_id)
+                az login --service-principal --username ${AZURE_CLIENT_ID} --password ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
+                if [[ "$vm_instance_status" = "Started" ]]; then
+                  echo "Starting instance ${vm_name} in RG ${resource_group_name}..."
+                  az vm start --resource-group ${resource_group_name} --name ${vm_name}
+                  exit 0
+                fi
+                if [[ "$vm_instance_status" = "Stopped" ]]; then
+                  echo "Stopping instance ${vm_name} in RG ${resource_group_name}..."
+                  az vm stop --resource-group ${resource_group_name} --name ${vm_name}
+                  exit 0
+                fi
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+        params:
+          vm_instance_status: ((vm_instance_status))
+          CY_AZURE_CRED: '((azure_cred))'
+
+($ else if eq .use_case "gcp" $)
+      - task: start-gcp-instances
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: google/cloud-sdk
+              tag: debian_component_based
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                source ansible-playbook/env
+                apt-get install jq -y >/dev/null
+                echo "Starting instance ${vm_name} in zone ${GOOGLE_ZONE}..."
+                echo ${GOOGLE_CRED} | jq -r .key >/tmp/gcp_credentials_json
+                gcloud auth activate-service-account --key-file /tmp/gcp_credentials_json
+                gcloud compute instances start ${vm_name} --zone=${GOOGLE_ZONE}
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+        params:
+          GOOGLE_PROJECT: ((gcp_project))
+          GOOGLE_REGION: ((gcp_region))
+          GOOGLE_ZONE: ((gcp_zone))
+          GOOGLE_CRED: ((gcp))
+
+      - task: run-ansible
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+              tag: ((ansible_version))
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                source ansible-playbook/env
+                export ANSIBLE_REMOTE_USER=${vm_os_user:-admin}
+                export ANSIBLE_EXTRA_ARGS="-i ${vm_ip},"
+                echo "Targeting VM ${vm_name} with IP ${vm_ip}..."
+                /usr/bin/ansible-runner
+          caches:
+            - path: ansible-playbook/roles
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+        params:
+          #+ Parameters of ansible-runner script. Can be found here: https://github.com/cycloidio/docker-cycloid-toolkit#ansible-runner
+          SSH_PRIVATE_KEY: ((($ .organization_canonical $)-($ .project $)-($ .environment $).ssh_key))
+          ANSIBLE_PLAYBOOK_PATH: ansible-playbook
+          ANSIBLE_PLAYBOOK_NAME: site.yml
+          CY_GCP_CRED: '((gcp_cred))'
+          ANSIBLE_EXTRA_VARS:
+            cyenv: ($ .environment $)
+            cyproject: ($ .project $)
+            cyorg: ($ .organization_canonical $)
+            hosts_service: ((hosts_service))
+            hosts_package: ((hosts_package))
+            hosts_user: ((hosts_user))
+
+      - task: run-gcp-cli-operations
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: google/cloud-sdk
+              tag: debian_component_based
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                source ansible-playbook/env
+                apt-get install jq -y >/dev/null
+                echo ${GOOGLE_CRED} | jq -r .key >/tmp/gcp_credentials_json
+                gcloud auth activate-service-account --key-file /tmp/gcp_credentials_json
+                if [[ "$vm_instance_status" = "Started" ]]; then
+                  echo "Starting instance ${vm_name} in zone ${GOOGLE_ZONE}..."
+                  gcloud compute instances start ${vm_name} --zone=${GOOGLE_ZONE}
+                  exit 0
+                fi
+                if [[ "$vm_instance_status" = "Stopped" ]]; then
+                  echo "Stopping instance ${vm_name} in zone ${GOOGLE_ZONE}..."
+                  gcloud compute instances stop ${vm_name} --zone=${GOOGLE_ZONE}
+                  exit 0
+                fi
+          inputs:
+          - name: merged-stack
+            path: ansible-playbook
+        params:
+          vm_instance_status: '((vm_instance_status))'
+          GOOGLE_PROJECT: ((gcp_project))
+          GOOGLE_REGION: ((gcp_region))
+          GOOGLE_ZONE: ((gcp_zone))
+          GOOGLE_CRED: ((gcp))
+($ end $)
+
+
+  # Destroy the demo infrastructure after its creation (after a timer and every hour)
+  - name: terraform-destroy
+    max_in_flight: 1
+    build_logs_to_retain: 10
+    plan:
+      - in_parallel:
+        - get: git_stack-terraform
+          trigger: false
+          passed:
+            - terraform-plan
+
+        - get: git_config-terraform
+          trigger: false
+          passed:
+            - terraform-plan
+
+        - get: tfstate
+          trigger: true
+          passed:
+            - terraform-apply
+
+        # In case of fail, it will help to retry every 1h to make sure the terraform is destroyed
+        - get: every-1h
+          trigger: true
+
+      # Timer to make sure the infra is destroyed at least 10 minutes after creation
+      - task: wait-a-bit
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+          run:
+            path: /bin/bash
+            args:
+              - '-ec'
+              - |
+                sleep 1800
+
+      - task: merge-stack-and-config
+        config:
+          <<: *merge-stack-and-config
+          inputs:
+          - name: git_config-terraform
+            path: "config"
+          - name: git_stack-terraform
+            path: "stack"
+          outputs:
+          - name: merged-stack
+            path: "merged-stack"
+        params:
+          CONFIG_PATH: ($ .project $)/($ .environment $)/terraform/($ .use_case $)
+          STACK_PATH: ($ .stack_path $)/terraform/($ .use_case $)
+
+      - put: tfstate
+        params:
+          action: destroy
+          terraform_source: merged-stack/
+        get_params:
+          action: destroy
+
+      - task: pipeline-cleanup
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: cycloid/cycloid-toolkit
+          run:
+            path: /bin/bash
+            args:
+              - '-c'
+              - |
+                export CY_API_KEY=${API_KEY}
+                echo "Login to Cycloid API:"
+                cy login --org ${ORGANIZATION} >output
+                if [[ "$?" != "0" ]]; then
+                    echo "Login Error: cy returned code $?"
+                    cat output
+                    exit 1
+                fi
+                echo "Pause pipeline ${PROJECT}/${ENV} in org ${ORGANIZATION}:"
+                cy pipeline pause \
+                --org ${ORGANIZATION} \
+                --project ${PROJECT} \
+                --env ${ENV} \
+                --api-url ${API_URL} >output
+                if [[ "$?" != "0" ]]; then
+                    echo "Pause Pipeline Error: cy returned code $?"
+                    cat output
+                    exit 1
+                fi
+
+          params:
+            ORGANIZATION: ($ .organization_canonical $)
+            PROJECT: ($ .project $)
+            ENV: ($ .environment $)
+            API_URL: ($ .api_url $)
+            API_KEY: ((cycloid_api_key))
