@@ -1,0 +1,8 @@
+# Expose variables to the pipeline.
+
+# Cycloid also provides special variables that can also be injected.
+# See: https://docs.cycloid.io/deploy/stackforms/advanced.html#special-variables
+
+aws_cred: "Filled by stackforms"
+aws_default_region: "Filled by stackforms"
+

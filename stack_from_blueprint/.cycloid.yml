@@ -1,0 +1,33 @@
+# Use the latest version 3 of the Cycloid stack engine.
+version: '3'
+name: Stack from blueprint
+canonical: stack_from_blueprint
+author: 'admin'
+# Fill in the stack details.
+description: 'Discover how to integrate Terraform in your pipelines.'
+image: https://github.com/cycloidio/bootstrap-stacks/blob/master/blank-sample/thumbnail.png
+keywords:
+  - 'terraform'
+  - 'aws'
+technologies:
+  - technology: terraform
+    version: 1.8.2
+template: false
+status: 'public'
+# Add use cases to the stack.
+# See: https://docs.cycloid.io/manage/pipeline/multi-use-case.html#multiple-use-case
+config:
+  aws:
+    name: 'AWS'
+    description: 'Manage Amazon Web Services (aws) resources.'
+    cloud_provider: aws
+    pipeline:
+      pipeline:
+        path: 'pipeline/pipeline.yml'
+      variables:
+        path: 'pipeline/variables.sample.yml'
+        destination: '($ .project $)/pipeline/variables-($ .environment $).yml'
+    terraform:
+      main:
+        path: 'terraform/main.tf.sample'
+        destination: '($ .project $)/terraform/($ .environment $)/main.tf'
