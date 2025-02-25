@@ -1,5 +1,9 @@
 # AWS EKS
 
+### Prerequisites
+Create an EC2 key pair named exactly `cycloid` with a RSA key. This key will be provisionned on the ndoes.
+
+### What it does ?
 It creates:
 * **VPC**
 * **AWS EKS cluster**
