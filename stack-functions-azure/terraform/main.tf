@@ -20,7 +20,7 @@ module "function" {
 
   #. azure_location: "West Europe"
   #+ Azure location
-  azure_location = "Value injected by StackForms"
+  #azure_location = "Value injected by StackForms"
 
   #. python_version: "3.11"
   #+ Python version

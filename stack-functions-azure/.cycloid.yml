@@ -3,7 +3,6 @@
 version: '3'
 name: Azure Function (Python)
 canonical: stack-functions-azure
-status: private
 author: Cycloid
 description: |
   Create a Python Azure Function App with its new Storage Account and Service Plan using Terraform and deploy the function endpoints using Azure Functions Core Tools.

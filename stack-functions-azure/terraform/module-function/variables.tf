@@ -9,10 +9,10 @@ variable "resource_group_name" {
   default     = ""
 }
 
-variable "azure_location" {
-  description = "Azure location"
-  default = "West Europe"
-}
+# variable "azure_location" {
+#   description = "Azure location"
+#   default = "West Europe"
+# }
 
 variable "python_version" {
   description = "Python version"

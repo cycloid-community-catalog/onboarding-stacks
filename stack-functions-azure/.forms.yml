@@ -32,14 +32,14 @@ use_cases:
             type: azurerm_resource_group
         type: string
         required: true
-      - name: "Azure location"
-        description: "Azure location for Terraform."
-        key: azure_location
-        widget: auto_complete
-        type: string
-        values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/azure-locations.json
-        default: "West Europe"
-        required: true
+      # - name: "Azure location"
+      #   description: "Azure location for Terraform."
+      #   key: azure_location
+      #   widget: auto_complete
+      #   type: string
+      #   values_ref: https://cycloid-demo-stackforms-values.s3.eu-west-1.amazonaws.com/azure-locations.json
+      #   default: "West Europe"
+      #   required: true
 
     - name: Azure Function Platform
       technologies: [terraform]
