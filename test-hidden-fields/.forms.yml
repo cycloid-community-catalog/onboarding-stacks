@@ -73,7 +73,7 @@ use_cases:
                 key: sqs_queue_name
                 widget: simple_text
                 type: string
-                # required: true   # Apparently we cannot put "required" if the submenu is hidden because if the condition is "false": the form still requires a value #bug
+                required: true   # Apparently we cannot put "required" if the submenu is hidden because if the condition is "false": the form still requires a value #bug
 
               - name: FIFO queue
                 description: >
