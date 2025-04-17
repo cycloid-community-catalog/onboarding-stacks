@@ -1,0 +1,95 @@
+---
+version: "2"
+
+use_cases:
+  - name: k8s-app-infra   # the use_case is defined in the .cycloid.yml file
+    sections:
+      - name: VPC configuration
+        groups:
+          - name: VPC configuration
+            technologies: [pipeline]
+            vars:
+              - name: VPC ID
+                description: |
+                  The ID of the Virtual Private Cloud (VPC).
+                key: vpc_id
+                widget: dropdown
+                type: string
+                values:
+                - "1"
+                required: true
+
+      - name: Cache configuration
+        groups:
+          - name: Toggle on/off
+            technologies: [pipeline]
+            vars:
+              - name: Enable Elasticache for Redis
+                description: >
+                  Enable Elasticache for Redis.
+                  When enabled, a Redis ElastiCache will be provisioned for caching purposes
+                key: enable_redis
+                widget: switch
+                type: boolean
+                default: false
+
+          - name: Redis options
+            technologies: [pipeline]
+            condition: '$enable_redis == true'
+            vars:
+              - name: Redis cache size
+                description: >
+                  Specify the size of the Redis cache.
+                  This determines the memory capacity available for caching data.
+                key: redis_cache_size
+                widget: slider_list
+                type: map
+                values:
+                  - {"label": "small (1GB)", "value": "cache.t4g.small"}
+                  - {"label": "medium (3GB)", "value": "cache.t4g.medium"}
+                  - {"label": "large (6GB)", "value": "cache.m7g.large"}
+
+      - name: Queue configuration
+        groups:
+          - name: Toggle on/off
+            technologies: [pipeline]
+            vars:
+              - name: Enable SQS
+                description: >
+                  Enable SQS.
+                  When enabled, a SQS resource will be provisioned for queueing purposes
+                key: enable_sqs
+                widget: switch
+                type: boolean
+                default: false
+
+          - name: SQS general options
+            technologies: [pipeline]
+            condition: '$enable_sqs == true'
+            vars:
+              - name: Queue Name
+                description: >
+                  The name of the queue
+                key: sqs_queue_name
+                widget: simple_text
+                type: string
+                # required: true   # Apparently we cannot put "required" if the submenu is hidden because if the condition is "false": the form still requires a value #bug
+
+              - name: FIFO queue
+                description: >
+                  Make the queue a FIFO style queue (first in first out)
+                key: sqs_fifo_queue
+                widget: switch
+                type: boolean
+                default: false
+
+              - name: Message retention time
+                description: >
+                  The number of seconds Amazon SQS retains a message. Integer representing seconds, from 60 (1 minute) to 1209600 (14 days)
+                key: sqs_message_retention_seconds
+                widget: slider_range
+                values:
+                  - 60
+                  - 1209600
+                type: integer
+                default: 60
