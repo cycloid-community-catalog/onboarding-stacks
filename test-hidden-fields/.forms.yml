@@ -2,7 +2,7 @@
 version: "2"
 
 use_cases:
-  - name: k8s-app-infra   # the use_case is defined in the .cycloid.yml file
+  - name: default
     sections:
       - name: VPC configuration
         groups:
